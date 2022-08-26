@@ -1,0 +1,6 @@
+require "chrigi.options"
+require "chrigi.keymaps"
+require "chrigi.plugins"
+require "chrigi.colorscheme"
+require "chrigi.cmp"
+require "chrigi.lsp"
