@@ -1,27 +1,9 @@
-local status_ok, mason = pcall(require, "mason")
+local status_ok, lsp_installer = pcall(require, "nvim-lsp-installer")
 if not status_ok then
-  vim.notify("'mason' not found.")
+  vim.notify("'nvim-lsp-installer' not found.")
 	return
 end
 
-local status_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
-if not status_ok then
-  vim.notify("'mason-lspconfig' not found.")
-	return
-end
-
-local status_ok, _ = pcall(require, "lspconfig")
-if not status_ok then
-  vim.notify("'lspconfig' not found")
-	return
-end
-
-local servers = {"jsonls", "pyright", "sumneko_lua"}
-
-mason.setup()
-mason_lspconfig.setup({
-  ensure_installed = servers
-})
 
 local lspconfig = require("lspconfig")
 
@@ -30,7 +12,7 @@ local lspconfig = require("lspconfig")
 local on_attach = require("chrigi.lsp.handlers").on_attach
 local capabilities = require("chrigi.lsp.handlers").capabilities
 
-for _, server in ipairs(servers) do
+for _, server in ipairs {"jsonls", "pyright", "sumneko_lua"} do 
   local opts = {
 		on_attach = on_attach,
     capabilities = capabilities
