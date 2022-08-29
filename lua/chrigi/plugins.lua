@@ -1,7 +1,5 @@
 local fn = vim.fn
 
-vim.notify(fn.stdpath("data"))
-
 -- Automatically install packer
 local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
@@ -47,11 +45,11 @@ return packer.startup(function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
-  
+
   -- Colorschemes
   use "lunarvim/colorschemes"
   use "folke/tokyonight.nvim"
-  
+
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- The completion plugin
   use "hrsh7th/cmp-buffer" -- buffer completions
@@ -70,6 +68,15 @@ return packer.startup(function(use)
   -- use "williamboman/nvim-lsp-installer" -- simple to use language server installer NOT MAINTAINED ANYMORE
   use "williamboman/mason.nvim"
   use "williamboman/mason-lspconfig.nvim"
+
+  -- Telescope
+  use {
+    'nvim-telescope/telescope.nvim',  branch = '0.1.x',
+  }
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+  -- additionally install fd-find, ripgrep
+
+  use 'nvim-telescope/telescope-media-files.nvim'
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
