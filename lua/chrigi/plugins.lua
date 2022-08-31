@@ -49,6 +49,12 @@ return packer.startup(function(use)
   use "windwp/nvim-autopairs" -- autopairs integrates with treesitter and cmp
   -- comments
   use "numToSTr/Comment.nvim" -- easily comment stuff
+  -- nvimtree
+  use "kyazdani42/nvim-web-devicons"
+  use {
+    "kyazdani42/nvim-tree.lua",
+    -- tag = "nighly" -- optional, updates every week
+  }
 
   -- Colorschemes
   use "lunarvim/colorschemes"
