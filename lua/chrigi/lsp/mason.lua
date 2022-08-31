@@ -26,7 +26,7 @@ local servers = {
 	"dockerls",
 	"hls", -- Haskell
 	"marksman", -- Markdown
-	"rust_analyser",
+	"rust_analyzer",
 	"yamlls",
 	"elmls",
 	"taplo", -- TOML
