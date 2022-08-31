@@ -61,6 +61,8 @@ return packer.startup(function(use)
 	-- bufferline
 	use({ "akinsho/bufferline.nvim", tag = "v2.*", requires = "kyazdani42/nvim-web-devicons" })
 	use("moll/vim-bbye")
+	-- lualine
+	use("nvim-lualine/lualine.nvim")
 
 	-- Colorschemes
 	use("lunarvim/colorschemes")
@@ -116,6 +118,9 @@ return packer.startup(function(use)
 
 	-- Toggleterm
 	use({ "akinsho/toggleterm.nvim", tag = "v2.*" })
+
+	-- Projects
+	use("ahmedkhalf/project.nvim")
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
