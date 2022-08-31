@@ -53,8 +53,14 @@ return packer.startup(function(use)
   use "kyazdani42/nvim-web-devicons"
   use {
     "kyazdani42/nvim-tree.lua",
+    requires = {
+      'kyazdani42/nvim-web-devicons', -- optional, for file icons
+    },
     -- tag = "nighly" -- optional, updates every week
   }
+  -- bufferline
+  use {"akinsho/bufferline.nvim", tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
+  use "moll/vim-bbye"
 
   -- Colorschemes
   use "lunarvim/colorschemes"
