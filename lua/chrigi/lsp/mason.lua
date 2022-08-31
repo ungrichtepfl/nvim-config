@@ -16,7 +16,22 @@ if not status_ok then
 	return
 end
 
-local servers = {"jsonls", "pyright", "sumneko_lua"}
+local servers = {
+  "jsonls",
+  "pyright",
+  "sumneko_lua",
+  "bashls",
+  "clangd", -- C/C++
+  "cmake",
+  "dockerls",
+  "hls", -- Haskell
+  "marksman", -- Markdown
+  "rust_analyser",
+  "yamlls",
+  "elmls",
+  "taplo", -- TOML
+  "lemminx", -- "XML"
+}
 
 mason.setup()
 mason_lspconfig.setup({
