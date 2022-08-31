@@ -53,3 +53,12 @@ Logs can be found in `~/.cache/nvim`
 - **Comments Line**
   - **Normal**: `gcc`, `gcA` (end of line)
   - **Visual**: `gc`
+
+#### Nvimtree
+
+- **Open Tree**: `<leader>e`
+
+#### Bufferline
+
+- **Close buffer**: `<leader>q`
+
