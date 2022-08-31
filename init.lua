@@ -1,13 +1,13 @@
-require "chrigi.options"
-require "chrigi.keymaps"
-require "chrigi.plugins"
-require "chrigi.colorscheme"
-require "chrigi.cmp"
-require "chrigi.lsp"
-require "chrigi.telescope"
-require "chrigi.treesitter"
-require "chrigi.autopairs"
-require "chrigi.comment"
-require "chrigi.gitsigns"
-require "chrigi.nvim-tree"
-require "chrigi.bufferline"
+require("chrigi.options")
+require("chrigi.keymaps")
+require("chrigi.plugins")
+require("chrigi.colorscheme")
+require("chrigi.cmp")
+require("chrigi.lsp")
+require("chrigi.telescope")
+require("chrigi.treesitter")
+require("chrigi.autopairs")
+require("chrigi.comment")
+require("chrigi.gitsigns")
+require("chrigi.nvim-tree")
+require("chrigi.bufferline")
