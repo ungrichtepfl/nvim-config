@@ -63,6 +63,12 @@ return packer.startup(function(use)
 	use("moll/vim-bbye")
 	-- lualine
 	use("nvim-lualine/lualine.nvim")
+	-- impatient TODO check if really needed:
+	use("lewis6991/impatient.nvim")
+	-- indent-blanklines
+	use("lukas-reineke/indent-blankline.nvim")
+	-- alpha (nice startup greeter)
+	use("goolord/alpha-nvim")
 
 	-- Colorschemes
 	use("lunarvim/colorschemes")
@@ -82,6 +88,7 @@ return packer.startup(function(use)
 	use("rafamadriz/friendly-snippets") -- a bunch of snippets to use
 
 	-- LSP
+	use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight TODO check is still needed.
 	use("neovim/nvim-lspconfig") -- enable LSP
 	-- use "williamboman/nvim-lsp-installer" -- simple to use language server installer NOT MAINTAINED ANYMORE
 	use("williamboman/mason.nvim")
