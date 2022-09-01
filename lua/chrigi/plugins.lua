@@ -69,6 +69,8 @@ return packer.startup(function(use)
 	use("lukas-reineke/indent-blankline.nvim")
 	-- alpha (nice startup greeter)
 	use("goolord/alpha-nvim")
+	-- whichkey
+	use("folke/which-key.nvim")
 
 	-- Colorschemes
 	use("lunarvim/colorschemes")
