@@ -17,6 +17,8 @@ require("chrigi.project")
 require("chrigi.impatient")
 require("chrigi.indentline")
 require("chrigi.alpha")
+require("chrigi.dap")
+
 --[[ require("chrigi.whichkey") ]]
 -- TODO check keymaps in config
 --[[ require("chrigi.autocommands") ]]

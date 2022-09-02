@@ -3,7 +3,8 @@ local opts = { noremap = true, silent = true }
 local term_opts = { silent = true }
 
 -- Shorten function name
-local keymap = vim.api.nvim_set_keymap
+--[[ local keymap = vim.api.nvim_set_keymap ]]
+local keymap = vim.keymap.set
 
 --Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
@@ -82,3 +83,11 @@ keymap("n", "<leader>q", ":Bdelete<cr>", opts)
 
 -- Lsp
 keymap("n", "<leader>l", ":Format<cr>", opts) --Format command defined in LSP handler.lua
+
+-- DAP
+keymap("n", "<F5>", ":lua require'dap'.continue()<CR>")
+keymap("n", "<F1>", ":lua require'dap'.step_over()<CR>")
+keymap("n", "<F2>", ":lua require'dap'.step_into()<CR>")
+keymap("n", "<F3>", ":lua require'dap'.step_out()<CR>")
+keymap("n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>")
+keymap("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>")
