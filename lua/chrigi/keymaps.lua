@@ -85,7 +85,9 @@ keymap("n", "<leader>q", ":Bdelete<cr>", opts)
 keymap("n", "<leader>l", ":Format<cr>", opts) --Format command defined in LSP handler.lua
 
 -- DAP
+keymap("n", "<leader>d", ":lua require'dapui'.toggle()<CR>", opts)
 keymap("n", "<F5>", ":lua require'dap'.continue()<CR>", opts)
+keymap("n", "<F6>", ":lua require'dap'.terminate()<CR>", opts)
 keymap("n", "<F1>", ":lua require'dap'.step_over()<CR>", opts)
 keymap("n", "<F2>", ":lua require'dap'.step_into()<CR>", opts)
 keymap("n", "<F3>", ":lua require'dap'.step_out()<CR>", opts)
