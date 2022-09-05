@@ -10,6 +10,13 @@ if not status_ok_dapui then
 	return
 end
 
+local status_ok_virtual_text, virtual_text = pcall(require, "nvim-dap-virtual-text")
+if not status_ok_virtual_text then
+	vim.notify("'nvim-dap-virtual-text' plugin not found.")
+	return
+end
+
+virtual_text.setup()
 dapui.setup()
 
 local dap_servers = { "dap-python" }

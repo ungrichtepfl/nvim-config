@@ -85,9 +85,11 @@ keymap("n", "<leader>q", ":Bdelete<cr>", opts)
 keymap("n", "<leader>l", ":Format<cr>", opts) --Format command defined in LSP handler.lua
 
 -- DAP
-keymap("n", "<F5>", ":lua require'dap'.continue()<CR>")
-keymap("n", "<F1>", ":lua require'dap'.step_over()<CR>")
-keymap("n", "<F2>", ":lua require'dap'.step_into()<CR>")
-keymap("n", "<F3>", ":lua require'dap'.step_out()<CR>")
-keymap("n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>")
-keymap("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>")
+keymap("n", "<F5>", ":lua require'dap'.continue()<CR>", opts)
+keymap("n", "<F1>", ":lua require'dap'.step_over()<CR>", opts)
+keymap("n", "<F2>", ":lua require'dap'.step_into()<CR>", opts)
+keymap("n", "<F3>", ":lua require'dap'.step_out()<CR>", opts)
+keymap("n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>", opts)
+keymap("n", "<leader>B", ":lua require'dap'.toggle_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", opts)
+keymap("n", "<leader>lp", ":lua require'dap'.toggle_breakpoint(nil,nil,vim.fn.input('Log point message: '))<CR>", opts)
+keymap("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>", opts)
