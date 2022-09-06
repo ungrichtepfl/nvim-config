@@ -83,7 +83,7 @@ keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- vim-bbye
 keymap("n", "<leader>q", ":Bdelete<cr>", opts)
-keymap("n", "<leader>qqq", ":Bdelete!<cr>", opts)
+keymap("n", "<leader>Q", ":Bdelete!<cr>", opts)
 
 -- Lsp
 keymap("n", "<leader>l", ":Format<cr>", opts) --Format command defined in LSP handler.lua
