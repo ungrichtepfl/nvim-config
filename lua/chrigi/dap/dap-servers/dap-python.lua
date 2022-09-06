@@ -29,10 +29,38 @@ table.insert(require("dap").configurations.python, {
 		"192.168.0.100",
 	},
 	env = {
+		FLASK_DEBUG = "0",
+		FLASK_ENV = "development",
 		API_HARDWARE_CONFIGURATION = "FLOOR",
 		API_NAME = "FLOOR",
-  }
- })
+	},
+})
+
+--[[ table.insert(require("dap").configurations.python, { ]]
+--[[ 	type = "python", ]]
+--[[ 	request = "launch", ]]
+--[[   module = "flask", ]]
+--[[ 	name = "Flask: Scewo Integration Tests Wheelchair Floor", ]]
+--[[ 	args = { ]]
+--[[     "run", ]]
+--[[     "--no-debugger", ]]
+--[[     "--host", ]]
+--[[     "0.0.0.0", ]]
+--[[     "--debug", ]]
+--[[     "False", ]]
+--[[ 		"--ip", ]]
+--[[ 		"192.168.0.100", ]]
+--[[ 	}, ]]
+--[[ 	env = { ]]
+--[[ 		API_HARDWARE_CONFIGURATION = "FLOOR", ]]
+--[[ 		API_NAME = "FLOOR", ]]
+--[[     FLASK_DEBUG=0, ]]
+--[[     FLASK_APP = "app.py", ]]
+--[[     FLASK_ENV = "development" ]]
+--[[   }, ]]
+--[[   jinja = true, ]]
+--[[   justMyCode = false ]]
+--[[  }) ]]
 
 table.insert(require("dap").configurations.python, {
 	type = "python",

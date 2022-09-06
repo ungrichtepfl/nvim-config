@@ -36,6 +36,9 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
+-- Saving/Closing
+keymap("n", "<C-s>", ":w<CR>", opts)
+
 -- Insert --
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)
@@ -80,6 +83,7 @@ keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
 
 -- vim-bbye
 keymap("n", "<leader>q", ":Bdelete<cr>", opts)
+keymap("n", "<leader>qqq", ":Bdelete!<cr>", opts)
 
 -- Lsp
 keymap("n", "<leader>l", ":Format<cr>", opts) --Format command defined in LSP handler.lua
