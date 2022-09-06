@@ -41,7 +41,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "Buf
 })
 ---ENDWORKAROUND
 
-local status_ts_context, ts_context = pcall(require, "treesitter_context")
+local status_ts_context, ts_context = pcall(require, "treesitter-context")
 if not status_ts_context then
 	vim.notify("'treesitter_context' plugin not found.")
 	return

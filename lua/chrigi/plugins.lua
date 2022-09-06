@@ -73,6 +73,8 @@ return packer.startup(function(use)
 	use("folke/which-key.nvim")
 	-- vim-visual-multi
 	use({ "mg979/vim-visual-multi", branch = "master" })
+	-- todo-comments
+	use({ "folke/todo-comments.nvim" })
 
 	-- Colorschemes
 	use("lunarvim/colorschemes")
