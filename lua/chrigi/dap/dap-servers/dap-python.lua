@@ -5,3 +5,39 @@ if not status_ok then
 end
 
 dap_python.setup("~/.virtualenvs/debugpy/bin/python") -- pip install depubpy
+
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+	dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+	dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+	dapui.close()
+end
+
+-- DAO Configurations
+table.insert(require("dap").configurations.python, {
+	type = "python",
+	request = "attach localhost port 5678",
+	connect = {
+		port = 5678,
+		host = "127.0.0.1",
+	},
+	mode = "remote",
+	name = "Container Attach Debug",
+	cwd = vim.fn.getcwd(),
+	pathMappings = {
+		{
+			localRoot = function()
+				return vim.fn.input("Local code folder > ", vim.fn.getcwd(), "file")
+				--"/home/alpha2phi/workspace/alpha2phi/python-apps/ml-yolo/backend", -- Local folder the code lives
+			end,
+			remoteRoot = function()
+				return vim.fn.input("Container code folder > ", "/", "file")
+				-- "/fastapi", -- Wherever your Python code lives in the container.
+			end,
+		},
+	},
+})
