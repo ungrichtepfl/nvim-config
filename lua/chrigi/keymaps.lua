@@ -38,6 +38,7 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
 -- Saving/Closing
 keymap("n", "<C-s>", ":w<CR>", opts)
+keymap("n", "<C-q>", ":q<CR>", opts)
 
 -- Insert --
 -- Press jk fast to enter

@@ -71,6 +71,8 @@ return packer.startup(function(use)
 	use("goolord/alpha-nvim")
 	-- whichkey
 	use("folke/which-key.nvim")
+	-- vim-visual-multi
+	use({ "mg979/vim-visual-multi", branch = "master" })
 
 	-- Colorschemes
 	use("lunarvim/colorschemes")
