@@ -30,4 +30,8 @@ vim.cmd([[
     autocmd User AlphaReady set showtabline=0 | autocmd BufUnload <buffer> set showtabline=2
   augroup end
 
+  augroup _dap
+    autocmd!  
+    autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
+  augroup end
 ]])

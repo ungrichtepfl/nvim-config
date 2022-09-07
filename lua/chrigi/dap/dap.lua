@@ -4,6 +4,9 @@ if not status_ok_dap then
 	return
 end
 
+--load from .vscode/launch.json files
+require("dap.ext.vscode").load_launchjs()
+
 local status_ok_dapui, dapui = pcall(require, "dapui")
 if not status_ok_dapui then
 	vim.notify("'dapui' plugin not found.")
