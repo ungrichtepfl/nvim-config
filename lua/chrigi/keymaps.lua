@@ -26,7 +26,7 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
--- Resize with arrows
+-- Resize with arrowskey
 keymap("n", "<C-Up>", ":resize +2<CR>", opts)
 keymap("n", "<C-Down>", ":resize -2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
@@ -70,13 +70,26 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
 -- Telescope
 -- keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
+-- The -u option stands for unrestricted such that gitignore files get also included
 keymap(
 	"n",
 	"<leader>f",
-	"<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
+	"<cmd>lua require'telescope.builtin'.find_files({require('telescope.themes').get_dropdown({ previewer = false })})<cr>",
 	opts
 )
-keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
+keymap(
+	"n",
+	"<leader>if",
+	"<cmd>lua require'telescope.builtin'.find_files({require('telescope.themes').get_dropdown({ previewer = false }), hidden=true, no_ignore=true, no_ignore_parent=true})<cr>",
+	opts
+)
+keymap(
+	"n",
+	"<leader>ig",
+	"<cmd>lua require'telescope.builtin'.live_grep{vimgrep_arguments = {'rg','--color=never', '--no-heading', '--with-filename','--line-number','--column','--smart-case','-u'}}<cr>",
+	opts
+)
+keymap("n", "<leader>g", "<cmd>lua require'telescope.builtin'.live_grep()<cr>", opts)
 
 -- Nvimtree
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
@@ -98,6 +111,6 @@ keymap("n", "<F2>", ":lua require'dap'.step_into()<CR>", opts)
 keymap("n", "<F3>", ":lua require'dap'.step_out()<CR>", opts)
 keymap("n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>", opts)
 keymap("n", "<leader>B", ":lua require'dap'.toggle_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", opts)
-keymap("n", "<leader>lp", ":lua require'dap'.toggle_breakpoint(nil,nil,vim.fn.input('Log point message: '))<CR>", opts)
-keymap("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>", opts)
-keymap("n", "<leader>de", ":lua require'dapui'.eval()<CR>", opts)
+--[[ keymap("n", "<leader>lp", ":lua require'dap'.toggle_breakpoint(nil,nil,vim.fn.input('Log point message: '))<CR>", opts) ]]
+--[[ keymap("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>", opts) ]]
+keymap("n", "<leader>v", ":lua require'dapui'.eval()<CR>", opts)
