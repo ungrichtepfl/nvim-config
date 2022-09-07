@@ -17,6 +17,9 @@ if not status_ok_lsp_conf then
 end
 
 local servers = {
+	"arduino_language_server",
+	"asm_lsp",
+	"gopls",
 	"jsonls",
 	"pyright",
 	"sumneko_lua",
@@ -25,12 +28,17 @@ local servers = {
 	"cmake",
 	"dockerls",
 	"hls", -- Haskell
-	"marksman", -- Markdown
+	--[[ "marksman", -- Markdown ]]
+	"remark_ls", -- Markdown
 	"rust_analyzer",
 	"yamlls",
 	"elmls",
 	"taplo", -- TOML
 	"lemminx", -- "XML"
+	"tsserver",
+	"html",
+	"cssls",
+	"angularls",
 }
 
 mason.setup()
