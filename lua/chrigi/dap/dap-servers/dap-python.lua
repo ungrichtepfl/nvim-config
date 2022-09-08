@@ -10,46 +10,46 @@ dap_python.setup("~/.virtualenvs/debugpy/bin/python") -- pip install depubpy
 table.insert(require("dap").configurations.python, {
 	type = "python",
 	request = "launch",
-	name = "Scewo Integration Tests Wheelchair Floor",
-	program = "${file}",
-	justMyCode = false,
+	module = "flask",
+	name = "Flask Dir",
 	args = {
-		"--ip",
-		"192.168.0.100",
+		--[[ "--debug", ]]
+		"run",
+		"--no-debugger",
+		"--host",
+		"0.0.0.0",
 	},
 	env = {
-		FLASK_DEBUG = "0",
-		FLASK_ENV = "development",
-		API_HARDWARE_CONFIGURATION = "FLOOR",
-		API_NAME = "FLOOR",
+		--[[ FLASK_DEBUG=0, ]]
+		FLASK_APP = function()
+			return vim.fn.input("Local flask folder > ", vim.fn.getcwd(), "file")
+		end,
+		--[[ FLASK_ENV = "development" ]]
 	},
+	jinja = true,
+	justMyCode = false,
 })
 
---[[ table.insert(require("dap").configurations.python, { ]]
---[[ 	type = "python", ]]
---[[ 	request = "launch", ]]
---[[   module = "flask", ]]
---[[ 	name = "Flask: Scewo Integration Tests Wheelchair Floor", ]]
---[[ 	args = { ]]
---[[     "run", ]]
---[[     "--no-debugger", ]]
---[[     "--host", ]]
---[[     "0.0.0.0", ]]
---[[     "--debug", ]]
---[[     "False", ]]
---[[ 		"--ip", ]]
---[[ 		"192.168.0.100", ]]
---[[ 	}, ]]
---[[ 	env = { ]]
---[[ 		API_HARDWARE_CONFIGURATION = "FLOOR", ]]
---[[ 		API_NAME = "FLOOR", ]]
---[[     FLASK_DEBUG=0, ]]
---[[     FLASK_APP = "app.py", ]]
---[[     FLASK_ENV = "development" ]]
---[[   }, ]]
---[[   jinja = true, ]]
---[[   justMyCode = false ]]
---[[  }) ]]
+table.insert(require("dap").configurations.python, {
+	type = "python",
+	request = "launch",
+	module = "flask",
+	name = "Flask app.py in current directory",
+	args = {
+		--[[ "--debug", ]]
+		"run",
+		"--no-debugger",
+		"--host",
+		"0.0.0.0",
+	},
+	env = {
+		--[[ FLASK_DEBUG=0, ]]
+		FLASK_APP = "app.py",
+		--[[ FLASK_ENV = "development" ]]
+	},
+	jinja = true,
+	justMyCode = false,
+})
 
 table.insert(require("dap").configurations.python, {
 	type = "python",
