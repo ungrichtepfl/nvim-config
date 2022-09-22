@@ -2,8 +2,14 @@
 
 local colorscheme = "tokyonight"
 
-vim.g.tokyonight_style = "night"
-vim.g.tokyonight_italic_functions = true
+local status_ok_color_plug, color_plug = pcall(require, colorscheme)
+if not status_ok_color_plug then
+	vim.notify("Colorscheme plugin" .. colorscheme .. " not found")
+end
+
+color_plug.setup({
+	style = "night",
+})
 
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 
