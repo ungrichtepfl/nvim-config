@@ -28,8 +28,8 @@ local servers = {
 	"cmake",
 	"dockerls",
 	"hls", -- Haskell
-	--[[ "marksman", -- Markdown ]]
-	"remark_ls", -- Markdown
+	"marksman", -- Markdown
+	--[[ "remark_ls", -- Markdown ]]
 	"rust_analyzer",
 	"yamlls",
 	"elmls",
