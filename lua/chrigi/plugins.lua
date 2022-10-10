@@ -75,6 +75,12 @@ return packer.startup(function(use)
 	use({ "mg979/vim-visual-multi", branch = "master" })
 	-- todo-comments
 	use({ "folke/todo-comments.nvim" })
+	-- trouble
+	-- Lua
+	use({
+		"folke/trouble.nvim",
+		requires = "kyazdani42/nvim-web-devicons",
+	})
 
 	-- Colorschemes
 	use("lunarvim/colorschemes")

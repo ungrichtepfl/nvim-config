@@ -20,6 +20,7 @@ require("chrigi.alpha")
 require("chrigi.dap")
 require("chrigi.todo-comments")
 require("chrigi.whichkey")
+require("chrigi.trouble")
 
 --[[ require("chrigi.autocommands") ]]
 -- TODO read into autocommands
