@@ -88,14 +88,25 @@ local mappings = {
 	},
 	["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
 	["w"] = { "<cmd>w!<CR>", "Save" },
-	["q"] = { "<cmd>q!<CR>", "Quit" },
-	["c"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
+	["W"] = { "<cmd>wq<CR>", "Save and Quit" },
+	["c"] = { "<cmd>q<CR>", "Quit" },
+	["C"] = { "<cmd>q!<CR>", "Quit Forced" },
+	["q"] = { "<cmd>Bdelete<CR>", "Close Buffer" },
+	["Q"] = { "<cmd>Bdelete!<CR>", "Close Buffer Forced" },
 	["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
 	["f"] = {
 		"<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-		"Find files",
+		"Find Files",
 	},
-	["F"] = { "<cmd>Telescope live_grep theme=ivy<cr>", "Find Text" },
+	["if"] = {
+		"<cmd>lua require'telescope.builtin'.live_grep{vimgrep_arguments = {'rg','--color=never', '--no-heading', '--with-filename','--line-number','--column','--smart-case','-u'}}<cr>",
+		"Find Ignored Files",
+	},
+	["r"] = { "<cmd>Telescope live_grep <cr>", "Find Text" },
+	["ir"] = {
+		"<cmd>lua require'telescope.builtin'.live_grep{vimgrep_arguments = {'rg','--color=never', '--no-heading', '--with-filename','--line-number','--column','--smart-case','-u'}}<cr>",
+		"Find Ignored Text",
+	},
 	["P"] = { "<cmd>Telescope projects<cr>", "Projects" },
 
 	p = {
@@ -105,6 +116,27 @@ local mappings = {
 		s = { "<cmd>PackerSync<cr>", "Sync" },
 		S = { "<cmd>PackerStatus<cr>", "Status" },
 		u = { "<cmd>PackerUpdate<cr>", "Update" },
+	},
+
+	d = {
+		name = "DAP",
+		d = { ":lua require'dapui'.toggle()<CR>", "Toggle" },
+		c = { ":lua require'dap'.continue()<CR>", "Continue" },
+		t = { ":lua require'dap'.terminate()<CR>", "Terminate" },
+		o = { ":lua require'dap'.step_over()<CR>", "Step Over" },
+		i = { ":lua require'dap'.step_into()<CR>", "Step Into" },
+		u = { ":lua require'dap'.step_out()<CR>", "Step Out" },
+		b = { ":lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint" },
+		B = {
+			":lua require'dap'.toggle_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+			"Toggle Conditional Breakpoint",
+		},
+		lp = {
+			":lua require'dap'.toggle_breakpoint(nil,nil,vim.fn.input('Log point message: '))<CR>",
+			"Toggle Log? Breakpoint",
+		},
+		dr = { ":lua require'dap'.repl.open()<CR>", "Open REPL" },
+		v = { ":lua require'dapui'.eval()<CR>", "Eval" },
 	},
 
 	g = {

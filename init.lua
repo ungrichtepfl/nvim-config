@@ -19,8 +19,7 @@ require("chrigi.indentline")
 require("chrigi.alpha")
 require("chrigi.dap")
 require("chrigi.todo-comments")
+require("chrigi.whichkey")
 
---[[ require("chrigi.whichkey") ]]
--- TODO check keymaps in config
 --[[ require("chrigi.autocommands") ]]
 -- TODO read into autocommands
