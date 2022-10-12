@@ -43,14 +43,19 @@ packer.init({
 return packer.startup(function(use)
 	-- My plugins here
 	use("wbthomason/packer.nvim") -- Have packer manage itself
+	-- useful APIs
 	use("nvim-lua/popup.nvim") -- An implementation of the Popup API from vim in Neovim
 	use("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
+	use("kyazdani42/nvim-web-devicons")
+	-- better Bdelete
+	use("moll/vim-bbye")
+	-- make lua vim startup time faster
+	use("lewis6991/impatient.nvim")
 	-- autopairs
 	use("windwp/nvim-autopairs") -- autopairs integrates with treesitter and cmp
 	-- comments
-	use("numToSTr/Comment.nvim") -- easily comment stuff
+	use({ "numToSTr/Comment.nvim", requires = { "JoosepAlviste/nvim-ts-context-commentstring" } }) -- easily comment stuff
 	-- nvimtree
-	use("kyazdani42/nvim-web-devicons")
 	use({
 		"kyazdani42/nvim-tree.lua",
 		requires = {
@@ -60,21 +65,18 @@ return packer.startup(function(use)
 	})
 	-- bufferline
 	use({ "akinsho/bufferline.nvim", tag = "v2.*", requires = "kyazdani42/nvim-web-devicons" })
-	use("moll/vim-bbye")
 	-- lualine
 	use("nvim-lualine/lualine.nvim")
-	-- impatient TODO check if really needed:
-	use("lewis6991/impatient.nvim")
 	-- indent-blanklines
 	use("lukas-reineke/indent-blankline.nvim")
 	-- alpha (nice startup greeter)
-	use("goolord/alpha-nvim")
+	use({ "goolord/alpha-nvim", requires = { "kyazdani42/nvim-web-devicons" } })
 	-- whichkey
 	use("folke/which-key.nvim")
 	-- vim-visual-multi
-	use({ "mg979/vim-visual-multi", branch = "master" })
+	use("mg979/vim-visual-multi")
 	-- todo-comments
-	use({ "folke/todo-comments.nvim" })
+	use({ "folke/todo-comments.nvim", requires = "nvim-lua/plenary.nvim" })
 	-- trouble
 	-- Lua
 	use({
