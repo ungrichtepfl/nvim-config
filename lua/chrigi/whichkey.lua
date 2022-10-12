@@ -99,12 +99,15 @@ local mappings = {
 		"Find Files",
 	},
 	["if"] = {
-		"<cmd>lua require'telescope.builtin'.live_grep{vimgrep_arguments = {'rg','--color=never', '--no-heading', '--with-filename','--line-number','--column','--smart-case','-u'}}<cr>",
+		"<cmd>lua require'telescope.builtin'.find_files({hidden=true, no_ignore=true, no_ignore_parent=true})<cr>",
 		"Find Ignored Files",
 	},
-	["r"] = { "<cmd>Telescope live_grep <cr>", "Find Text" },
+	["r"] = {
+		"<cmd>lua require'telescope.builtin'.live_grep(require('telescope.themes').get_dropdown())<cr>",
+		"Find Text",
+	},
 	["ir"] = {
-		"<cmd>lua require'telescope.builtin'.live_grep{vimgrep_arguments = {'rg','--color=never', '--no-heading', '--with-filename','--line-number','--column','--smart-case','-u'}}<cr>",
+		"<cmd>lua require'telescope.builtin'.live_grep({vimgrep_arguments = {'rg','--color=never', '--no-heading', '--with-filename','--line-number','--column','--smart-case','-u'}})<cr>",
 		"Find Ignored Text",
 	},
 	["P"] = { "<cmd>Telescope projects<cr>", "Projects" },
@@ -131,11 +134,11 @@ local mappings = {
 			":lua require'dap'.toggle_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
 			"Toggle Conditional Breakpoint",
 		},
-		lp = {
+		p = {
 			":lua require'dap'.toggle_breakpoint(nil,nil,vim.fn.input('Log point message: '))<CR>",
 			"Toggle Log? Breakpoint",
 		},
-		dr = { ":lua require'dap'.repl.open()<CR>", "Open REPL" },
+		r = { ":lua require'dap'.repl.open()<CR>", "Open REPL" },
 		v = { ":lua require'dapui'.eval()<CR>", "Eval" },
 	},
 
@@ -173,7 +176,7 @@ local mappings = {
 			"<cmd>Telescope lsp_workspace_diagnostics<cr>",
 			"Workspace Diagnostics",
 		},
-		f = { "<cmd>lua vim.lsp.buf.format{async = true} <cr>", "Format" },
+		f = { "<cmd>lua vim.lsp.buf.format{async = true}<cr>", "Format" },
 		i = { "<cmd>LspInfo<cr>", "Info" },
 		I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
 		j = {
