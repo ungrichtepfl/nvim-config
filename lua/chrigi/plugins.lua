@@ -102,7 +102,6 @@ return packer.startup(function(use)
 	use("rafamadriz/friendly-snippets") -- a bunch of snippets to use
 
 	-- LSP
-	use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight TODO check is still needed.
 	use("neovim/nvim-lspconfig") -- enable LSP
 	-- use "williamboman/nvim-lsp-installer" -- simple to use language server installer NOT MAINTAINED ANYMORE
 	use("williamboman/mason.nvim")
@@ -121,6 +120,7 @@ return packer.startup(function(use)
 	use({
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
+		requires = "nvim-lua/plenary.nvim",
 	})
 	use({
 		"nvim-telescope/telescope-fzf-native.nvim",
