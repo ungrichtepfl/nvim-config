@@ -1,12 +1,12 @@
 local status_ok, mason = pcall(require, "mason")
 if not status_ok then
-	vim.notify("'mason' not found.")
+	vim.notify("'mason' plugin not found.")
 	return
 end
 
 local status_ok_manson_lspconf, mason_lspconfig = pcall(require, "mason-lspconfig")
 if not status_ok_manson_lspconf then
-	vim.notify("'mason-lspconfig' not found.")
+	vim.notify("'mason-lspconfig' plugin not found.")
 	return
 end
 
@@ -49,6 +49,7 @@ local servers = {
 }
 
 mason.setup()
+-- needs to be after manson setup:
 mason_lspconfig.setup({
 	ensure_installed = servers,
 })
@@ -69,6 +70,6 @@ for _, server in ipairs(servers) do
 	if server_status_ok then
 		opts = vim.tbl_deep_extend("force", server_opts, opts)
 	end
-
+	-- needs to be after manson and manson_lspconfig
 	lspconfig[server].setup(opts)
 end

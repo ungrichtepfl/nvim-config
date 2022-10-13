@@ -61,6 +61,7 @@ local function lsp_highlight_document(client)
 end
 
 local function lsp_keymaps(bufnr)
+	-- TODO: Is this the best place for keymaps?
 	local opts = { noremap = true, silent = true }
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
@@ -81,7 +82,7 @@ local function lsp_keymaps(bufnr)
 	)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
 	--[[ vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ld", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts) ]]
-	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format(async = true)' ]])
+	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format{async = true}' ]])
 end
 
 M.on_attach = function(client, bufnr)
@@ -96,8 +97,8 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not status_ok then
-	vim.notify("'cmp_nvim_lsp' not found!")
-	return
+	vim.notify("'cmp_nvim_lsp' plugin not found!")
+	return M
 end
 
 M.capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
