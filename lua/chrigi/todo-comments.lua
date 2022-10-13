@@ -16,18 +16,19 @@ todo_commments.setup({
 		TODO = { icon = " ", color = "info" },
 		HACK = { icon = " ", color = "warning" },
 		WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-		PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+		PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE", "OPTIMISE" } },
 		NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
 		TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
 	},
 	-- highlighting of the line containing the todo comment
 	highlight = {
-		pattern = [[.*<(KEYWORDS)\s*\b]], -- pattern or table of patterns, used for highlightng (vim regex)
+		pattern = [[.*<(KEYWORDS)(\s|:)]], -- pattern or table of patterns, used for highlightng (vim regex)
+		comments_only = true,
 	},
 	search = {
 		-- regex that will be used to match keywords.
 		-- don't replace the (KEYWORDS) placeholder
 		-- pattern = [[\b(KEYWORDS):]], -- ripgrep regex
-		pattern = [[\b(KEYWORDS)\b]], -- match without the extra colon. You'll likely get false positives
+		pattern = [[\b(KEYWORDS):?\b]], -- match without the extra colon. You'll likely get false positives
 	},
 })
