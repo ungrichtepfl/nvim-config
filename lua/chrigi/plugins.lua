@@ -53,8 +53,6 @@ return packer.startup(function(use)
 	use("lewis6991/impatient.nvim")
 	-- autopairs
 	use("windwp/nvim-autopairs") -- autopairs integrates with treesitter and cmp
-	-- comments
-	use({ "numToSTr/Comment.nvim", requires = { "JoosepAlviste/nvim-ts-context-commentstring" } }) -- easily comment stuff
 	-- nvimtree
 	use({
 		"kyazdani42/nvim-tree.lua",
@@ -139,6 +137,8 @@ return packer.startup(function(use)
 	use("nvim-treesitter/nvim-treesitter-context")
 	use("p00f/nvim-ts-rainbow")
 	use("JoosepAlviste/nvim-ts-context-commentstring") -- to make context aware comments
+	-- Comments
+	use({ "numToSTr/Comment.nvim", requires = { "JoosepAlviste/nvim-ts-context-commentstring" } }) -- easily comment stuff
 
 	-- Gitsigns
 	use({
