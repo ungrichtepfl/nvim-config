@@ -152,6 +152,14 @@ return packer.startup(function(use)
 	-- Projects
 	use("ahmedkhalf/project.nvim")
 
+	-- Add docstrings:
+	use({
+		"danymat/neogen",
+		requires = "nvim-treesitter/nvim-treesitter",
+		-- Uncomment next line if you want to follow only stable versions
+		-- tag = "*"
+	})
+
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
 	if PACKER_BOOTSTRAP then

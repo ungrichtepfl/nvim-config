@@ -185,6 +185,14 @@ local mappings = {
 		r = { "<cmd>TroubleToggle lsp_references<cr>", "Lsp References" },
 		t = { "<cmd>TodoTrouble<cr>", "Todos" },
 	},
+
+	n = {
+		name = "Neogen",
+		f = { "<cmd>Neogen func<cr>", "Function Docstring" },
+		c = { "<cmd>Neogen class<cr>", "Class Docstring" },
+		t = { "<cmd>Neogen type<cr>", "Type Docstring" },
+		F = { "<cmd>Neogen file<cr>", "File Docstring" },
+	},
 }
 
 local vopts = {

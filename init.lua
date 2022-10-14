@@ -21,6 +21,7 @@ require("chrigi.dap") -- Needs to be after lsp as soon as manson is used
 require("chrigi.todo-comments")
 require("chrigi.trouble")
 require("chrigi.whichkey")
+require("chrigi.neogen")
 
 -- TODO read into autocommands:
 --require("chrigi.autocommands")
