@@ -118,6 +118,7 @@ local mappings = {
 			"<cmd>Gitsigns diffthis HEAD<cr>",
 			"Diff",
 		},
+		m = { "<cmd>GitConflictListQf<cr>", "List merge conflicts" },
 	},
 
 	l = {

@@ -160,6 +160,10 @@ return packer.startup(function(use)
 		-- tag = "*"
 	})
 
+	-- resolve git conflics:
+	use({ "https://gitlab.com/yorickpeterse/nvim-pqf.git" })
+	use({ "akinsho/git-conflict.nvim", tag = "*", requires = "https://gitlab.com/yorickpeterse/nvim-pqf.git" })
+
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
 	if PACKER_BOOTSTRAP then
