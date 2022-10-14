@@ -23,6 +23,4 @@ require("chrigi.trouble")
 require("chrigi.whichkey")
 require("chrigi.neogen")
 require("chrigi.git_conflict")
-
--- TODO read into autocommands:
---require("chrigi.autocommands")
+require("chrigi.autocommands")
