@@ -20,7 +20,6 @@ nvim_tree.setup({
 		"dashboard",
 		"alpha",
 	},
-	sync_root_with_cwd = true,
 	diagnostics = {
 		enable = true,
 		icons = {
@@ -29,11 +28,6 @@ nvim_tree.setup({
 			warning = "",
 			error = "",
 		},
-	},
-	update_focused_file = {
-		enable = true,
-		update_root = true,
-		ignore_list = {},
 	},
 	git = {
 		enable = true,
@@ -75,5 +69,13 @@ nvim_tree.setup({
 				},
 			},
 		},
+	},
+	-- projects plugin support:
+	sync_root_with_cwd = true,
+	respect_buf_cwd = true,
+	update_focused_file = {
+		enable = true,
+		update_root = true,
+		ignore_list = {},
 	},
 })
