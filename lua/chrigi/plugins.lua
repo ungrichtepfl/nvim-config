@@ -37,6 +37,7 @@ packer.init({
 			return require("packer.util").float({ border = "rounded" })
 		end,
 	},
+	snapshot_path = fn.stdpath("config") .. "/packer-snapshots",
 })
 
 -- Install your plugins here
