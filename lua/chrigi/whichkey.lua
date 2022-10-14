@@ -5,14 +5,8 @@ if not status_ok then
 end
 
 local setup = {
-	plugins = {
-		-- the presets plugin, adds help for a bunch of default keybindings in Neovim
-		-- No actual key bindings are created
-		presets = {
-			operators = false, -- adds help for operators like d, y, ... and registers them for motion / text object completion
-			motions = false, -- adds help for motions
-			text_objects = false, -- help for text objects triggered after entering an operator
-		},
+	spelling = {
+		enabled = true,
 	},
 	icons = {
 		breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
@@ -42,10 +36,10 @@ local mappings = {
 		"Buffers",
 	},
 	["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
-	["w"] = { "<cmd>w!<CR>", "Save" },
-	["W"] = { "<cmd>wq<CR>", "Save and Quit" },
-	["c"] = { "<cmd>q<CR>", "Quit" },
-	["C"] = { "<cmd>q!<CR>", "Quit Forced" },
+	["w"] = { "<cmd>w!<CR>", "Save File" },
+	["W"] = { "<cmd>wq<CR>", "Save File and Quit Window" },
+	["c"] = { "<cmd>q<CR>", "Quit Window" },
+	["C"] = { "<cmd>q!<CR>", "Quit Window Forced" },
 	["q"] = { "<cmd>Bdelete<CR>", "Close Buffer" },
 	["Q"] = { "<cmd>Bdelete!<CR>", "Close Buffer Forced" },
 	["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
