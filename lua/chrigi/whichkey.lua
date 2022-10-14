@@ -5,8 +5,10 @@ if not status_ok then
 end
 
 local setup = {
-	spelling = {
-		enabled = true,
+	plugins = {
+		spelling = {
+			enabled = true,
+		},
 	},
 	icons = {
 		breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
