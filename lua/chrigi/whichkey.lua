@@ -182,6 +182,7 @@ local mappings = {
 		l = { "<cmd>TroubleToggle loclist<cr>", "Location List" },
 		q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix" },
 		r = { "<cmd>TroubleToggle lsp_references<cr>", "Lsp References" },
+    t = { "<cmd>TodoTrouble<cr>", "Todos"}
 	},
 }
 
