@@ -165,6 +165,18 @@ return packer.startup(function(use)
 	use({ "https://gitlab.com/yorickpeterse/nvim-pqf.git" })
 	use({ "akinsho/git-conflict.nvim", tag = "*", requires = "https://gitlab.com/yorickpeterse/nvim-pqf.git" })
 
+	-- Code actions:
+	use({
+		"weilbith/nvim-code-action-menu",
+		cmd = "CodeActionMenu",
+	})
+
+	-- lightbulb for code actions:
+	use({
+		"kosayoda/nvim-lightbulb",
+		-- requires = "antoinemadec/FixCursorHold.nvim",
+	})
+
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
 	if PACKER_BOOTSTRAP then
