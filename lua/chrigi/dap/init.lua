@@ -1,1 +1,1 @@
-require("chrigi.dap.dap")
+require "chrigi.dap.dap"

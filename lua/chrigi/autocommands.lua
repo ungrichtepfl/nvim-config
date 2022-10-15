@@ -1,5 +1,5 @@
 -- autocmd! remove all autocommands, if entered under a group it will clear that group
-vim.cmd([[
+vim.cmd [[
   augroup _general_settings
     autocmd!
     autocmd FileType qf,help,man,lspinfo nnoremap <silent> <buffer> q :close<CR> 
@@ -34,4 +34,4 @@ vim.cmd([[
     autocmd!  
     autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
   augroup end
-]])
+]]
