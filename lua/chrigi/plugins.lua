@@ -137,6 +137,8 @@ return packer.startup(function(use)
   use "nvim-treesitter/nvim-treesitter-context"
   use "p00f/nvim-ts-rainbow"
   use "JoosepAlviste/nvim-ts-context-commentstring" -- to make context aware comments
+  use "windwp/nvim-ts-autotag"
+
   -- Comments
   use { "numToSTr/Comment.nvim", requires = { "JoosepAlviste/nvim-ts-context-commentstring" } } -- easily comment stuff
 

@@ -32,6 +32,10 @@ configs.setup {
     enable = true,
     enable_autocmd = false,
   },
+  -- nvim-ts-autotag plugin:
+  autotag = {
+    enable = true,
+  },
 }
 
 -- vim.opt.foldmethod     = 'expr'
