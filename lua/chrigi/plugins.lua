@@ -181,6 +181,9 @@ return packer.startup(function(use)
   -- illuminate same variable:
   use "RRethy/vim-illuminate"
 
+  -- UI enhancer
+  use "stevearc/dressing.nvim"
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then require("packer").sync() end
