@@ -109,6 +109,7 @@ return packer.startup(function(use)
   use "jose-elias-alvarez/null-ls.nvim"
   use "jayp0521/mason-null-ls.nvim"
   use "RubixDev/mason-update-all"
+  use "b0o/schemastore.nvim"
   -- DAP
   use "mfussenegger/nvim-dap"
   use "mfussenegger/nvim-dap-python"
