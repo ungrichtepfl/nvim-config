@@ -1,13 +1,15 @@
 -- vim.cmd "colorscheme default"
 
-local colorscheme = "darcula-solid"
--- local colorscheme = "tokyonight"
+-- local colorscheme = "darcula-solid"
+local colorscheme = "tokyonight"
 -- local colorscheme = "darcula"
 
-local status_ok_color_plug, color_plug = pcall(require, colorscheme)
-if status_ok_color_plug then color_plug.setup {
-  style = "night",
-} end
+if colorscheme == "tokyonight" then
+  local status_ok_color_plug, color_plug = pcall(require, colorscheme)
+  if status_ok_color_plug then color_plug.setup {
+    style = "night",
+  } end
+end
 
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 
