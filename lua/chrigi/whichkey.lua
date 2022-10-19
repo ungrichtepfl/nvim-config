@@ -187,6 +187,14 @@ local mappings = {
     t = { "<cmd>Neogen type<cr>", "Type Docstring" },
     F = { "<cmd>Neogen file<cr>", "File Docstring" },
   },
+
+  m = {
+    name = "Codewindow",
+    o = { "<cmd>lua require('codewindow').open_minimap()<cr>", "open the minimap" },
+    c = { "<cmd>lua require('codewindow').close_minimap()<cr>", "close the minimap" },
+    m = { "<cmd>lua require('codewindow').toggle_minimap()<cr>", "focus/unfocus the minimap" },
+    f = { "<cmd>lua require('codewindow').toggle_focus()<cr>", "toggle the minimap" },
+  },
 }
 
 local vopts = {

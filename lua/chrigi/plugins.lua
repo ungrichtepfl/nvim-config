@@ -191,6 +191,9 @@ return packer.startup(function(use)
   -- better escape for jk mappings
   use "max397574/better-escape.nvim"
 
+  -- codewindow
+  use "gorbit99/codewindow.nvim"
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then require("packer").sync() end
