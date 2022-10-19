@@ -21,3 +21,10 @@ codewindow.setup {
     "TelescopePrompt",
   },
 }
+local status_ok_tele, telescope = pcall(require, "telescope")
+if not status_ok_tele then
+  vim.notify "'telescope' plugin not found."
+  return
+end
+
+telescope.load_extension "refactoring"

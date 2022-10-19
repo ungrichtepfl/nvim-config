@@ -195,6 +195,15 @@ local mappings = {
     m = { "<cmd>lua require('codewindow').toggle_minimap()<cr>", "focus/unfocus the minimap" },
     f = { "<cmd>lua require('codewindow').toggle_focus()<cr>", "toggle the minimap" },
   },
+
+  R = {
+    name = "Refactoring",
+    b = { "<cmd>lua require('refactoring').refactor('Extract Block')<CR>", "Extract block" },
+    bf = { "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>", "Extract block to file" },
+
+    -- Inline variable can also pick up the identifier currently under the cursor without visual mode
+    i = { "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>", "Inline variable" },
+  },
 }
 
 local vopts = {
@@ -205,8 +214,16 @@ local vopts = {
   noremap = true, -- use `noremap` when creating keymaps
   nowait = true, -- use `nowait` when creating keymaps
 }
+
 local vmappings = {
   ["/"] = { '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>', "Comment" },
+  R = {
+    f = { "<Esc><cmd>lua require('refactoring').refactor('Extract Function')<cr>", "Extract function" },
+    F = { "<Esc><cmd>lua require('refactoring').refactor('Extract Function To File')<cr>", "Extract function to file" },
+    v = { "<Esc><cmd>lua require('refactoring').refactor('Extract Variable')<cr>", "Extract variable" },
+    i = { "<Esc><cmd>lua require('refactoring').refactor('Inline Variable')<cr>", "Inline variable" },
+    r = { "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>", "Telescoper refefactor " },
+  },
 }
 
 which_key.setup(setup)

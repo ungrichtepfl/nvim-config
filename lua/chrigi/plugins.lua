@@ -191,6 +191,15 @@ return packer.startup(function(use)
   -- better escape for jk mappings
   use "max397574/better-escape.nvim"
 
+  -- refactoring
+  use {
+    "ThePrimeagen/refactoring.nvim",
+    requires = {
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-treesitter/nvim-treesitter" },
+    },
+  }
+
   -- codewindow
   use "gorbit99/codewindow.nvim"
 
