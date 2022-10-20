@@ -200,9 +200,12 @@ local mappings = {
     name = "Refactoring",
     b = { "<cmd>lua require('refactoring').refactor('Extract Block')<CR>", "Extract block" },
     bf = { "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>", "Extract block to file" },
-
     -- Inline variable can also pick up the identifier currently under the cursor without visual mode
     i = { "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>", "Inline variable" },
+    -- Debug operations:
+    p = { "<cmd>lua require('refactoring').debug.printf({below = true})<CR>", "Printf to mark a function." },
+    a = { "<cmd>lua require('refactoring').debug.print_var({ normal = { true }})<CR>", "Print variable" },
+    c = { "<cmd>lua require('refactoring').debug.cleanup({})<CR>", "Cleanup print statements" },
   },
 }
 
@@ -218,11 +221,14 @@ local vopts = {
 local vmappings = {
   ["/"] = { '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>', "Comment" },
   R = {
+    name = "Refactoring",
     f = { "<Esc><cmd>lua require('refactoring').refactor('Extract Function')<cr>", "Extract function" },
     F = { "<Esc><cmd>lua require('refactoring').refactor('Extract Function To File')<cr>", "Extract function to file" },
     v = { "<Esc><cmd>lua require('refactoring').refactor('Extract Variable')<cr>", "Extract variable" },
     i = { "<Esc><cmd>lua require('refactoring').refactor('Inline Variable')<cr>", "Inline variable" },
     r = { "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>", "Telescoper refefactor " },
+    -- Debug operations:
+    a = { "<cmd>lua require('refactoring').debug.print_var({})<CR>", "Print selection" },
   },
 }
 
