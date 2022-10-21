@@ -8,6 +8,7 @@ end
 local formatting = null_ls.builtins.formatting
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
 local diagnostics = null_ls.builtins.diagnostics
+local hover = null_ls.builtins.hover
 
 null_ls.setup {
   debug = false,
@@ -32,6 +33,11 @@ null_ls.setup {
     -- cpp/c:
     diagnostics.cpplint,
     formatting.clang_format,
+    -- shell:
+    diagnostics.shellcheck,
+    hover.printenv,
+    formatting.beautysh,
+    formatting.shellharden,
   },
 }
 
