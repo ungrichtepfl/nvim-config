@@ -12,13 +12,14 @@ local diagnostics = null_ls.builtins.diagnostics
 null_ls.setup {
   debug = false,
   sources = {
-    --[[ formatting.prettier.with { extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }, ]]
-    --[[ formatting.black.with { extra_args = { "--fast" } }, ]]
+    -- jovascript
+    formatting.prettier.with { extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } },
     -- lua:
     formatting.stylua,
     -- python:
-    formatting.black,
+    formatting.isort,
     formatting.yapf,
+    -- formatting.black,
     diagnostics.flake8,
     diagnostics.pylint,
     -- Haskell
@@ -43,5 +44,5 @@ end
 
 mason_null_ls.setup {
   -- ensures that all null-ls sources are installed.
-  automatic_installation = true,
+  automatic_installation = false,
 }
