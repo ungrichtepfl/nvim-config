@@ -34,7 +34,7 @@ local servers = {
   "dockerls",
   "hls", -- Haskell
   "marksman", -- Markdown
-  --[[ "remark_ls", -- Markdown ]]
+  -- "remark_ls", -- Markdown
   "rust_analyzer",
   "yamlls",
   "elmls",

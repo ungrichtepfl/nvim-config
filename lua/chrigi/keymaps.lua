@@ -39,6 +39,9 @@ keymap("n", "<S-h>", ":bprevious<CR>", opts "Go to previous buffer")
 -- Saving/Closing
 keymap("n", "<C-s>", ":w<CR>", opts "Save file")
 
+-- Open link
+keymap("n", "gx", [[ <CMD>execute '!xdg-open ' .. shellescape(expand('<cfile>'), v:true)<CR> ]], opts "Open link")
+
 -- Insert --
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts "Change to normal mode")

@@ -13,8 +13,10 @@ local hover = null_ls.builtins.hover
 null_ls.setup {
   debug = false,
   sources = {
-    -- jovascript
+    -- javascript/markdown/etc
     formatting.prettier.with { extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } },
+    -- Markdown
+    diagnostics.markdownlint,
     -- lua:
     formatting.stylua,
     -- python:
@@ -23,7 +25,9 @@ null_ls.setup {
     -- formatting.black,
     diagnostics.flake8,
     diagnostics.pylint,
-    -- Haskell
+    -- Rust:
+    formatting.rustfmt,
+    -- Haskell:
     formatting.stylish_haskell,
     -- yaml:
     formatting.yamlfmt,
