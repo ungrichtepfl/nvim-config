@@ -11,6 +11,9 @@
   "vim-bbye": {
     "commit": "25ef93a"
   },
+  "project.nvim": {
+    "commit": "628de7e"
+  },
   "telescope-fzf-native.nvim": {
     "commit": "65c0ee3"
   },
@@ -29,17 +32,14 @@
   "vim-illuminate": {
     "commit": "0603e75"
   },
-  "nvim-cmp": {
-    "commit": "cdb7766"
-  },
   "git-conflict.nvim": {
     "commit": "80bc893"
   },
   "nvim-lightbulb": {
     "commit": "56b9ce3"
   },
-  "nvim-treesitter": {
-    "commit": "0e1b73b4"
+  "nvim-dap-virtual-text": {
+    "commit": "2971ce3"
   },
   "vim-visual-multi": {
     "commit": "724bd53"
@@ -50,8 +50,8 @@
   "lualine.nvim": {
     "commit": "3325d5d"
   },
-  "cmp-cmdline": {
-    "commit": "c66c379"
+  "which-key.nvim": {
+    "commit": "61553ae"
   },
   "nvim-pqf.git": {
     "commit": "d15582d"
@@ -80,8 +80,8 @@
   "nvim-ts-autotag": {
     "commit": "fdefe46"
   },
-  "which-key.nvim": {
-    "commit": "1b7f09a"
+  "cmp-cmdline": {
+    "commit": "c66c379"
   },
   "telescope.nvim": {
     "commit": "0b1c41a"
@@ -105,7 +105,7 @@
     "commit": "7380bd0"
   },
   "todo-comments.nvim": {
-    "commit": "41dd70e"
+    "commit": "530eb3a"
   },
   "alpha-nvim": {
     "commit": "0bb6fc0"
@@ -143,8 +143,8 @@
   "tokyonight.nvim": {
     "commit": "8756c99"
   },
-  "nvim-dap-virtual-text": {
-    "commit": "2971ce3"
+  "nvim-treesitter": {
+    "commit": "287ffdcc"
   },
   "mason-lspconfig.nvim": {
     "commit": "6768067"
@@ -156,7 +156,7 @@
     "commit": "c9ee823"
   },
   "nvim-tree.lua": {
-    "commit": "1be1e17"
+    "commit": "65c2ba8"
   },
   "darcula-solid.nvim": {
     "commit": "11a8c4a"
@@ -176,8 +176,8 @@
   "plenary.nvim": {
     "commit": "4b7e520"
   },
-  "project.nvim": {
-    "commit": "628de7e"
+  "nvim-cmp": {
+    "commit": "cdb7766"
   },
   "nvim-treesitter-context": {
     "commit": "0dd5eae"
@@ -185,8 +185,11 @@
   "telescope-dap.nvim": {
     "commit": "b4134ff"
   },
-  "cmp-nvim-lua": {
-    "commit": "d276254"
+  "cmp-path": {
+    "commit": "91ff86c"
+  },
+  "markdown-preview.nvim": {
+    "commit": "02cc387"
   },
   "neodev.nvim": {
     "commit": "1b79177"
@@ -194,8 +197,8 @@
   "nvim-ts-rainbow": {
     "commit": "1ec3f88"
   },
-  "cmp-path": {
-    "commit": "91ff86c"
+  "cmp-nvim-lua": {
+    "commit": "d276254"
   },
   "cmp-buffer": {
     "commit": "3022dbc"
