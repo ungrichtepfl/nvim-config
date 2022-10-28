@@ -144,6 +144,7 @@ local mappings = {
       "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
       "Workspace Symbols",
     },
+    -- h  = is definded in lsp.mason for haskell
   },
   s = {
     name = "Search",

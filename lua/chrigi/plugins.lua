@@ -113,6 +113,15 @@ return packer.startup(function(use)
   use "jayp0521/mason-null-ls.nvim"
   use "RubixDev/mason-update-all"
   use "b0o/schemastore.nvim"
+  use {
+    "MrcJkb/haskell-tools.nvim",
+    requires = {
+      "neovim/nvim-lspconfig",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    tag = "1.*",
+  }
   -- DAP
   use "mfussenegger/nvim-dap"
   use "mfussenegger/nvim-dap-python"

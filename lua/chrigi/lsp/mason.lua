@@ -59,13 +59,28 @@ local lspconfig = require "lspconfig"
 local on_attach = require("chrigi.lsp.handlers").on_attach
 local capabilities = require("chrigi.lsp.handlers").capabilities
 
+local status_ok_ht, ht = pcall(require, "haskell-tools")
+if not status_ok_ht then vim.notify "'haskell-tools' plugin not found." end
+
 for _, server in ipairs(servers) do
-  local opts = {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
-  local server_status_ok, server_opts = pcall(require, "chrigi.lsp.settings." .. server)
-  if server_status_ok then opts = vim.tbl_deep_extend("force", server_opts, opts) end
-  -- needs to be after manson and manson_lspconfig
-  lspconfig[server].setup(opts)
+  if server == "hls" and status_ok_ht then
+    ht.setup {
+      hls = {
+        on_attach = function(client, bufnr)
+          local function opts_ht(desc) return { noremap = true, silent = true, buffer = bufnr, desc = desc } end
+          vim.keymap.set("n", "<space>lh", ht.hoogle.hoogle_signature, opts_ht "")
+          on_attach(client, bufnr)
+        end,
+      },
+    }
+  else
+    local opts = {
+      on_attach = on_attach,
+      capabilities = capabilities,
+    }
+    local server_status_ok, server_opts = pcall(require, "chrigi.lsp.settings." .. server)
+    if server_status_ok then opts = vim.tbl_deep_extend("force", server_opts, opts) end
+    -- needs to be after manson and manson_lspconfig
+    lspconfig[server].setup(opts)
+  end
 end
