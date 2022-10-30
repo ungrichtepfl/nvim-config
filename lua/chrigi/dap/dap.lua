@@ -9,9 +9,9 @@ end
 --load from .vscode/launch.json files
 require("dap.ext.vscode").load_launchjs()
 
-local dap_servers = { "dap-python" }
+local dap_servers = { "dap-python", "dap-lldb", "dap-rust" }
 for _, dap_server in ipairs(dap_servers) do
-  require("chrigi.dap.dap-servers." .. dap_server)
+  require("chrigi.dap.dap-servers." .. dap_server).setup()
 end
 
 local status_ok_virtual_text, virtual_text = pcall(require, "nvim-dap-virtual-text")
@@ -59,6 +59,8 @@ dapui.setup {
     },
   },
 }
+
+vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
 
 -- automatic startup and shutdown:
 dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end

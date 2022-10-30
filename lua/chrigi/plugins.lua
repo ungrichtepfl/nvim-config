@@ -122,6 +122,12 @@ return packer.startup(function(use)
     },
     tag = "1.*",
   }
+
+  use {
+    "simrat39/rust-tools.nvim",
+    requires = { "neovim/nvim-lspconfig", "nvim-lua/plenary.nvim", "mfussenegger/nvim-dap" },
+  }
+
   -- DAP
   use "mfussenegger/nvim-dap"
   use "mfussenegger/nvim-dap-python"
