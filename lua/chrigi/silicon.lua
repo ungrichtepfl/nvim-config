@@ -5,7 +5,7 @@ if not status_ok then
   return
 end
 
-require("silicon").setup {
+silicon.setup {
   font = "JetBrainsMono Nerd Font Mono=16",
   line_number = true,
   tab_width = 2,
