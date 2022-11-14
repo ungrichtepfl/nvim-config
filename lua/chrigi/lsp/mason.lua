@@ -83,6 +83,7 @@ for _, server in ipairs(servers) do
         on_attach = function(client, bufnr)
           -- Hover actions
           local function opts_rt(desc) return { noremap = true, silent = true, buffer = bufnr, desc = desc } end
+
           vim.keymap.set("n", "<leader>lK", rt.hover_actions.hover_actions, opts_rt "Rust hover actions")
           -- Code action groups
           vim.keymap.set("n", "<leader>lA", rt.code_action_group.code_action_group, opts_rt "Rust code actions")
