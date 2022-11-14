@@ -235,6 +235,9 @@ return packer.startup(function(use)
   -- git diffview
   use { "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" }
 
+  -- nice scrollbar
+  use { "petertriho/nvim-scrollbar", requires = { "kevinhwang91/nvim-hlslens", "lewis6991/gitsigns.nvim" } }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then require("packer").sync() end
