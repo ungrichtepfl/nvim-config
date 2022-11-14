@@ -217,9 +217,6 @@ return packer.startup(function(use)
     },
   }
 
-  -- codewindow
-  use "gorbit99/codewindow.nvim"
-
   -- Markdown preview
   use {
     "iamcco/markdown-preview.nvim",
