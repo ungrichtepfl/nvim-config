@@ -35,3 +35,4 @@ require "chrigi.silicon"
 require "chrigi.surround"
 require "chrigi.diffview"
 require "chrigi.scrollbar" -- needs to be after gitsigns
+require "chrigi.lsp_signature"

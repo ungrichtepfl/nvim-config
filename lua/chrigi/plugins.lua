@@ -234,6 +234,7 @@ return packer.startup(function(use)
 
   -- nice scrollbar
   use { "petertriho/nvim-scrollbar", requires = { "kevinhwang91/nvim-hlslens", "lewis6991/gitsigns.nvim" } }
+  use "ray-x/lsp_signature.nvim"
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
