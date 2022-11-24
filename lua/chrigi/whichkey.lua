@@ -91,6 +91,10 @@ local mappings = {
     },
     r = { ":lua require'dap'.repl.open()<CR>", "Open REPL" },
     v = { ":lua require'dapui'.eval()<CR>", "Eval" },
+    P = {
+      name = "Python debugging",
+      t = { ":lua require('dap-python').test_method()<CR>", "Test method" },
+    },
   },
 
   g = {
