@@ -69,26 +69,13 @@ for _, server in ipairs(servers) do
   if server == "hls" and status_ok_ht then
     ht.setup {
       hls = {
-        on_attach = function(client, bufnr)
-          local function opts_ht(desc) return { noremap = true, silent = true, buffer = bufnr, desc = desc } end
-
-          vim.keymap.set("n", "<space>lh", ht.hoogle.hoogle_signature, opts_ht "")
-          on_attach(client, bufnr)
-        end,
+        on_attach = on_attach,
       },
     }
   elseif server == "rust_analyzer" and status_ok_rt then
     rt.setup {
       server = {
-        on_attach = function(client, bufnr)
-          -- Hover actions
-          local function opts_rt(desc) return { noremap = true, silent = true, buffer = bufnr, desc = desc } end
-
-          vim.keymap.set("n", "<leader>lK", rt.hover_actions.hover_actions, opts_rt "Rust hover actions")
-          -- Code action groups
-          vim.keymap.set("n", "<leader>lA", rt.code_action_group.code_action_group, opts_rt "Rust code actions")
-          on_attach(client, bufnr)
-        end,
+        on_attach = on_attach,
         capabilities = capabilities,
       },
       dap = {
