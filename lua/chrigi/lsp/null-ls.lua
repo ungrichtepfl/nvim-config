@@ -9,11 +9,18 @@ local formatting = null_ls.builtins.formatting
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
 local diagnostics = null_ls.builtins.diagnostics
 local hover = null_ls.builtins.hover
+local code_actions = null_ls.builtins.code_actions
+local completion = null_ls.builtins.completion
 
 null_ls.setup {
   debug = false,
   sources = {
-    -- javascript/markdown/etc
+    --spelling:
+    diagnostics.codespell,
+    formatting.codespell,
+    completion.spell,
+    diagnostics.misspell,
+    -- javascript/markdown/etc:
     formatting.prettier.with { extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } },
     -- Markdown
     diagnostics.markdownlint,
