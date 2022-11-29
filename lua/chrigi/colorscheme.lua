@@ -1,8 +1,10 @@
 -- vim.cmd "colorscheme default"
 
 -- local colorscheme = "darcula-solid"
-local colorscheme = "tokyonight"
+-- local colorscheme = "tokyonight"
 -- local colorscheme = "darcula"
+local colorscheme = "nightfox"
+-- local colorscheme = "terafox"
 
 if colorscheme == "tokyonight" then
   local status_ok_color_plug, color_plug = pcall(require, colorscheme)
