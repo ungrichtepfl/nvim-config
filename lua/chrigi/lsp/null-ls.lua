@@ -42,8 +42,8 @@ null_ls.setup {
     -- elm:
     formatting.elm_format,
     -- cpp/c:
-    diagnostics.cpplint,
-    formatting.clang_format,
+    -- diagnostics.cpplint,
+    -- formatting.clang_format,
     -- shell:
     diagnostics.shellcheck,
     hover.printenv,
