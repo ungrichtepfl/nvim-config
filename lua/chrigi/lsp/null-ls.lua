@@ -32,6 +32,7 @@ null_ls.setup {
     -- formatting.black,
     diagnostics.flake8,
     diagnostics.pylint,
+    diagnostics.mypy.with { extra_args = { "--ignore-missing-imports" } },
     -- Rust:
     formatting.rustfmt,
     -- Haskell:
