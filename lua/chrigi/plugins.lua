@@ -238,6 +238,9 @@ return packer.startup(function(use)
   use "ray-x/lsp_signature.nvim"
   -- nicer folds
   use { "anuvyklack/pretty-fold.nvim" }
+
+  -- Github copilot
+  use { "github/copilot.vim" }
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then require("packer").sync() end

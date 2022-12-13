@@ -37,3 +37,4 @@ require "chrigi.diffview"
 require "chrigi.scrollbar" -- needs to be after gitsigns
 require "chrigi.lsp_signature"
 require "chrigi.pretty-fold"
+require "chrigi.copilot"
