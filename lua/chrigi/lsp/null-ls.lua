@@ -21,7 +21,13 @@ null_ls.setup {
     completion.spell,
     diagnostics.misspell,
     -- javascript/markdown/etc:
-    formatting.prettier.with { extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } },
+    -- formatting.prettier_eslint.with {
+    --   extra_args = { "--eslint-config-path", "./.eslintrc.json", "--config", "./.prettierrc" },
+    -- },
+    formatting.prettierd,
+    -- JS and TS
+    diagnostics.eslint_d,
+    code_actions.eslint_d,
     -- Markdown
     diagnostics.markdownlint,
     -- lua:
