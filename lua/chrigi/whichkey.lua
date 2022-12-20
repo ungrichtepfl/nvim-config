@@ -62,6 +62,7 @@ local mappings = {
     "Find Ignored Text",
   },
   ["P"] = { "<cmd>Telescope projects<cr>", "Projects" },
+  ["N"] = { "<cmd>NoNeckPain<cr>", "Center window" },
 
   p = {
     name = "Packer",

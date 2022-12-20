@@ -182,7 +182,7 @@ return packer.startup(function(use)
     -- tag = "*"
   }
 
-  -- resolve git conflics:
+  -- resolve git conflicts:
   use { "https://gitlab.com/yorickpeterse/nvim-pqf.git" }
   use { "akinsho/git-conflict.nvim", tag = "*", requires = "https://gitlab.com/yorickpeterse/nvim-pqf.git" }
 
@@ -241,6 +241,10 @@ return packer.startup(function(use)
 
   -- Github copilot
   use { "github/copilot.vim" }
+
+  -- Center window
+  use { "shortcuts/no-neck-pain.nvim", tag = "*" }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then require("packer").sync() end

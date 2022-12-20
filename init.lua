@@ -38,3 +38,4 @@ require "chrigi.scrollbar" -- needs to be after gitsigns
 require "chrigi.lsp_signature"
 require "chrigi.pretty-fold"
 require "chrigi.copilot"
+require "chrigi.no_neck_pain"
