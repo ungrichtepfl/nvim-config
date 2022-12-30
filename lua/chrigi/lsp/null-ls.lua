@@ -56,6 +56,8 @@ null_ls.setup {
     hover.printenv,
     formatting.beautysh,
     formatting.shellharden,
+    -- zig:
+    formatting.zigfmt,
   },
 }
 
