@@ -31,7 +31,6 @@ require "chrigi.illuminate"
 require "chrigi.dressing"
 require "chrigi.better_escape"
 require "chrigi.refactoring"
-require "chrigi.silicon"
 require "chrigi.surround"
 require "chrigi.diffview"
 require "chrigi.scrollbar" -- needs to be after gitsigns

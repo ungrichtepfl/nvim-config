@@ -89,8 +89,6 @@ return packer.startup(function(use)
   use "folke/tokyonight.nvim"
   use { "briones-gabriel/darcula-solid.nvim", requires = "rktjmp/lush.nvim" }
   use "EdenEast/nightfox.nvim"
-  -- Have nive screenshots
-  use { "krivahtoo/silicon.nvim", run = "./install.sh" }
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- The completion plugin
