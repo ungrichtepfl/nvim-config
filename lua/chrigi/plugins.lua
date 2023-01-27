@@ -67,6 +67,11 @@ return packer.startup(function(use)
   use { "akinsho/bufferline.nvim", tag = "v2.*", requires = "kyazdani42/nvim-web-devicons" }
   -- lualine
   use "nvim-lualine/lualine.nvim"
+  -- smart guess indent
+  use {
+    "nmac427/guess-indent.nvim",
+    config = function() require("guess-indent").setup {} end,
+  }
   -- indent-blanklines
   use "lukas-reineke/indent-blankline.nvim"
   -- alpha (nice startup greeter)
