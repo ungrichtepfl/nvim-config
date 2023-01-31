@@ -158,7 +158,7 @@ return packer.startup(function(use)
     run = function() require("nvim-treesitter.install").update { with_sync = true } end,
   }
   use "nvim-treesitter/nvim-treesitter-context"
-  use "p00f/nvim-ts-rainbow"
+  use "mrjones2014/nvim-ts-rainbow"
   use "JoosepAlviste/nvim-ts-context-commentstring" -- to make context aware comments
   use "windwp/nvim-ts-autotag"
 
