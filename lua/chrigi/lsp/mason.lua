@@ -44,6 +44,7 @@ local servers = {
   "html",
   "cssls",
   "angularls",
+  "omnisharp", -- C#/dotnet
 }
 
 mason.setup()

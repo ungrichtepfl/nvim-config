@@ -9,7 +9,7 @@ end
 --load from .vscode/launch.json files
 require("dap.ext.vscode").load_launchjs()
 
-local dap_servers = { "dap-python", "dap-lldb", "dap-rust" }
+local dap_servers = { "dap-python", "dap-lldb", "dap-rust", "csharp" }
 for _, dap_server in ipairs(dap_servers) do
   require("chrigi.dap.dap-servers." .. dap_server).setup()
 end

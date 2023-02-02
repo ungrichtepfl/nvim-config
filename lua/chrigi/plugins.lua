@@ -126,6 +126,7 @@ return packer.startup(function(use)
     },
     tag = "1.*",
   }
+  use "Hoffs/omnisharp-extended-lsp.nvim"
 
   use {
     "simrat39/rust-tools.nvim",
