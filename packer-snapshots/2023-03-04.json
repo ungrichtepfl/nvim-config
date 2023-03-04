@@ -1,0 +1,236 @@
+{
+  "better-escape.nvim": {
+    "commit": "426d297"
+  },
+  "telescope-media-files.nvim": {
+    "commit": "0826c7a"
+  },
+  "nvim-dap": {
+    "commit": "c1bfcd8"
+  },
+  "vim-bbye": {
+    "commit": "25ef93a"
+  },
+  "project.nvim": {
+    "commit": "1c2e9c9"
+  },
+  "telescope-fzf-native.nvim": {
+    "commit": "580b6c4"
+  },
+  "packer.nvim": {
+    "commit": "1d0cf98"
+  },
+  "nvim-notify": {
+    "commit": "281e4d7"
+  },
+  "mason-null-ls.nvim": {
+    "commit": "c05de94"
+  },
+  "nvim-lspconfig": {
+    "commit": "e0926b6"
+  },
+  "vim-illuminate": {
+    "commit": "49062ab"
+  },
+  "omnisharp-extended-lsp.nvim": {
+    "commit": "55cb3d7"
+  },
+  "guess-indent.nvim": {
+    "commit": "c37467b"
+  },
+  "git-conflict.nvim": {
+    "commit": "80bc893"
+  },
+  "nvim-lightbulb": {
+    "commit": "56b9ce3"
+  },
+  "nvim-treesitter": {
+    "commit": "d4e48be"
+  },
+  "pretty-fold.nvim": {
+    "commit": "a7d8b42"
+  },
+  "vim-visual-multi": {
+    "commit": "724bd53"
+  },
+  "null-ls.nvim": {
+    "commit": "689cdd7"
+  },
+  "lualine.nvim": {
+    "commit": "e99d733"
+  },
+  "which-key.nvim": {
+    "commit": "fb02773"
+  },
+  "nvim-pqf.git": {
+    "commit": "d15582d"
+  },
+  "bufferline.nvim": {
+    "commit": "5aa803a"
+  },
+  "cmp-nvim-lsp": {
+    "commit": "0e6b2ed"
+  },
+  "cmp_luasnip": {
+    "commit": "1809552"
+  },
+  "friendly-snippets": {
+    "commit": "009887b"
+  },
+  "rust-tools.nvim": {
+    "commit": "71d2cf6"
+  },
+  "alpha-nvim": {
+    "commit": "4b0ba68"
+  },
+  "gitsigns.nvim": {
+    "commit": "3b6c0a6"
+  },
+  "dressing.nvim": {
+    "commit": "5f44f82"
+  },
+  "indent-blankline.nvim": {
+    "commit": "018bd04"
+  },
+  "nvim-ts-autotag": {
+    "commit": "fdefe46"
+  },
+  "nvim-scrollbar": {
+    "commit": "75210c5"
+  },
+  "telescope.nvim": {
+    "commit": "766a45a"
+  },
+  "colorschemes": {
+    "commit": "e29f329"
+  },
+  "trouble.nvim": {
+    "commit": "6733764"
+  },
+  "nvim-ts-context-commentstring": {
+    "commit": "a0f8956"
+  },
+  "cmp-cmdline": {
+    "commit": "8fcc934"
+  },
+  "lsp_signature.nvim": {
+    "commit": "6f6252f"
+  },
+  "Comment.nvim": {
+    "commit": "6821b3a"
+  },
+  "mason.nvim": {
+    "commit": "7175340"
+  },
+  "todo-comments.nvim": {
+    "commit": "74c7d28"
+  },
+  "nvim-hlslens": {
+    "commit": "5e3e908"
+  },
+  "nvim-autopairs": {
+    "commit": "ab49517"
+  },
+  "lush.nvim": {
+    "commit": "b1e8eb1"
+  },
+  "LuaSnip": {
+    "commit": "58236e8"
+  },
+  "neogen": {
+    "commit": "93d997d"
+  },
+  "diffview.nvim": {
+    "commit": "009beb8"
+  },
+  "nvim-dap-ui": {
+    "commit": "bdb94e3"
+  },
+  "popup.nvim": {
+    "commit": "b7404d3"
+  },
+  "schemastore.nvim": {
+    "commit": "809c053"
+  },
+  "nvim-web-devicons": {
+    "commit": "c3c1dc4"
+  },
+  "copilot.vim": {
+    "commit": "9e869d2"
+  },
+  "haskell-tools.nvim": {
+    "commit": "3ed5085"
+  },
+  "tokyonight.nvim": {
+    "commit": "a0d5034"
+  },
+  "nvim-dap-virtual-text": {
+    "commit": "8db23ea"
+  },
+  "mason-lspconfig.nvim": {
+    "commit": "e4badf7"
+  },
+  "impatient.nvim": {
+    "commit": "c90e273"
+  },
+  "mason-update-all": {
+    "commit": "d94cf0f"
+  },
+  "nvim-tree.lua": {
+    "commit": "1b45344"
+  },
+  "nightfox.nvim": {
+    "commit": "5e9c8ca"
+  },
+  "darcula-solid.nvim": {
+    "commit": "d950b9c"
+  },
+  "nvim-code-action-menu": {
+    "commit": "e4399db"
+  },
+  "refactoring.nvim": {
+    "commit": "57c32c6"
+  },
+  "nvim-dap-python": {
+    "commit": "65ccab8"
+  },
+  "toggleterm.nvim": {
+    "commit": "f494c61"
+  },
+  "plenary.nvim": {
+    "commit": "253d348"
+  },
+  "no-neck-pain.nvim": {
+    "commit": "bc7c1c4"
+  },
+  "nvim-surround": {
+    "commit": "a06dea1"
+  },
+  "nvim-cmp": {
+    "commit": "01f697a"
+  },
+  "nvim-treesitter-context": {
+    "commit": "895ec44"
+  },
+  "telescope-dap.nvim": {
+    "commit": "313d2ea"
+  },
+  "cmp-nvim-lua": {
+    "commit": "f349163"
+  },
+  "markdown-preview.nvim": {
+    "commit": "02cc387"
+  },
+  "neodev.nvim": {
+    "commit": "c6b8ff8"
+  },
+  "nvim-ts-rainbow": {
+    "commit": "81f9a2e"
+  },
+  "cmp-path": {
+    "commit": "91ff86c"
+  },
+  "cmp-buffer": {
+    "commit": "3022dbc"
+  }
+}
