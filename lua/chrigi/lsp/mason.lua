@@ -27,7 +27,7 @@ local servers = {
   "gopls",
   "jsonls",
   "pyright",
-  "sumneko_lua",
+  "lua_ls",
   "bashls",
   "clangd", -- C/C++
   "cmake",
