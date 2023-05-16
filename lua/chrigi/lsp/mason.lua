@@ -32,7 +32,6 @@ local servers = {
   "clangd", -- C/C++
   "cmake",
   "dockerls",
-  "hls", -- Haskell
   "marksman", -- Markdown
   -- "remark_ls", -- Markdown
   "rust_analyzer",
@@ -54,6 +53,10 @@ mason_lspconfig.setup {
 }
 
 local lspconfig = require "lspconfig"
+
+servers = vim.tbl_extend("force", servers, {
+  "hls", -- Haskell
+})
 
 -- Register a handler that will be called for all installed servers.
 -- Alternatively, you may also register handlers on specific server instances instead (see example below).
