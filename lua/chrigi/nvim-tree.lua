@@ -13,6 +13,7 @@ end
 local tree_cb = nvim_tree_config.nvim_tree_callback
 
 nvim_tree.setup {
+  on_attach = require("chrigi.nvim-tree-on-attach").on_attach,
   disable_netrw = true,
   diagnostics = {
     enable = true,
@@ -30,13 +31,6 @@ nvim_tree.setup {
   },
   view = {
     side = "left",
-    mappings = {
-      list = {
-        { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
-        { key = "h", cb = tree_cb "close_node" },
-        { key = "v", cb = tree_cb "vsplit" },
-      },
-    },
   },
   renderer = {
     root_folder_modifier = ":t",

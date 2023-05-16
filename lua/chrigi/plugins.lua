@@ -124,7 +124,8 @@ return packer.startup(function(use)
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
     },
-    tag = "1.*",
+    branch = "1.x.x",
+    -- commit = "ea2cf02"
   }
   use "Hoffs/omnisharp-extended-lsp.nvim"
 
