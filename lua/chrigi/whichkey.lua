@@ -227,6 +227,13 @@ local mappings = {
     a = { "<cmd>lua require('refactoring').debug.print_var({ normal = { true }})<CR>", "Print variable" },
     c = { "<cmd>lua require('refactoring').debug.cleanup({})<CR>", "Cleanup print statements" },
   },
+  v = {
+    name = "VSCode Tasks",
+    t = { "<cmd>lua require('telescope').extensions.vstask.tasks()<CR>", "Tasks" },
+    i = { "<cmd>lua require('telescope').extensions.vstask.inputs()<CR>", "Inputs" },
+    h = { "<cmd>lua require('telescope').extensions.vstask.history()<CR>", "History" },
+    l = { "<cmd>lua require('telescope').extensions.vstask.launch()<cr>", "Launch" },
+  },
 }
 
 local vopts = {
