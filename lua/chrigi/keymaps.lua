@@ -71,4 +71,4 @@ keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 
 -- Change word with enter --
-keymap("n", "<CR>", "ciw", opts "Change word with enter")
+keymap("n", "<BS>", "ciw", opts "Change word with enter")
