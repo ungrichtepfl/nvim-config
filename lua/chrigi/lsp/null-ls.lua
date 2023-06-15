@@ -44,8 +44,9 @@ null_ls.setup {
     -- Haskell:
     formatting.stylish_haskell,
     -- yaml:
-    formatting.yamlfmt,
-    diagnostics.yamllint,
+    -- INFO: yamlls does it already
+    -- formatting.yamlfmt,
+    -- diagnostics.yamllint,
     -- elm:
     formatting.elm_format,
     -- cpp/c:
