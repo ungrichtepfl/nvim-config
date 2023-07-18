@@ -1,6 +1,6 @@
 local status_ok, telescope = pcall(require, "telescope")
 if not status_ok then
-  vim.notify "'telescope not found"
+  vim.notify "'telescope' not found"
   return
 end
 -- NEEDS ripgrep and fd-files to be installed
