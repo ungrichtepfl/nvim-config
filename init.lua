@@ -1,8 +1,8 @@
-require "chrigi.options"
-require "chrigi.keymaps"
-require "chrigi.plugins"
-require "chrigi.colorscheme"
-require "chrigi.autocommands"
+require "options"
+require "keymaps"
+require "plugins"
+require "colorscheme"
+require "autocommands"
 
 -- FIXME: Hack from https://github.com/OmniSharp/omnisharp-roslyn/issues/2483#issuecomment-1546721190
 vim.api.nvim_create_autocmd("LspAttach", {

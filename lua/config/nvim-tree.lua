@@ -13,7 +13,7 @@ end
 local tree_cb = nvim_tree_config.nvim_tree_callback
 
 nvim_tree.setup {
-  on_attach = require("chrigi.nvim-tree-on-attach").on_attach,
+  on_attach = require("config.nvim-tree-on-attach").on_attach,
   disable_netrw = true,
   diagnostics = {
     enable = true,

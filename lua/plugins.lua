@@ -31,19 +31,19 @@ lazy.setup {
   -- neovim lua language server
   {
     "folke/neodev.nvim",
-    config = function() require "chrigi.neodev" end,
+    config = function() require "config.neodev" end,
   },
   -- better Bdelete
   { "moll/vim-bbye" },
   -- make lua vim startup time faster
   {
     "lewis6991/impatient.nvim",
-    config = function() require "chrigi.impatient" end,
+    config = function() require "config.impatient" end,
   },
   -- autopairs
   {
     "windwp/nvim-autopairs",
-    config = function() require "chrigi.autopairs" end,
+    config = function() require "config.autopairs" end,
   }, -- autopairs integrates with treesitter and cmp
   -- nvimtree
   {
@@ -51,7 +51,7 @@ lazy.setup {
     dependencies = {
       "kyazdani42/nvim-web-devicons", -- optional, for file icons
     },
-    config = function() require "chrigi.nvim-tree" end,
+    config = function() require "config.nvim-tree" end,
     -- version = "nighly" -- optional, updates every week
   },
   -- bufferline
@@ -59,12 +59,12 @@ lazy.setup {
     "akinsho/bufferline.nvim",
     version = "v2.*",
     dependencies = "kyazdani42/nvim-web-devicons",
-    config = function() require "chrigi.bufferline" end,
+    config = function() require "config.bufferline" end,
   },
   -- lualine
   {
     "nvim-lualine/lualine.nvim",
-    config = function() require "chrigi.lualine" end,
+    config = function() require "config.lualine" end,
   },
   -- smart guess indent
   {
@@ -74,18 +74,18 @@ lazy.setup {
   -- indent-blanklines
   {
     "lukas-reineke/indent-blankline.nvim",
-    config = function() require "chrigi.indentline" end,
+    config = function() require "config.indentline" end,
   },
   -- alpha (nice startup greeter},
   {
     "goolord/alpha-nvim",
     dependencies = { "kyazdani42/nvim-web-devicons" },
-    config = function() require "chrigi.alpha" end,
+    config = function() require "config.alpha" end,
   },
   -- whichkey
   {
     "folke/which-key.nvim",
-    config = function() require "chrigi.whichkey" end,
+    config = function() require "config.whichkey" end,
   },
   -- vim-visual-multi
   { "mg979/vim-visual-multi" },
@@ -93,14 +93,14 @@ lazy.setup {
   {
     "folke/todo-comments.nvim",
     dependencies = "nvim-lua/plenary.nvim",
-    config = function() require "chrigi.todo-comments" end,
+    config = function() require "config.todo-comments" end,
   },
   -- trouble
   -- Lua
   {
     "folke/trouble.nvim",
     dependencies = "kyazdani42/nvim-web-devicons",
-    config = function() require "chrigi.trouble" end,
+    config = function() require "config.trouble" end,
   },
 
   -- Colorschemes
@@ -112,7 +112,7 @@ lazy.setup {
   -- cmp plugins
   {
     "hrsh7th/nvim-cmp",
-    config = function() require "chrigi.cmp" end,
+    config = function() require "config.cmp" end,
   }, -- The completion plugin
   {
     "hrsh7th/cmp-buffer",
@@ -146,7 +146,7 @@ lazy.setup {
   -- LSP
   {
     "neovim/nvim-lspconfig",
-    config = function() require "chrigi.lsp" end,
+    config = function() require "config.lsp" end,
   }, -- enable LSP
   -- use "williamboman/nvim-lsp-installer" -- simple to use language server installer NOT MAINTAINED ANYMORE
   {
@@ -197,7 +197,7 @@ lazy.setup {
   {
     "mfussenegger/nvim-dap",
     dependencies = "neovim/nvim-lspconfig",
-    config = function() require "chrigi.dap" end,
+    config = function() require "config.dap" end,
   },
   {
     "mfussenegger/nvim-dap-python",
@@ -222,7 +222,7 @@ lazy.setup {
     branch = "0.1.x",
     -- commit = "533c7fb",
     dependencies = "nvim-lua/plenary.nvim",
-    config = function() require "chrigi.telescope" end,
+    config = function() require "config.telescope" end,
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
@@ -240,7 +240,7 @@ lazy.setup {
   {
     "nvim-treesitter/nvim-treesitter",
     build = function() require("nvim-treesitter.install").update { with_sync = true } end,
-    config = function() require "chrigi.treesitter" end,
+    config = function() require "config.treesitter" end,
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -263,13 +263,13 @@ lazy.setup {
   {
     "numToSTr/Comment.nvim",
     dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
-    config = function() require "chrigi.comment" end,
+    config = function() require "config.comment" end,
   }, -- easily comment stuff
 
   -- Gitsigns
   {
     "lewis6991/gitsigns.nvim",
-    config = function() require "chrigi.gitsigns" end,
+    config = function() require "config.gitsigns" end,
     -- version = 'release' -- To use the latest release
   },
 
@@ -277,13 +277,13 @@ lazy.setup {
   {
     "akinsho/toggleterm.nvim",
     version = "*",
-    config = function() require "chrigi.toggleterm" end,
+    config = function() require "config.toggleterm" end,
   },
 
   -- Projects
   {
     "ahmedkhalf/project.nvim",
-    config = function() require "chrigi.project" end,
+    config = function() require "config.project" end,
     dependencies = "nvim-telescope/telescope.nvim",
   },
 
@@ -291,7 +291,7 @@ lazy.setup {
   {
     "danymat/neogen",
     dependencies = "nvim-treesitter/nvim-treesitter",
-    config = function() require "chrigi.neogen" end,
+    config = function() require "config.neogen" end,
     -- Uncomment next line if you want to follow only stable versions
     -- version = "*"
   },
@@ -302,7 +302,7 @@ lazy.setup {
     "akinsho/git-conflict.nvim",
     version = "*",
     dependencies = "https://gitlab.com/yorickpeterse/nvim-pqf.git",
-    config = function() require "chrigi.git_conflict" end,
+    config = function() require "config.git_conflict" end,
   },
 
   -- Code actions:
@@ -314,32 +314,32 @@ lazy.setup {
   -- lightbulb for code actions:
   {
     "kosayoda/nvim-lightbulb",
-    config = function() require "chrigi.lightbulb" end,
+    config = function() require "config.lightbulb" end,
     -- dependencies = "antoinemadec/FixCursorHold.nvim",
   },
   -- nicer notifications:
   {
     "rcarriga/nvim-notify",
     dependencies = "nvim-telescope/telescope.nvim",
-    config = function() require "chrigi.notify" end,
+    config = function() require "config.notify" end,
   },
 
   -- illuminate same variable:
   {
     "RRethy/vim-illuminate",
-    config = function() require "chrigi.illuminate" end,
+    config = function() require "config.illuminate" end,
   },
 
   -- UI enhancer
   {
     "stevearc/dressing.nvim",
-    config = function() require "chrigi.dressing" end,
+    config = function() require "config.dressing" end,
   },
 
   -- better escape for jk mappings
   {
     "max397574/better-escape.nvim",
-    config = function() require "chrigi.better_escape" end,
+    config = function() require "config.better_escape" end,
   },
 
   -- refactoring
@@ -349,7 +349,7 @@ lazy.setup {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
-    config = function() require "chrigi.refactoring" end,
+    config = function() require "config.refactoring" end,
   },
 
   -- Markdown preview
@@ -362,44 +362,44 @@ lazy.setup {
   {
     "kylechui/nvim-surround",
     version = "*",
-    config = function() require "chrigi.surround" end,
+    config = function() require "config.surround" end,
   },
 
   -- git diffview
   {
     "sindrets/diffview.nvim",
     dependencies = "nvim-lua/plenary.nvim",
-    config = function() require "chrigi.diffview" end,
+    config = function() require "config.diffview" end,
   },
 
   -- nice scrollbar
   {
     "petertriho/nvim-scrollbar",
     dependencies = { "kevinhwang91/nvim-hlslens", "lewis6991/gitsigns.nvim" },
-    config = function() require "chrigi.scrollbar" end,
+    config = function() require "config.scrollbar" end,
   },
   {
     "ray-x/lsp_signature.nvim",
     dependencies = "neovim/nvim-lspconfig",
-    config = function() require "chrigi.lsp_signature" end,
+    config = function() require "config.lsp_signature" end,
   },
   -- nicer folds
   {
     "anuvyklack/pretty-fold.nvim",
-    config = function() require "chrigi.pretty-fold" end,
+    config = function() require "config.pretty-fold" end,
   },
 
   -- Github copilot
   {
     "github/copilot.vim",
-    config = function() require "chrigi.copilot" end,
+    config = function() require "config.copilot" end,
   },
 
   -- Center window
   {
     "shortcuts/no-neck-pain.nvim",
     version = "*",
-    config = function() require "chrigi.no_neck_pain" end,
+    config = function() require "config.no_neck_pain" end,
   },
 
   -- VSCode Tasks

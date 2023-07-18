@@ -60,8 +60,8 @@ servers = vim.tbl_extend("force", servers, {
 
 -- Register a handler that will be called for all installed servers.
 -- Alternatively, you may also register handlers on specific server instances instead (see example below).
-local on_attach = require("chrigi.lsp.handlers").on_attach
-local capabilities = require("chrigi.lsp.handlers").capabilities
+local on_attach = require("config.lsp.handlers").on_attach
+local capabilities = require("config.lsp.handlers").capabilities
 
 local status_ok_ht, ht = pcall(require, "haskell-tools")
 if not status_ok_ht then vim.notify "'haskell-tools' plugin not found." end
@@ -93,7 +93,7 @@ for _, server in ipairs(servers) do
       on_attach = on_attach,
       capabilities = capabilities,
     }
-    local server_status_ok, server_opts = pcall(require, "chrigi.lsp.settings." .. server)
+    local server_status_ok, server_opts = pcall(require, "config.lsp.settings." .. server)
     if server_status_ok then opts = vim.tbl_deep_extend("force", server_opts, opts) end
     -- needs to be after manson and manson_lspconfig
     lspconfig[server].setup(opts)
