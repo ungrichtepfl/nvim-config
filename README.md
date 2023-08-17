@@ -21,9 +21,9 @@ npm i -g neovim
 #### Python
 
 ```shell
-mkdir .virtualenvs
-cd .virtualenvs
-python -m venv debugpy
+mkdir $HOME/.virtualenvs
+cd $HOME/.virtualenvs
+python3 -m venv debugpy
 debugpy/bin/python -m pip install debugpy
 ```
 
