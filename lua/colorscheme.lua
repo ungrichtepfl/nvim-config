@@ -3,7 +3,8 @@
 -- local colorscheme = "darcula-solid"
 -- local colorscheme = "tokyonight"
 -- local colorscheme = "darcula"
-local colorscheme = "nightfox"
+-- local colorscheme = "nightfox"
+local colorscheme = "moonfly"
 -- local colorscheme = "terafox"
 
 if colorscheme == "tokyonight" then
