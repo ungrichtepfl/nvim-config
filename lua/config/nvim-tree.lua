@@ -4,13 +4,13 @@ if not status_ok then
   return
 end
 
-local config_status_ok, nvim_tree_config = pcall(require, "nvim-tree.config")
-if not config_status_ok then
-  vim.notify "'nvim-tree.config' not found."
-  return
+local status_ok, web_devicons = pcall(require, "nvim-web-devicons")
+if status_ok then
+  -- Problem with default icon for text files
+  web_devicons.set_icon {
+    txt = { icon = "" },
+  }
 end
-
-local tree_cb = nvim_tree_config.nvim_tree_callback
 
 nvim_tree.setup {
   on_attach = require("config.nvim-tree-on-attach").on_attach,
