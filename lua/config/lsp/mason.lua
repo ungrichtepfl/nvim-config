@@ -54,29 +54,17 @@ mason_lspconfig.setup {
 
 local lspconfig = require "lspconfig"
 
-servers = vim.tbl_extend("force", servers, {
-  "hls", -- Haskell
-})
 
 -- Register a handler that will be called for all installed servers.
 -- Alternatively, you may also register handlers on specific server instances instead (see example below).
 local on_attach = require("config.lsp.handlers").on_attach
 local capabilities = require("config.lsp.handlers").capabilities
 
-local status_ok_ht, ht = pcall(require, "haskell-tools")
-if not status_ok_ht then vim.notify "'haskell-tools' plugin not found." end
-
 local status_ok_rt, rt = pcall(require, "rust-tools")
 if not status_ok_rt then vim.notify "'rust-tools' plugin not found." end
 
 for _, server in ipairs(servers) do
-  if server == "hls" and status_ok_ht then
-    ht.setup {
-      hls = {
-        on_attach = on_attach,
-      },
-    }
-  elseif server == "rust_analyzer" and status_ok_rt then
+  if server == "rust_analyzer" and status_ok_rt then
     rt.setup {
       server = {
         on_attach = on_attach,

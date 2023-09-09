@@ -177,12 +177,10 @@ lazy.setup {
   {
     "MrcJkb/haskell-tools.nvim",
     dependencies = {
-      "neovim/nvim-lspconfig",
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
     },
-    branch = "1.x.x",
-    -- commit = "ea2cf02"
+    branch = "2.x.x",
+    ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
   },
   {
     "Hoffs/omnisharp-extended-lsp.nvim",
@@ -412,6 +410,10 @@ lazy.setup {
       "nvim-telescope/telescope.nvim",
     },
   },
+  -- zig
+  -- {
+  --   "ziglang/zig.vim",
+  -- },
 }
 
 if LAZY_BOOTSTRAP then require("lazy").sync() end

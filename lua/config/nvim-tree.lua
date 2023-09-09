@@ -4,11 +4,12 @@ if not status_ok then
   return
 end
 
-local status_ok, web_devicons = pcall(require, "nvim-web-devicons")
-if status_ok then
+local status_ok_web, web_devicons = pcall(require, "nvim-web-devicons")
+if status_ok_web then
   -- Problem with default icon for text files
   web_devicons.set_icon {
     txt = { icon = "" },
+    xlsx = { icon = "" },
   }
 end
 
