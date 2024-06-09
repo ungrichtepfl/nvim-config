@@ -54,7 +54,6 @@ mason_lspconfig.setup {
 
 local lspconfig = require "lspconfig"
 
-
 -- Register a handler that will be called for all installed servers.
 -- Alternatively, you may also register handlers on specific server instances instead (see example below).
 local on_attach = require("config.lsp.handlers").on_attach

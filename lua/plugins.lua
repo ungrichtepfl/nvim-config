@@ -141,7 +141,7 @@ lazy.setup {
   },
 
   -- snippets
-  { "L3MON4D3/LuaSnip", build = "make install_jsregexp"}, --snippet engine
+  { "L3MON4D3/LuaSnip", build = "make install_jsregexp" }, --snippet engine
   { "rafamadriz/friendly-snippets" }, -- a bunch of snippets to use
 
   -- LSP
@@ -176,11 +176,8 @@ lazy.setup {
   },
   {
     "MrcJkb/haskell-tools.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    branch = "2.x.x",
-    ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+    version = "^3", -- Recommended
+    lazy = false, -- This plugin is already lazy
   },
   {
     "Hoffs/omnisharp-extended-lsp.nvim",
@@ -204,7 +201,7 @@ lazy.setup {
   },
   {
     "rcarriga/nvim-dap-ui",
-    dependencies = "mfussenegger/nvim-dap",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio", "folke/neodev.nvim" },
   },
   {
     "theHamsta/nvim-dap-virtual-text",
@@ -252,6 +249,7 @@ lazy.setup {
   {
     "JoosepAlviste/nvim-ts-context-commentstring",
     dependencies = "nvim-treesitter/nvim-treesitter",
+    config = function() require("ts_context_commentstring").setup { enable_autocmd = false } end,
   }, -- to make context aware comments
   {
     "windwp/nvim-ts-autotag",
@@ -403,12 +401,18 @@ lazy.setup {
 
   -- VSCode Tasks
   {
+    "Joakker/lua-json5",
+    build = "./install.sh",
+  },
+  {
     "EthanJWright/vs-tasks.nvim",
     dependencies = {
       "nvim-lua/popup.nvim",
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
+      "Joakker/lua-json5",
     },
+    config = function() require("vstask").setup { json_parser = require("json5").parse } end,
   },
   -- zig
   -- {
