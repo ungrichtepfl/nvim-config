@@ -7,7 +7,9 @@ end
 -- TODO: Check out mason-dap (https://github.com/jayp0521/mason-nvim-dap.nvim)
 
 --load from .vscode/launch.json files
-require("dap.ext.vscode").load_launchjs()
+local vs_code_ext = require "dap.ext.vscode"
+vs_code_ext.json_decode = require("json5").parse
+vs_code_ext.load_launchjs()
 
 local dap_servers = { "dap-python", "dap-lldb", "dap-rust", "csharp" }
 for _, dap_server in ipairs(dap_servers) do

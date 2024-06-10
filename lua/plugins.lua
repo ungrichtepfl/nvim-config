@@ -192,7 +192,7 @@ lazy.setup {
   -- DAP
   {
     "mfussenegger/nvim-dap",
-    dependencies = "neovim/nvim-lspconfig",
+    dependencies = { "neovim/nvim-lspconfig", "Joakker/lua-json5" },
     config = function() require "config.dap" end,
   },
   {
