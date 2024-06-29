@@ -59,30 +59,13 @@ local lspconfig = require "lspconfig"
 local on_attach = require("config.lsp.handlers").on_attach
 local capabilities = require("config.lsp.handlers").capabilities
 
-local status_ok_rt, rt = pcall(require, "rust-tools")
-if not status_ok_rt then vim.notify "'rust-tools' plugin not found." end
-
 for _, server in ipairs(servers) do
-  if server == "rust_analyzer" and status_ok_rt then
-    rt.setup {
-      server = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-      },
-      dap = {
-        adapter = {
-          command = "lldb-vscode-10",
-        },
-      },
-    }
-  else
-    local opts = {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    }
-    local server_status_ok, server_opts = pcall(require, "config.lsp.settings." .. server)
-    if server_status_ok then opts = vim.tbl_deep_extend("force", server_opts, opts) end
-    -- needs to be after manson and manson_lspconfig
-    lspconfig[server].setup(opts)
-  end
+  local opts = {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+  local server_status_ok, server_opts = pcall(require, "config.lsp.settings." .. server)
+  if server_status_ok then opts = vim.tbl_deep_extend("force", server_opts, opts) end
+  -- needs to be after manson and manson_lspconfig
+  lspconfig[server].setup(opts)
 end

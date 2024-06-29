@@ -185,8 +185,10 @@ lazy.setup {
   },
 
   {
-    "simrat39/rust-tools.nvim",
-    dependencies = { "neovim/nvim-lspconfig", "nvim-lua/plenary.nvim", "mfussenegger/nvim-dap" },
+    "mrcjkb/rustaceanvim",
+    version = "^4", -- Recommended
+    lazy = false, -- This plugin is already lazy
+    dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
   },
 
   -- DAP

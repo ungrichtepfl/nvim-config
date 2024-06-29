@@ -159,14 +159,6 @@ local mappings = {
       name = "Haskell",
       s = { ":lua require'haskell-tools'.hoogle.hoogle_signature()<cr>", "Hoogle signatures" },
     },
-    R = {
-      name = "Rust",
-      k = {
-        ':lua require"rust-tools".hover_actions.hover_actions()<cr> :lua require"rust-tools".hover_actions.hover_actions()<cr>',
-        "Hover actions",
-      },
-      a = { ':lua require"rust-tools".code_action_group.code_action_group()<cr>', "Code actions" },
-    },
   },
   s = {
     name = "Search",
