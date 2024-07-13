@@ -37,7 +37,7 @@ local servers = {
   "rust_analyzer",
   "yamlls",
   "elmls",
-  "taplo", -- TOML
+  "taplo",   -- TOML
   "lemminx", -- "XML"
   "tsserver",
   "html",
@@ -60,6 +60,13 @@ local on_attach = require("config.lsp.handlers").on_attach
 local capabilities = require("config.lsp.handlers").capabilities
 
 for _, server in ipairs(servers) do
+  if server == "rust_analyzer" then
+    status_ok, _ = pcall(require, "rustaceanvim")
+    if status_ok then
+      -- Don't load rust_analyzer if rustaceanvim is loaded
+      goto continue
+    end
+  end
   local opts = {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -68,4 +75,5 @@ for _, server in ipairs(servers) do
   if server_status_ok then opts = vim.tbl_deep_extend("force", server_opts, opts) end
   -- needs to be after manson and manson_lspconfig
   lspconfig[server].setup(opts)
+  ::continue::
 end

@@ -1,5 +1,5 @@
 return {
-  settings = {
+  default_settings = {
     ["rust-analyzer"] = {
       completion = {
         -- addCallArgumentSnippets = false,
@@ -14,6 +14,9 @@ return {
           "--message-format=json",
           "--all-targets",
           "--all-features",
+          "--",
+          "-Dclippy::all",
+          "-Dclippy::pedantic",
         },
       },
     },

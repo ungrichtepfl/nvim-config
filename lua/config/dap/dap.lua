@@ -11,7 +11,7 @@ local vs_code_ext = require "dap.ext.vscode"
 vs_code_ext.json_decode = require("json5").parse
 vs_code_ext.load_launchjs()
 
-local dap_servers = { "dap-python", "dap-lldb", "dap-rust", "csharp" }
+local dap_servers = { "dap-python", "dap-lldb", "csharp" }
 for _, dap_server in ipairs(dap_servers) do
   require("config.dap.dap-servers." .. dap_server).setup()
 end
