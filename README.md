@@ -34,3 +34,15 @@ In `nvim` use:
 ```nvim
 :checkhealth
 ```
+
+## Formatting
+
+Use stylua for lua formatting:
+
+```shell
+cargo install stylua --features lua52
+```
+
+```shell
+stylua .
+```

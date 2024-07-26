@@ -42,7 +42,7 @@ null_ls.setup {
     -- Rust:
     formatting.rustfmt,
     -- Haskell:
-    formatting.stylish_haskell,
+    formatting.fourmolu,
     -- yaml:
     -- INFO: yamlls does it already
     -- formatting.yamlfmt,

@@ -37,7 +37,7 @@ local servers = {
   "rust_analyzer",
   "yamlls",
   "elmls",
-  "taplo",   -- TOML
+  "taplo", -- TOML
   "lemminx", -- "XML"
   "tsserver",
   "html",
@@ -52,6 +52,11 @@ mason_lspconfig.setup {
   ensure_installed = servers,
 }
 
+-- servers not installed by mason-lspconfig
+servers = vim.tbl_deep_extend("force", servers, {
+  "hls", -- Haskell
+})
+
 local lspconfig = require "lspconfig"
 
 -- Register a handler that will be called for all installed servers.
@@ -64,6 +69,13 @@ for _, server in ipairs(servers) do
     status_ok, _ = pcall(require, "rustaceanvim")
     if status_ok then
       -- Don't load rust_analyzer if rustaceanvim is loaded
+      goto continue
+    end
+  end
+  if server == "hls" then
+    status_ok, _ = pcall(require, "haskell-tools")
+    if status_ok then
+      -- Don't load haskell_language_server if haskell_tools is loaded
       goto continue
     end
   end

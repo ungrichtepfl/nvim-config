@@ -1,5 +1,5 @@
 return {
-  default_settings = {
+  settings = {
     ["rust-analyzer"] = {
       completion = {
         -- addCallArgumentSnippets = false,

@@ -25,7 +25,7 @@ end
 -- Install your plugins here
 lazy.setup {
   -- useful APIs
-  { "nvim-lua/popup.nvim" },   -- An implementation of the Popup API from vim in Neovim
+  { "nvim-lua/popup.nvim" }, -- An implementation of the Popup API from vim in Neovim
   { "nvim-lua/plenary.nvim" }, -- Useful lua functions used ny lots of plugins
   { "kyazdani42/nvim-web-devicons" },
   -- neovim lua language server
@@ -104,11 +104,11 @@ lazy.setup {
   },
 
   -- Colorschemes
-  { "lunarvim/colorschemes",              lazy = true },
-  { "folke/tokyonight.nvim",              lazy = true },
-  { "briones-gabriel/darcula-solid.nvim", lazy = true,      dependencies = "rktjmp/lush.nvim" },
-  { "EdenEast/nightfox.nvim",             lazy = true },
-  { "bluz71/vim-moonfly-colors",          name = "moonfly", lazy = false,                     priority = 1000 },
+  { "lunarvim/colorschemes", lazy = true },
+  { "folke/tokyonight.nvim", lazy = true },
+  { "briones-gabriel/darcula-solid.nvim", lazy = true, dependencies = "rktjmp/lush.nvim" },
+  { "EdenEast/nightfox.nvim", lazy = true },
+  { "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000 },
 
   -- cmp plugins
   {
@@ -141,8 +141,8 @@ lazy.setup {
   },
 
   -- snippets
-  { "L3MON4D3/LuaSnip",            build = "make install_jsregexp" }, --snippet engine
-  { "rafamadriz/friendly-snippets" },                      -- a bunch of snippets to use
+  { "L3MON4D3/LuaSnip", build = "make install_jsregexp" }, --snippet engine
+  { "rafamadriz/friendly-snippets" }, -- a bunch of snippets to use
 
   -- LSP
   {
@@ -177,7 +177,9 @@ lazy.setup {
   {
     "MrcJkb/haskell-tools.nvim",
     version = "^3", -- Recommended
-    lazy = false,   -- This plugin is already lazy
+    lazy = false, -- This plugin is already lazy
+    dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
+    config = function() require "config.haskell_tools" end,
   },
   {
     "Hoffs/omnisharp-extended-lsp.nvim",
@@ -187,7 +189,7 @@ lazy.setup {
   {
     "mrcjkb/rustaceanvim",
     version = "^4", -- Recommended
-    lazy = false,   -- This plugin is already lazy
+    lazy = false, -- This plugin is already lazy
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     config = function() require "config.rustaceanvim" end,
   },

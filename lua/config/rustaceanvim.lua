@@ -6,8 +6,11 @@ local function rustaceanvim_settings()
     },
   }
 
-  local status_ok, server_settings = pcall(require, "config.lsp.servers.rust_analyzer")
-  if status_ok then opts = vim.tbl_deep_extend("force", opts, server_settings) end
+  local status_ok, server_settings = pcall(require, "config.lsp.settings.rust_analyzer")
+  if status_ok then
+    local server_opts = vim.tbl_deep_extend("force", opts.server, { default_settings = server_settings.settings })
+    opts.server = server_opts
+  end
 
   return opts
 end
