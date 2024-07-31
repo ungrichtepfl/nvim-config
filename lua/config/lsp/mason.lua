@@ -34,7 +34,6 @@ local servers = {
   "dockerls",
   "marksman", -- Markdown
   -- "remark_ls", -- Markdown
-  "rust_analyzer",
   "yamlls",
   "elmls",
   "taplo", -- TOML
@@ -54,7 +53,8 @@ mason_lspconfig.setup {
 
 -- servers not installed by mason-lspconfig
 servers = vim.tbl_deep_extend("force", servers, {
-  "hls", -- Haskell
+  "hls", -- Haskell, installed by ghcup
+  "rust_analyzer", -- Installed by rustup
 })
 
 local lspconfig = require "lspconfig"
