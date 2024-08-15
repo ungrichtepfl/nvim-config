@@ -33,11 +33,6 @@ null_ls.setup {
     -- lua:
     formatting.stylua,
     -- python:
-    formatting.isort,
-    formatting.yapf,
-    -- formatting.black,
-    diagnostics.flake8,
-    diagnostics.pylint,
     diagnostics.mypy.with { extra_args = { "--ignore-missing-imports" } },
     -- Rust:
     formatting.rustfmt,

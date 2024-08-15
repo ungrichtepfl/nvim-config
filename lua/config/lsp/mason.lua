@@ -27,6 +27,7 @@ local servers = {
   "gopls",
   "jsonls",
   "pyright",
+  "ruff",
   "lua_ls",
   "bashls",
   "clangd", -- C/C++
