@@ -1,20 +1,20 @@
-local fn = vim.fn
-
--- Automatically install packer
-local install_path = fn.stdpath "data" .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(install_path) then
-  LAZY_BOOTSTRAP = fn.system {
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    install_path,
-  }
-  print "Installing lazy. Close and reopen Neovim..."
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system { "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath }
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
-vim.opt.rtp:prepend(install_path)
 
+vim.opt.rtp:prepend(lazypath)
 -- Use a protected call so we don't error out on first use
 local status_ok, lazy = pcall(require, "lazy")
 if not status_ok then
@@ -34,7 +34,7 @@ lazy.setup {
     config = function() require "config.neodev" end,
   },
   -- better Bdelete
-  { "moll/vim-bbye" },
+  { "famiu/bufdelete.nvim" },
   -- make lua vim startup time faster
   {
     "lewis6991/impatient.nvim",
@@ -45,19 +45,14 @@ lazy.setup {
     "windwp/nvim-autopairs",
     config = function() require "config.autopairs" end,
   }, -- autopairs integrates with treesitter and cmp
-  -- nvimtree
+  -- directory manager
   {
-    "kyazdani42/nvim-tree.lua",
-    dependencies = {
-      "kyazdani42/nvim-web-devicons", -- optional, for file icons
-    },
-    config = function() require "config.nvim-tree" end,
-    -- version = "nighly" -- optional, updates every week
+    "2hdddg/fex.nvim",
   },
   -- bufferline
   {
     "akinsho/bufferline.nvim",
-    version = "v2.*",
+    -- version = "*",
     dependencies = "kyazdani42/nvim-web-devicons",
     config = function() require "config.bufferline" end,
   },
@@ -85,6 +80,9 @@ lazy.setup {
   -- whichkey
   {
     "folke/which-key.nvim",
+    opts = {
+      notify = false, -- don't warn if there are issues with the keymaps
+    },
     config = function() require "config.whichkey" end,
   },
   -- vim-visual-multi
@@ -149,7 +147,6 @@ lazy.setup {
     "neovim/nvim-lspconfig",
     config = function() require "config.lsp" end,
   }, -- enable LSP
-  -- use "williamboman/nvim-lsp-installer" -- simple to use language server installer NOT MAINTAINED ANYMORE
   {
     "williamboman/mason.nvim",
     dependencies = "neovim/nvim-lspconfig",
@@ -176,7 +173,7 @@ lazy.setup {
   },
   {
     "MrcJkb/haskell-tools.nvim",
-    version = "^3", -- Recommended
+    version = "^4", -- Recommended
     lazy = false, -- This plugin is already lazy
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     config = function() require "config.haskell_tools" end,
@@ -188,7 +185,7 @@ lazy.setup {
 
   {
     "mrcjkb/rustaceanvim",
-    version = "^4", -- Recommended
+    version = "^5", -- Recommended
     lazy = false, -- This plugin is already lazy
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     config = function() require "config.rustaceanvim" end,
@@ -309,8 +306,22 @@ lazy.setup {
 
   -- Code actions:
   {
-    "weilbith/nvim-code-action-menu",
-    cmd = "CodeActionMenu",
+    "aznhe21/actions-preview.nvim",
+    config = function()
+      require("actions-preview").setup {
+        telescope = {
+          sorting_strategy = "ascending",
+          layout_strategy = "vertical",
+          layout_config = {
+            width = 0.8,
+            height = 0.9,
+            prompt_position = "top",
+            preview_cutoff = 20,
+            preview_height = function(_, _, max_lines) return max_lines - 15 end,
+          },
+        },
+      }
+    end,
   },
 
   -- lightbulb for code actions:
@@ -340,6 +351,7 @@ lazy.setup {
 
   -- better escape for jk mappings
   {
+
     "max397574/better-escape.nvim",
     config = function() require "config.better_escape" end,
   },
@@ -387,7 +399,8 @@ lazy.setup {
   },
   -- nicer folds
   {
-    "anuvyklack/pretty-fold.nvim",
+    -- "anuvyklack/pretty-fold.nvim",
+    "bbjornstad/pretty-fold.nvim", -- fork that works with nvim 0.10
     config = function() require "config.pretty-fold" end,
   },
 
@@ -424,5 +437,3 @@ lazy.setup {
   --   "ziglang/zig.vim",
   -- },
 }
-
-if LAZY_BOOTSTRAP then require("lazy").sync() end

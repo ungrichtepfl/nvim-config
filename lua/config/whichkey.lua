@@ -4,253 +4,479 @@ if not status_ok then
   return
 end
 
-local setup = {
-  plugins = {
-    spelling = {
-      enabled = true,
-    },
-  },
-  icons = {
-    breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-    separator = "➜", -- symbol used between a key and it's label
-    group = "+", -- symbol prepended to a group
-  },
-  window = {
-    border = "rounded", -- none, single, double, shadow
-  },
-  ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
-}
-
-local opts = {
-  mode = "n", -- NORMAL mode
-  prefix = "<leader>",
-  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
-  noremap = true, -- use `noremap` when creating keymaps
-  nowait = true, -- use `nowait` when creating keymaps
-}
-
 local mappings = {
-  ["/"] = { '<cmd>lua require("Comment.api").toggle_current_linewise()<CR>', "Comment" },
-  ["a"] = { "<cmd>Alpha<cr>", "Alpha" },
-  ["b"] = {
+  {
+    "<leader>/",
+    '<cmd>lua require("Comment.api").toggle_current_linewise()<CR>',
+    desc = "Comment",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>C", "<cmd>q!<CR>", desc = "Quit Window Forced", nowait = true, remap = false },
+  { "<leader>N", "<cmd>NoNeckPain<cr>", desc = "Center window", nowait = true, remap = false },
+  { "<leader>P", "<cmd>Telescope projects<cr>", desc = "Projects", nowait = true, remap = false },
+  { "<leader>Q", "<cmd>Bdelete!<CR>", desc = "Close Buffer Forced", nowait = true, remap = false },
+  { "<leader>R", group = "Refactoring", nowait = true, remap = false },
+  {
+    "<leader>Ra",
+    "<cmd>lua require('refactoring').debug.print_var({ normal = { true }})<CR>",
+    desc = "Print variable",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>Rb",
+    "<cmd>lua require('refactoring').refactor('Extract Block')<CR>",
+    desc = "Extract block",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>Rbf",
+    "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>",
+    desc = "Extract block to file",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>Rc",
+    "<cmd>lua require('refactoring').debug.cleanup({})<CR>",
+    desc = "Cleanup print statements",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>Ri",
+    "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>",
+    desc = "Inline variable",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>Rp",
+    "<cmd>lua require('refactoring').debug.printf({below = true})<CR>",
+    desc = "Printf to mark a function.",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>W", "<cmd>wq<CR>", desc = "Save File and Quit Window", nowait = true, remap = false },
+  { "<leader>a", "<cmd>Alpha<cr>", desc = "Alpha", nowait = true, remap = false },
+  {
+    "<leader>b",
     "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-    "Buffers",
+    desc = "Buffers",
+    nowait = true,
+    remap = false,
   },
-  ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
-  ["w"] = { "<cmd>w!<CR>", "Save File" },
-  ["W"] = { "<cmd>wq<CR>", "Save File and Quit Window" },
-  ["c"] = { "<cmd>q<CR>", "Quit Window" },
-  ["C"] = { "<cmd>q!<CR>", "Quit Window Forced" },
-  ["q"] = { "<cmd>Bdelete<CR>", "Close Buffer" },
-  ["Q"] = { "<cmd>Bdelete!<CR>", "Close Buffer Forced" },
-  ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
-  ["f"] = {
+  { "<leader>c", "<cmd>q<CR>", desc = "Quit Window", nowait = true, remap = false },
+  { "<leader>d", group = "DAP", nowait = true, remap = false },
+  {
+    "<leader>dB",
+    ":lua require'dap'.toggle_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+    desc = "Toggle Conditional Breakpoint",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>dP", group = "Python debugging", nowait = true, remap = false },
+  { "<leader>dPt", ":lua require('dap-python').test_method()<CR>", desc = "Test method", nowait = true, remap = false },
+  {
+    "<leader>db",
+    ":lua require'dap'.toggle_breakpoint()<CR>",
+    desc = "Toggle Breakpoint",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>dc", ":lua require'dap'.continue()<CR>", desc = "Continue", nowait = true, remap = false },
+  { "<leader>dd", ":lua require'dapui'.toggle()<CR>", desc = "Toggle", nowait = true, remap = false },
+  { "<leader>di", ":lua require'dap'.step_into()<CR>", desc = "Step Into", nowait = true, remap = false },
+  { "<leader>do", ":lua require'dap'.step_over()<CR>", desc = "Step Over", nowait = true, remap = false },
+  {
+    "<leader>dp",
+    ":lua require'dap'.toggle_breakpoint(nil,nil,vim.fn.input('Log point message: '))<CR>",
+    desc = "Toggle Log? Breakpoint",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>dr", ":lua require'dap'.repl.open()<CR>", desc = "Open REPL", nowait = true, remap = false },
+  { "<leader>dt", ":lua require'dap'.terminate()<CR>", desc = "Terminate", nowait = true, remap = false },
+  { "<leader>du", ":lua require'dap'.step_out()<CR>", desc = "Step Out", nowait = true, remap = false },
+  { "<leader>dv", ":lua require'dapui'.eval()<CR>", desc = "Eval", nowait = true, remap = false },
+  { "<leader>e", "<cmd>Fex<cr>", desc = "Explorer", nowait = true, remap = false },
+  {
+    "<leader>f",
     "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-    "Find Files",
+    desc = "Find Files",
+    nowait = true,
+    remap = false,
   },
-  ["if"] = {
+  { "<leader>g", group = "Git", nowait = true, remap = false },
+  {
+    "<leader>gD",
+    "<cmd>lua require 'gitsigns'.toggle_deleted()<cr>",
+    desc = "Toggle Deleted",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gL",
+    "<cmd>lua require 'gitsigns'.blame_line{full=true}<cr>",
+    desc = "Blame with changes",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gR",
+    "<cmd>lua require 'gitsigns'.reset_buffer()<cr>",
+    desc = "Reset Buffer",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gS",
+    "<cmd>lua require 'gitsigns'.stage_buffer()<cr>",
+    desc = "Stage Buffer",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gb",
+    "<cmd>Telescope git_branches<cr>",
+    desc = "Checkout branch",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gc",
+    "<cmd>Telescope git_commits<cr>",
+    desc = "Checkout commit",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gd",
+    "<cmd>lua require 'gitsigns'.diffthis()<cr>",
+    desc = "Diff with HEAD",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gg",
+    "<cmd>lua _LAZYGIT_TOGGLE()<CR>",
+    desc = "Lazygit",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gj",
+    "<cmd>lua require 'gitsigns'.next_hunk()<cr>",
+    desc = "Next Hunk",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gk",
+    "<cmd>lua require 'gitsigns'.prev_hunk()<cr>",
+    desc = "Prev Hunk",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gl",
+    "<cmd>lua require 'gitsigns'.blame_line()<cr>",
+    desc = "Blame",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gm",
+    "<cmd>GitConflictListQf<cr>",
+    desc = "List merge conflicts",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>go",
+    "<cmd>Telescope git_status<cr>",
+    desc = "Open changed file",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gp",
+    "<cmd>lua require 'gitsigns'.preview_hunk()<cr>",
+    desc = "Preview Hunk",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>gr", "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = "Reset Hunk", nowait = true, remap = false },
+  { "<leader>gs", "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = "Stage Hunk", nowait = true, remap = false },
+  {
+    "<leader>gu",
+    "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
+    desc = "Undo Stage Hunk",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>h", "<cmd>nohlsearch<CR>", desc = "No Highlight", nowait = true, remap = false },
+  {
+    "<leader>if",
     "<cmd>lua require'telescope.builtin'.find_files({hidden=true, no_ignore=true, no_ignore_parent=true})<cr>",
-    "Find Ignored Files",
+    desc = "Find Ignored Files",
+    nowait = true,
+    remap = false,
   },
-  ["r"] = {
-    "<cmd>lua require'telescope.builtin'.live_grep(require('telescope.themes').get_dropdown())<cr>",
-    "Find Text",
-  },
-  ["ir"] = {
+  {
+    "<leader>ir",
     "<cmd>lua require'telescope.builtin'.live_grep({vimgrep_arguments = {'rg','--color=never', '--no-heading', '--with-filename','--line-number','--column','--smart-case','-u'}})<cr>",
-    "Find Ignored Text",
+    desc = "Find Ignored Text",
+    nowait = true,
+    remap = false,
   },
-  ["P"] = { "<cmd>Telescope projects<cr>", "Projects" },
-  ["N"] = { "<cmd>NoNeckPain<cr>", "Center window" },
-
-  p = {
-    name = "Packer",
-    c = { "<cmd>PackerCompile<cr>", "Compile" },
-    i = { "<cmd>PackerInstall<cr>", "Install" },
-    s = { "<cmd>PackerSync<cr>", "Sync" },
-    S = { "<cmd>PackerStatus<cr>", "Status" },
-    u = { "<cmd>PackerUpdate<cr>", "Update" },
+  { "<leader>l", group = "LSP", nowait = true, remap = false },
+  { "<leader>lH", group = "Haskell", nowait = true, remap = false },
+  {
+    "<leader>lHs",
+    ":lua require'haskell-tools'.hoogle.hoogle_signature()<cr>",
+    desc = "Hoogle signatures",
+    nowait = true,
+    remap = false,
   },
-
-  d = {
-    name = "DAP",
-    d = { ":lua require'dapui'.toggle()<CR>", "Toggle" },
-    c = { ":lua require'dap'.continue()<CR>", "Continue" },
-    t = { ":lua require'dap'.terminate()<CR>", "Terminate" },
-    o = { ":lua require'dap'.step_over()<CR>", "Step Over" },
-    i = { ":lua require'dap'.step_into()<CR>", "Step Into" },
-    u = { ":lua require'dap'.step_out()<CR>", "Step Out" },
-    b = { ":lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint" },
-    B = {
-      ":lua require'dap'.toggle_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-      "Toggle Conditional Breakpoint",
-    },
-    p = {
-      ":lua require'dap'.toggle_breakpoint(nil,nil,vim.fn.input('Log point message: '))<CR>",
-      "Toggle Log? Breakpoint",
-    },
-    r = { ":lua require'dap'.repl.open()<CR>", "Open REPL" },
-    v = { ":lua require'dapui'.eval()<CR>", "Eval" },
-    P = {
-      name = "Python debugging",
-      t = { ":lua require('dap-python').test_method()<CR>", "Test method" },
-    },
+  {
+    "<leader>lI",
+    "<cmd>Mason<cr>",
+    desc = "Installer Info",
+    nowait = true,
+    remap = false,
   },
-
-  g = {
-    name = "Git",
-    g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
-    j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
-    k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
-    l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
-    L = { "<cmd>lua require 'gitsigns'.blame_line{full=true}<cr>", "Blame with changes" },
-    p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk" },
-    r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk" },
-    R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer" },
-    s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk" },
-    S = { "<cmd>lua require 'gitsigns'.stage_buffer()<cr>", "Stage Buffer" },
-    u = {
-      "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
-      "Undo Stage Hunk",
-    },
-    d = {
-      "<cmd>lua require 'gitsigns'.diffthis()<cr>",
-      "Diff with HEAD",
-    },
-    D = {
-      "<cmd>lua require 'gitsigns'.toggle_deleted()<cr>",
-      "Toggle Deleted",
-    },
-    o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
-    b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-    c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
-    m = { "<cmd>GitConflictListQf<cr>", "List merge conflicts" },
+  {
+    "<leader>la",
+    "<cmd>lua require('actions-preview').code_actions()<cr>",
+    desc = "Code Action",
+    nowait = true,
+    remap = false,
   },
-
-  l = {
-    name = "LSP",
-    a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
-    m = { "<cmd>CodeActionMenu<cr>", "Show Code Action Menu" },
-    d = {
-      "<cmd>Telescope diagnostics<cr>",
-      "Document Diagnostics",
-    },
-    f = { "<cmd>lua vim.lsp.buf.format{async = true}<cr>", "Format" },
-    i = { "<cmd>LspInfo<cr>", "Info" },
-    I = { "<cmd>Mason<cr>", "Installer Info" },
-    j = {
-      "<cmd>lua vim.diagnostic.goto_next()<CR>",
-      "Next Diagnostic",
-    },
-    k = {
-      "<cmd>lua vim.diagnostic.goto_prev()<cr>",
-      "Prev Diagnostic",
-    },
-    q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
-    l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
-    r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
-    s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
-    w = {
-      "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
-      "Workspace Symbols",
-    },
-    H = {
-      name = "Haskell",
-      s = { ":lua require'haskell-tools'.hoogle.hoogle_signature()<cr>", "Hoogle signatures" },
-    },
+  {
+    "<leader>ld",
+    "<cmd>Telescope diagnostics<cr>",
+    desc = "Document Diagnostics",
+    nowait = true,
+    remap = false,
   },
-  s = {
-    name = "Search",
-    b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-    c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
-    h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
-    M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
-    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-    R = { "<cmd>Telescope registers<cr>", "Registers" },
-    k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
-    C = { "<cmd>Telescope commands<cr>", "Commands" },
+  {
+    "<leader>lf",
+    "<cmd>lua vim.lsp.buf.format{async = true}<cr>",
+    desc = "Format",
+    nowait = true,
+    remap = false,
   },
-
-  t = {
-    name = "Terminal",
-    n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
-    u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
-    o = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
-    p = { "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
-    f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
-    h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
-    v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
-    t = { "<cmd>ToggleTerm direction=tab<cr>", "Tab" },
+  {
+    "<leader>li",
+    "<cmd>LspInfo<cr>",
+    desc = "Info",
+    nowait = true,
+    remap = false,
   },
-
-  x = {
-    name = "Trouble",
-    x = { "<cmd>TroubleToggle<cr>", "Toggle" },
-    w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
-    d = { "<cmd>TroubleToggle document_diagnostics<cr>", "Document Diagnostics" },
-    l = { "<cmd>TroubleToggle loclist<cr>", "Location List" },
-    q = { "<cmd>TroubleToggle quickfix<cr>", "Quickfix" },
-    r = { "<cmd>TroubleToggle lsp_references<cr>", "Lsp References" },
-    t = { "<cmd>TodoTrouble<cr>", "Todos" },
+  {
+    "<leader>lj",
+    "<cmd>lua vim.diagnostic.goto_next()<CR>",
+    desc = "Next Diagnostic",
+    nowait = true,
+    remap = false,
   },
-
-  n = {
-    name = "Neogen",
-    f = { "<cmd>Neogen func<cr>", "Function Docstring" },
-    c = { "<cmd>Neogen class<cr>", "Class Docstring" },
-    t = { "<cmd>Neogen type<cr>", "Type Docstring" },
-    F = { "<cmd>Neogen file<cr>", "File Docstring" },
+  {
+    "<leader>lk",
+    "<cmd>lua vim.diagnostic.goto_prev()<cr>",
+    desc = "Prev Diagnostic",
+    nowait = true,
+    remap = false,
   },
-
-  m = {
-    name = "Markdown",
-    p = { [[<Plug>MarkdownPreviewToggle]], "preview markdown" },
+  {
+    "<leader>ll",
+    "<cmd>lua vim.lsp.codelens.run()<cr>",
+    desc = "CodeLens Action",
+    nowait = true,
+    remap = false,
   },
-
-  R = {
-    name = "Refactoring",
-    b = { "<cmd>lua require('refactoring').refactor('Extract Block')<CR>", "Extract block" },
-    bf = { "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>", "Extract block to file" },
-    -- Inline variable can also pick up the identifier currently under the cursor without visual mode
-    i = { "<cmd>lua require('refactoring').refactor('Inline Variable')<CR>", "Inline variable" },
-    -- Debug operations:
-    p = { "<cmd>lua require('refactoring').debug.printf({below = true})<CR>", "Printf to mark a function." },
-    a = { "<cmd>lua require('refactoring').debug.print_var({ normal = { true }})<CR>", "Print variable" },
-    c = { "<cmd>lua require('refactoring').debug.cleanup({})<CR>", "Cleanup print statements" },
+  {
+    "<leader>lq",
+    "<cmd>lua vim.diagnostic.setloclist()<cr>",
+    desc = "Quickfix",
+    nowait = true,
+    remap = false,
   },
-  v = {
-    name = "VSCode Tasks",
-    t = { "<cmd>lua require('telescope').extensions.vstask.tasks()<CR>", "Tasks" },
-    i = { "<cmd>lua require('telescope').extensions.vstask.inputs()<CR>", "Inputs" },
-    h = { "<cmd>lua require('telescope').extensions.vstask.history()<CR>", "History" },
-    l = { "<cmd>lua require('telescope').extensions.vstask.launch()<cr>", "Launch" },
+  {
+    "<leader>lr",
+    "<cmd>lua vim.lsp.buf.rename()<cr>",
+    desc = "Rename",
+    nowait = true,
+    remap = false,
   },
-}
-
-local vopts = {
-  mode = "v", -- VISUAL mode
-  prefix = "<leader>",
-  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
-  noremap = true, -- use `noremap` when creating keymaps
-  nowait = true, -- use `nowait` when creating keymaps
+  {
+    "<leader>ls",
+    "<cmd>Telescope lsp_document_symbols<cr>",
+    desc = "Document Symbols",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>lw",
+    "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
+    desc = "Workspace Symbols",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>m", group = "Markdown", nowait = true, remap = false },
+  { "<leader>mp", "<Plug>MarkdownPreviewToggle", desc = "preview markdown", nowait = true, remap = false },
+  { "<leader>n", group = "Neogen", nowait = true, remap = false },
+  { "<leader>nF", "<cmd>Neogen file<cr>", desc = "File Docstring", nowait = true, remap = false },
+  { "<leader>nc", "<cmd>Neogen class<cr>", desc = "Class Docstring", nowait = true, remap = false },
+  { "<leader>nf", "<cmd>Neogen func<cr>", desc = "Function Docstring", nowait = true, remap = false },
+  { "<leader>nt", "<cmd>Neogen type<cr>", desc = "Type Docstring", nowait = true, remap = false },
+  { "<leader>p", group = "Packer", nowait = true, remap = false },
+  { "<leader>pS", "<cmd>PackerStatus<cr>", desc = "Status", nowait = true, remap = false },
+  { "<leader>pc", "<cmd>PackerCompile<cr>", desc = "Compile", nowait = true, remap = false },
+  { "<leader>pi", "<cmd>PackerInstall<cr>", desc = "Install", nowait = true, remap = false },
+  { "<leader>ps", "<cmd>PackerSync<cr>", desc = "Sync", nowait = true, remap = false },
+  { "<leader>pu", "<cmd>PackerUpdate<cr>", desc = "Update", nowait = true, remap = false },
+  { "<leader>q", "<cmd>Bdelete<CR>", desc = "Close Buffer", nowait = true, remap = false },
+  {
+    "<leader>r",
+    "<cmd>lua require'telescope.builtin'.live_grep(require('telescope.themes').get_dropdown())<cr>",
+    desc = "Find Text",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>s", group = "Search", nowait = true, remap = false },
+  { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands", nowait = true, remap = false },
+  { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages", nowait = true, remap = false },
+  { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers", nowait = true, remap = false },
+  { "<leader>sb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch", nowait = true, remap = false },
+  { "<leader>sc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme", nowait = true, remap = false },
+  { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Find Help", nowait = true, remap = false },
+  { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps", nowait = true, remap = false },
+  { "<leader>sr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File", nowait = true, remap = false },
+  { "<leader>t", group = "Terminal", nowait = true, remap = false },
+  { "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", desc = "Float", nowait = true, remap = false },
+  {
+    "<leader>th",
+    "<cmd>ToggleTerm size=10 direction=horizontal<cr>",
+    desc = "Horizontal",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>tn", "<cmd>lua _NODE_TOGGLE()<cr>", desc = "Node", nowait = true, remap = false },
+  { "<leader>to", "<cmd>lua _HTOP_TOGGLE()<cr>", desc = "Htop", nowait = true, remap = false },
+  { "<leader>tp", "<cmd>lua _PYTHON_TOGGLE()<cr>", desc = "Python", nowait = true, remap = false },
+  { "<leader>tt", "<cmd>ToggleTerm direction=tab<cr>", desc = "Tab", nowait = true, remap = false },
+  { "<leader>tu", "<cmd>lua _NCDU_TOGGLE()<cr>", desc = "NCDU", nowait = true, remap = false },
+  { "<leader>tv", "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "Vertical", nowait = true, remap = false },
+  { "<leader>v", group = "VSCode Tasks", nowait = true, remap = false },
+  {
+    "<leader>vh",
+    "<cmd>lua require('telescope').extensions.vstask.history()<CR>",
+    desc = "History",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>vi",
+    "<cmd>lua require('telescope').extensions.vstask.inputs()<CR>",
+    desc = "Inputs",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>vl",
+    "<cmd>lua require('telescope').extensions.vstask.launch()<cr>",
+    desc = "Launch",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>vt",
+    "<cmd>lua require('telescope').extensions.vstask.tasks()<CR>",
+    desc = "Tasks",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>w", "<cmd>w!<CR>", desc = "Save File", nowait = true, remap = false },
+  { "<leader>x", group = "Trouble", nowait = true, remap = false },
+  {
+    "<leader>xd",
+    "<cmd>TroubleToggle document_diagnostics<cr>",
+    desc = "Document Diagnostics",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>xl", "<cmd>TroubleToggle loclist<cr>", desc = "Location List", nowait = true, remap = false },
+  { "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix", nowait = true, remap = false },
+  { "<leader>xr", "<cmd>TroubleToggle lsp_references<cr>", desc = "Lsp References", nowait = true, remap = false },
+  { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todos", nowait = true, remap = false },
+  {
+    "<leader>xw",
+    "<cmd>TroubleToggle workspace_diagnostics<cr>",
+    desc = "Workspace Diagnostics",
+    nowait = true,
+    remap = false,
+  },
+  { "<leader>xx", "<cmd>TroubleToggle<cr>", desc = "Toggle", nowait = true, remap = false },
 }
 
 local vmappings = {
-  ["/"] = { '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>', "Comment" },
-  R = {
-    name = "Refactoring",
-    f = { "<Esc><cmd>lua require('refactoring').refactor('Extract Function')<cr>", "Extract function" },
-    F = { "<Esc><cmd>lua require('refactoring').refactor('Extract Function To File')<cr>", "Extract function to file" },
-    v = { "<Esc><cmd>lua require('refactoring').refactor('Extract Variable')<cr>", "Extract variable" },
-    i = { "<Esc><cmd>lua require('refactoring').refactor('Inline Variable')<cr>", "Inline variable" },
-    r = { "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>", "Telescoper refefactor " },
-    -- Debug operations:
-    a = { "<cmd>lua require('refactoring').debug.print_var({})<CR>", "Print selection" },
+  {
+    mode = { "v" },
+    {
+      "<leader>/",
+      '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>',
+      desc = "Comment",
+      nowait = true,
+      remap = false,
+    },
+    { "<leader>R", group = "Refactoring", nowait = true, remap = false },
+    {
+      "<leader>RF",
+      "<Esc><cmd>lua require('refactoring').refactor('Extract Function To File')<cr>",
+      desc = "Extract function to file",
+      nowait = true,
+      remap = false,
+    },
+    {
+      "<leader>Ra",
+      "<cmd>lua require('refactoring').debug.print_var({})<CR>",
+      desc = "Print selection",
+      nowait = true,
+      remap = false,
+    },
+    {
+      "<leader>Rf",
+      "<Esc><cmd>lua require('refactoring').refactor('Extract Function')<cr>",
+      desc = "Extract function",
+      nowait = true,
+      remap = false,
+    },
+    {
+      "<leader>Ri",
+      "<Esc><cmd>lua require('refactoring').refactor('Inline Variable')<cr>",
+      desc = "Inline variable",
+      nowait = true,
+      remap = false,
+    },
+    {
+      "<leader>Rr",
+      "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
+      desc = "Telescoper refefactor ",
+      nowait = true,
+      remap = false,
+    },
+    {
+      "<leader>Rv",
+      "<Esc><cmd>lua require('refactoring').refactor('Extract Variable')<cr>",
+      desc = "Extract variable",
+      nowait = true,
+      remap = false,
+    },
   },
 }
 
-which_key.setup(setup)
-which_key.register(mappings, opts)
-which_key.register(vmappings, vopts)
+which_key.add(mappings)
+which_key.add(vmappings)

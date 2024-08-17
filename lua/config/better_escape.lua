@@ -4,6 +4,4 @@ if not status_ok then
   return
 end
 
-better_escape.setup {
-  mapping = { "jk" }, -- a table with mappings to use
-}
+better_escape.setup {}
