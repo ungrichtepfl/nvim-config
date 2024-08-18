@@ -294,6 +294,10 @@ lazy.setup {
     "windwp/nvim-ts-autotag",
     dependencies = "nvim-treesitter/nvim-treesitter",
   },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+  },
 
   -- Comments
   {
