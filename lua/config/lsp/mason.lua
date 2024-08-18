@@ -27,7 +27,6 @@ local servers = {
   "gopls",
   "jsonls",
   "pyright",
-  "ruff",
   "lua_ls",
   "bashls",
   "clangd", -- C/C++
@@ -56,6 +55,7 @@ mason_lspconfig.setup {
 servers = vim.tbl_deep_extend("force", servers, {
   "hls", -- Haskell, installed by ghcup
   "rust_analyzer", -- Installed by rustup
+  "ruff", -- install locally to be sure which version is used
 })
 
 local lspconfig = require "lspconfig"

@@ -1,7 +1,9 @@
 return {
   settings = {
-
     Lua = {
+      format = {
+        enable = false, -- let stylua handle this
+      },
       diagnostics = {
         globals = { "vim" },
       },

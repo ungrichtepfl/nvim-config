@@ -86,7 +86,6 @@ local function lsp_keymaps(bufnr)
     opts "Go to next diagnostics"
   )
   --[[ vim.keymap.set("n", "<leader>ld", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts("Set location list")) ]]
-  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format{async = true}' ]]
 end
 
 M.on_attach = function(client, bufnr)

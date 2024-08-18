@@ -55,7 +55,7 @@ local progress = function()
   return chars[index]
 end
 
-local spaces = function() return "spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth") end
+local spaces = function() return "spaces: " .. vim.api.nvim_get_option_value(0, "shiftwidth") end
 
 lualine.setup {
   options = {

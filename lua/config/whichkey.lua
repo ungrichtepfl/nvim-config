@@ -5,13 +5,6 @@ if not status_ok then
 end
 
 local mappings = {
-  {
-    "<leader>/",
-    '<cmd>lua require("Comment.api").toggle_current_linewise()<CR>',
-    desc = "Comment",
-    nowait = true,
-    remap = false,
-  },
   { "<leader>C", "<cmd>q!<CR>", desc = "Quit Window Forced", nowait = true, remap = false },
   { "<leader>N", "<cmd>NoNeckPain<cr>", desc = "Center window", nowait = true, remap = false },
   { "<leader>P", "<cmd>Telescope projects<cr>", desc = "Projects", nowait = true, remap = false },
@@ -154,8 +147,15 @@ local mappings = {
   },
   {
     "<leader>gd",
-    "<cmd>lua require 'gitsigns'.diffthis()<cr>",
+    "<cmd>DiffviewOpen<cr>",
     desc = "Diff with HEAD",
+    nowait = true,
+    remap = false,
+  },
+  {
+    "<leader>gdd",
+    "<cmd>DiffviewClose<cr>",
+    desc = "Close diff with HEAD",
     nowait = true,
     remap = false,
   },
@@ -258,13 +258,13 @@ local mappings = {
   {
     "<leader>ld",
     "<cmd>Telescope diagnostics<cr>",
-    desc = "Document Diagnostics",
+    desc = "Project Diagnostics",
     nowait = true,
     remap = false,
   },
   {
     "<leader>lf",
-    "<cmd>lua vim.lsp.buf.format{async = true}<cr>",
+    "<cmd>lua vim.lsp.buf.format{async = true}<cr> <bar> <cmd>FormatWrite<cr>",
     desc = "Format",
     nowait = true,
     remap = false,
@@ -299,8 +299,8 @@ local mappings = {
   },
   {
     "<leader>lq",
-    "<cmd>lua vim.diagnostic.setloclist()<cr>",
-    desc = "Quickfix",
+    "<cmd>lua vim.diagnostic.setqflist()<cr>",
+    desc = "Diagnostic Quickfix",
     nowait = true,
     remap = false,
   },
@@ -403,35 +403,34 @@ local mappings = {
   { "<leader>x", group = "Trouble", nowait = true, remap = false },
   {
     "<leader>xd",
-    "<cmd>TroubleToggle document_diagnostics<cr>",
+    "<cmd>TroubleToggle diagnostics toggle<cr>",
     desc = "Document Diagnostics",
     nowait = true,
     remap = false,
   },
-  { "<leader>xl", "<cmd>TroubleToggle loclist<cr>", desc = "Location List", nowait = true, remap = false },
-  { "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix", nowait = true, remap = false },
-  { "<leader>xr", "<cmd>TroubleToggle lsp_references<cr>", desc = "Lsp References", nowait = true, remap = false },
-  { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todos", nowait = true, remap = false },
+  { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List", nowait = true, remap = false },
+  { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix", nowait = true, remap = false },
   {
-    "<leader>xw",
-    "<cmd>TroubleToggle workspace_diagnostics<cr>",
-    desc = "Workspace Diagnostics",
+    "<leader>xr",
+    "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+    desc = "Lsp References",
     nowait = true,
     remap = false,
   },
-  { "<leader>xx", "<cmd>TroubleToggle<cr>", desc = "Toggle", nowait = true, remap = false },
+  { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todos", nowait = true, remap = false },
+  { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Toggle", nowait = true, remap = false },
+  {
+    "<leader>xX",
+    "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+    desc = "Buffer Diagnostics (Trouble)",
+    nowait = true,
+    remap = false,
+  },
 }
 
 local vmappings = {
   {
     mode = { "v" },
-    {
-      "<leader>/",
-      '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>',
-      desc = "Comment",
-      nowait = true,
-      remap = false,
-    },
     { "<leader>R", group = "Refactoring", nowait = true, remap = false },
     {
       "<leader>RF",
@@ -464,7 +463,7 @@ local vmappings = {
     {
       "<leader>Rr",
       "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
-      desc = "Telescoper refefactor ",
+      desc = "Telescoper refactor",
       nowait = true,
       remap = false,
     },

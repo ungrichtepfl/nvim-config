@@ -91,7 +91,7 @@ lazy.setup {
   {
     "folke/todo-comments.nvim",
     dependencies = "nvim-lua/plenary.nvim",
-    config = function() require "config.todo-comments" end,
+    opts = {},
   },
   -- trouble
   -- Lua
@@ -160,8 +160,12 @@ lazy.setup {
     dependencies = "neovim/nvim-lspconfig",
   },
   {
-    "jayp0521/mason-null-ls.nvim",
-    dependencies = "neovim/nvim-lspconfig",
+    "mfussenegger/nvim-lint",
+    config = function() require "config.lint" end,
+  },
+  {
+    "mhartington/formatter.nvim",
+    config = function() require "config.formatter" end,
   },
   {
     "RubixDev/mason-update-all",
@@ -245,7 +249,7 @@ lazy.setup {
     dependencies = "nvim-treesitter/nvim-treesitter",
   },
   {
-    "mrjones2014/nvim-ts-rainbow",
+    "HiPhish/rainbow-delimiters.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
   },
   {

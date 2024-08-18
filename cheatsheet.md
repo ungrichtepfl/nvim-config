@@ -2,16 +2,17 @@
 
 ## Find plugins
 
-Check out this secion on the [Awesom-Neovim](https://github.com/rockerBOO/awesome-neovim#plugin) repo.
+Check out this section on the [Awesom-Neovim](https://github.com/rockerBOO/awesome-neovim#plugin)
+repo.
 
-## Plugin installation path (Packer)
+## Plugin installation path (Lazy)
 
-Plugin data can be found in `~/.local/share/nvim`, more specifically *Packer* installs the plugins to `~/.local/share/nvim/site/pack/packer/`.
+Plugin data can be found in `~/.local/share/nvim`, more specifically _Lazy_
+installs the plugins to `~/.local/share/nvim/lazy/`.
 
 ## Plugin log file patch
 
 Logs can be found in `~/.cache/nvim`
-
 
 ## Deep dive for plugins
 
@@ -22,7 +23,6 @@ Logs can be found in `~/.cache/nvim`
 
 `:lua <lua-command>`
 
-
 ## Keybindings
 
 ### Default
@@ -30,7 +30,7 @@ Logs can be found in `~/.cache/nvim`
 - **Folding**: `zc` (close), `zM` (close all), `za` (open), `zR` (open all)
 - **New Line Insert Mode**: `o`
 
-### Plugins 
+### Plugins
 
 #### Telescope
 
@@ -54,11 +54,6 @@ Logs can be found in `~/.cache/nvim`
   - **Normal**: `gcc`, `gcA` (end of line)
   - **Visual**: `gc`
 
-#### Nvimtree
-
-- **Open Tree**: `<leader>e`
-
 #### Bufferline
 
 - **Close buffer**: `<leader>q`
-

@@ -36,15 +36,12 @@ vim.cmd [[
   augroup end
 ]]
 
-local api = vim.api
-
 -- Autocommand to open fex.nvim when starting Neovim with a directory
-local status_ok, fex = pcall(require, "fex")
+local status_ok, _ = pcall(require, "fex")
 if status_ok then
   vim.api.nvim_create_autocmd("BufEnter", {
     nested = true,
     callback = function()
-      -- Check if the buffer is a directory
       local directory = vim.fn.isdirectory(vim.fn.expand "%")
       if directory == 1 then vim.cmd "Fex" end
     end,
