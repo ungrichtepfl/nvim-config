@@ -94,7 +94,7 @@ local mappings = {
   { "<leader>dt", ":lua require'dap'.terminate()<CR>", desc = "Terminate", nowait = true, remap = false },
   { "<leader>du", ":lua require'dap'.step_out()<CR>", desc = "Step Out", nowait = true, remap = false },
   { "<leader>dv", ":lua require'dapui'.eval()<CR>", desc = "Eval", nowait = true, remap = false },
-  { "<leader>e", "<cmd>Fex<cr>", desc = "Explorer", nowait = true, remap = false },
+  { "<leader>e", "<cmd>Oil<cr>", desc = "Explorer", nowait = true, remap = false },
   {
     "<leader>f",
     "<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",

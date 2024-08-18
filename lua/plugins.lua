@@ -40,19 +40,31 @@ lazy.setup {
     "lewis6991/impatient.nvim",
     config = function() require "config.impatient" end,
   },
-  -- autopairs
+  -- autopairs integrates with treesitter and cmp
   {
     "windwp/nvim-autopairs",
     config = function() require "config.autopairs" end,
-  }, -- autopairs integrates with treesitter and cmp
+  },
   -- directory manager
   {
-    "2hdddg/fex.nvim",
+    "stevearc/oil.nvim",
+    opts = {
+      columns = {
+        "icon",
+        "permissions",
+        "size",
+        "mtime",
+      },
+      view_options = {
+        show_hidden = true,
+        is_always_hidden = function(name, bufnr) return name == ".." end,
+      },
+    },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   -- bufferline
   {
     "akinsho/bufferline.nvim",
-    -- version = "*",
     dependencies = "kyazdani42/nvim-web-devicons",
     config = function() require "config.bufferline" end,
   },
