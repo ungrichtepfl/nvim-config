@@ -97,8 +97,24 @@ lazy.setup {
     },
     config = function() require "config.whichkey" end,
   },
-  -- vim-visual-multi
-  { "mg979/vim-visual-multi" },
+  -- multicursors
+  {
+    "smoka7/multicursors.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvimtools/hydra.nvim",
+    },
+    opts = {},
+    cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
+    keys = {
+      {
+        mode = { "v", "n" },
+        "<Leader>M",
+        "<cmd>MCstart<cr>",
+        desc = "Create a selection for selected text or word under the cursor",
+      },
+    },
+  },
   -- todo-comments
   {
     "folke/todo-comments.nvim",
