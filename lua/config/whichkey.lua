@@ -5,7 +5,7 @@ if not status_ok then
 end
 
 local mappings = {
-  { "<leader>C", "<cmd>q!<CR>", desc = "Quit Window Forced", nowait = true, remap = false },
+  { "<leader><leader>C", "<cmd>q!<CR>", desc = "Quit Window Forced", nowait = true, remap = false },
   { "<leader>N", "<cmd>NoNeckPain<cr>", desc = "Center window", nowait = true, remap = false },
   { "<leader>P", "<cmd>Telescope projects<cr>", desc = "Projects", nowait = true, remap = false },
   { "<leader>Q", "<cmd>Bdelete!<CR>", desc = "Close Buffer Forced", nowait = true, remap = false },
@@ -61,7 +61,7 @@ local mappings = {
     nowait = true,
     remap = false,
   },
-  { "<leader>c", "<cmd>q<CR>", desc = "Quit Window", nowait = true, remap = false },
+  { "<leader><leader>", "<cmd>q<CR>", desc = "Quit Window", nowait = true, remap = false },
   { "<leader>d", group = "DAP", nowait = true, remap = false },
   {
     "<leader>dB",
@@ -184,13 +184,6 @@ local mappings = {
     "<leader>gl",
     "<cmd>lua require 'gitsigns'.blame_line()<cr>",
     desc = "Blame",
-    nowait = true,
-    remap = false,
-  },
-  {
-    "<leader>gm",
-    "<cmd>GitConflictListQf<cr>",
-    desc = "List merge conflicts",
     nowait = true,
     remap = false,
   },
@@ -401,13 +394,6 @@ local mappings = {
   },
   { "<leader>w", "<cmd>w!<CR>", desc = "Save File", nowait = true, remap = false },
   { "<leader>x", group = "Trouble", nowait = true, remap = false },
-  {
-    "<leader>xd",
-    "<cmd>TroubleToggle diagnostics toggle<cr>",
-    desc = "Document Diagnostics",
-    nowait = true,
-    remap = false,
-  },
   { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List", nowait = true, remap = false },
   { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix", nowait = true, remap = false },
   {

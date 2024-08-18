@@ -336,15 +336,6 @@ lazy.setup {
     -- version = "*"
   },
 
-  -- resolve git conflicts:
-  { "https://gitlab.com/yorickpeterse/nvim-pqf.git" },
-  {
-    "akinsho/git-conflict.nvim",
-    version = "*",
-    dependencies = "https://gitlab.com/yorickpeterse/nvim-pqf.git",
-    config = function() require "config.git_conflict" end,
-  },
-
   -- Code actions:
   {
     "aznhe21/actions-preview.nvim",
