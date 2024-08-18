@@ -4,7 +4,8 @@
 -- local colorscheme = "tokyonight"
 -- local colorscheme = "darcula"
 -- local colorscheme = "nightfox"
-local colorscheme = "moonfly"
+local colorscheme = "rosebones"
+-- local colorscheme = "moonfly"
 -- local colorscheme = "terafox"
 
 if colorscheme == "tokyonight" then
