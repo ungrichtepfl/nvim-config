@@ -264,7 +264,7 @@ local mappings = {
   },
   {
     "<leader>lf",
-    "<cmd>lua vim.lsp.buf.format{async = true}<cr> <bar> <cmd>FormatWrite<cr>",
+    "<cmd>lua vim.lsp.buf.format{async = true}<cr> <bar> <cmd>Format<cr>",
     desc = "Format",
     nowait = true,
     remap = false,

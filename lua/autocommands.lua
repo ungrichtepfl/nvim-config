@@ -35,4 +35,3 @@ vim.cmd [[
     autocmd FileType dap-repl lua require('dap.ext.autocompl').attach()
   augroup end
 ]]
-
