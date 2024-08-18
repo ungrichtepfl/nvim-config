@@ -6,20 +6,21 @@ if not status_ok then
 end
 
 lint.linters_by_ft = {
+  bash = { "shellcheck" },
   css = { "stylelint" },
   html = { "stylelint" },
   javascript = { "eslint_d" },
   javascriptreact = { "eslint_d" },
-  json = { "jsonlint" },
   markdown = { "markdownlint" },
   scss = { "stylelint" },
   sh = { "shellcheck" },
-  bash = { "shellcheck" },
   svelte = { "stylelint" },
+  -- NOTE: json is already handled by jsonls
+  -- NOTE: yaml is already handled by yamlls
+  -- NOTE: toml is already handled by taplo
   typescript = { "eslint_d" },
   typescriptreact = { "eslint_d" },
   vue = { "stylelint" },
-  yaml = { "yamllint" },
 }
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {

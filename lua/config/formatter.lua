@@ -14,7 +14,9 @@ formatter.setup {
       require("formatter.filetypes.toml").prettierd,
     },
     -- NOTE: json is already handled by jsonls
-    -- NOTE: yaml is already handled by yamlls
+    yaml = {
+      require("formatter.filetypes.yaml").prettierd,
+    },
     markdown = {
       require("formatter.filetypes.markdown").prettierd,
     },
