@@ -137,6 +137,7 @@ lazy.setup {
     dependencies = "rktjmp/lush.nvim",
     lazy = true,
   },
+  {"rebelot/kanagawa.nvim", lazy = true},
   { "briones-gabriel/darcula-solid.nvim", lazy = true, dependencies = "rktjmp/lush.nvim" },
   { "EdenEast/nightfox.nvim", lazy = true },
   { "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000 },
