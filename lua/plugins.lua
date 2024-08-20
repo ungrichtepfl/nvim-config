@@ -190,10 +190,6 @@ lazy.setup {
     dependencies = "neovim/nvim-lspconfig",
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    dependencies = "neovim/nvim-lspconfig",
-  },
-  {
     "mfussenegger/nvim-lint",
     config = function() require "config.lint" end,
   },
