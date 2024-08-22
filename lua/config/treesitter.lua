@@ -129,17 +129,9 @@ configs.setup {
   },
 }
 
--- vim.opt.foldmethod     = 'expr'
--- vim.opt.foldexpr       = 'nvim_treesitter#foldexpr()'
----WORKAROUND
-vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "BufWinEnter" }, {
-  group = vim.api.nvim_create_augroup("TS_FOLD_WORKAROUND", {}),
-  callback = function()
-    vim.opt.foldmethod = "expr"
-    vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-  end,
-})
----ENDWORKAROUND
+-- Enable tresitter folding
+vim.wo.foldmethod = "expr"
+vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 local status_ts_context, ts_context = pcall(require, "treesitter-context")
 if not status_ts_context then
