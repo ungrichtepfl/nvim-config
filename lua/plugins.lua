@@ -486,6 +486,14 @@ lazy.setup {
     },
     config = function() require("vstask").setup { json_parser = require("json5").parse } end,
   },
+  -- better navigation
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function() require "config.harpoon" end,
+}
+
   -- zig
   -- {
   --   "ziglang/zig.vim",

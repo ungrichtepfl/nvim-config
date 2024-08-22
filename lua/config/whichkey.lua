@@ -53,7 +53,6 @@ local mappings = {
     remap = false,
   },
   { "<leader>W", "<cmd>wq<CR>", desc = "Save File and Quit Window", nowait = true, remap = false },
-  { "<leader>a", "<cmd>Alpha<cr>", desc = "Alpha", nowait = true, remap = false },
   {
     "<leader>b",
     "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
