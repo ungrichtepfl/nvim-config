@@ -1,5 +1,9 @@
-vim.cmd [[imap <silent> <C-j> <Plug>(copilot-next)]]
-vim.cmd [[imap <silent> <C-k> <Plug>(copilot-previous)]]
-vim.cmd [[imap <silent> <C-\> <Plug>(copilot-dismiss)]]
-vim.cmd [[imap <silent><script><expr> <C-a> copilot#Accept("\<CR>")]]
-vim.cmd [[let g:copilot_no_tab_map = v:true]]
+vim.keymap.set("i", "<C-j>", "<Plug>(copilot-next)")
+vim.keymap.set("i", "<C-k>", "<Plug>(copilot-previous)")
+vim.keymap.set("i", "<C-\\>", "<Plug>(copilot-dismiss)")
+vim.keymap.set("i", "<C-a>", 'copilot#Accept("\\<CR>")', {
+  expr = true,
+  replace_keycodes = false,
+})
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_enabled = false -- Disable by default
