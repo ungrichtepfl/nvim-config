@@ -57,11 +57,24 @@ lazy.setup {
       },
       view_options = {
         show_hidden = true,
-        is_always_hidden = function(name, bufnr) return name == ".." end,
+        is_always_hidden = function(name, _) return name == ".." end,
+      },
+      win_options = {
+        signcolumn = "yes:2",
       },
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
+  {
+    "refractalize/oil-git-status.nvim",
+
+    dependencies = {
+      "stevearc/oil.nvim",
+    },
+
+    config = true,
+  },
+
   -- bufferline
   {
     "akinsho/bufferline.nvim",
@@ -492,7 +505,7 @@ lazy.setup {
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function() require "config.harpoon" end,
-}
+  },
 
   -- zig
   -- {
