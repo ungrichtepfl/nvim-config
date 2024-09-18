@@ -20,12 +20,6 @@ vim.g.maplocalleader = " "
 --   command_mode = "c",
 
 -- Normal --
--- Better window navigation
-keymap("n", "<C-h>", "<C-w>h", opts "Go to left window")
-keymap("n", "<C-j>", "<C-w>j", opts "Go to lower window")
-keymap("n", "<C-k>", "<C-w>k", opts "Go to upper window")
-keymap("n", "<C-l>", "<C-w>l", opts "Go to right window")
-
 -- Resize with arrowskey
 keymap("n", "<A-Up>", ":resize +2<CR>", opts "Resize horizontal plus")
 keymap("n", "<A-Down>", ":resize -2<CR>", opts "Resize horizontal minus")
@@ -41,6 +35,9 @@ keymap("n", "<C-s>", ":w<CR>", opts "Save file")
 
 -- Open link
 keymap("n", "gx", [[ <CMD>execute '!xdg-open ' .. shellescape(expand('<cfile>'), v:true)<CR> ]], opts "Open link")
+
+-- Change word with backslash --
+keymap("n", "<BS>", "ciw", opts "Change word with backslash")
 
 -- Insert --
 -- Press jk fast to enter
@@ -62,13 +59,3 @@ keymap("x", "J", ":move '>+1<CR>gv-gv", opts "Move text up")
 keymap("x", "K", ":move '<-2<CR>gv-gv", opts "Move text down")
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts "Move text up")
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts "Move text down")
-
--- Terminal --
--- Better terminal navigation
-keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
-keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
-keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
-keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
-
--- Change word with enter --
-keymap("n", "<BS>", "ciw", opts "Change word with enter")
