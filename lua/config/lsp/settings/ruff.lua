@@ -16,6 +16,9 @@ return {
   init_options = {
     settings = {
       lineLength = 120,
+      lint = {
+        extendSelect = {"I"}
+      }
     },
   },
 }
