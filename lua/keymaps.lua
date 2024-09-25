@@ -30,9 +30,6 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts "Resize vertical plus")
 keymap("n", "<S-l>", ":bnext<CR>", opts "Go to next buffer")
 keymap("n", "<S-h>", ":bprevious<CR>", opts "Go to previous buffer")
 
--- Saving/Closing
-keymap("n", "<C-s>", ":w<CR>", opts "Save file")
-
 -- Open link
 keymap("n", "gx", [[ <CMD>execute '!xdg-open ' .. shellescape(expand('<cfile>'), v:true)<CR> ]], opts "Open link")
 

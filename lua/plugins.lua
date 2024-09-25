@@ -112,21 +112,9 @@ lazy.setup {
   },
   -- multicursors
   {
-    "smoka7/multicursors.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "nvimtools/hydra.nvim",
-    },
-    opts = {},
-    cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
-    keys = {
-      {
-        mode = { "v", "n" },
-        "<Leader>M",
-        "<cmd>MCstart<cr>",
-        desc = "Create a selection for selected text or word under the cursor",
-      },
-    },
+    "jake-stewart/multicursor.nvim",
+    branch = "1.0",
+    config = function() require "config.multicursor" end,
   },
   -- todo-comments
   {
