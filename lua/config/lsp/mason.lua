@@ -38,7 +38,7 @@ local servers = {
   "elmls",
   "taplo", -- TOML
   "lemminx", -- "XML"
-  "tsserver",
+  "ts_ls",
   "html",
   "cssls",
   "angularls",
