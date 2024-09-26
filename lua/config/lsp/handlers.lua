@@ -67,11 +67,8 @@ local function lsp_keymaps(bufnr)
   vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts "Go to definition")
   vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts "Hover info")
   vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts "Go to implementation")
-  vim.keymap.set("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts "Signature help")
-  --[[ vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts("Rename variable")) ]]
+  vim.keymap.set("n", "<leader>k", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts "Signature help")
   vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts "Go to references")
-  -- vim.keymap.set("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts("Code actions"))
-  -- vim.keymap.set("n", "<leader>f", "<cmd>lua vim.diagnostic.open_float()<CR>", opts("Open diagnostics"))
   vim.keymap.set(
     "n",
     "[d",
@@ -85,7 +82,6 @@ local function lsp_keymaps(bufnr)
     '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>',
     opts "Go to next diagnostics"
   )
-  --[[ vim.keymap.set("n", "<leader>ld", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts("Set location list")) ]]
 end
 
 M.on_attach = function(client, bufnr)
