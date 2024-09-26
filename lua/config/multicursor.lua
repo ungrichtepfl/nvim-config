@@ -46,13 +46,13 @@ vim.keymap.set("n", "<esc>", function()
     -- Default <esc> handler.
   end
 end)
-
+           
 -- Align cursor columns.
-vim.keymap.set("n", "<leader>a", mc.alignCursors)
-
+-- vim.keymap.set("n", "<leader>a", mc.alignCursors) -- NOTE: collides with harpoon
+           
 -- Split visual selections by regex.
 vim.keymap.set("v", "S", mc.splitCursors)
-
+           
 -- Append/insert for each line of visual selections.
 vim.keymap.set("v", "I", mc.insertVisual)
 vim.keymap.set("v", "A", mc.appendVisual)
