@@ -62,6 +62,9 @@ lazy.setup {
       win_options = {
         signcolumn = "yes:2",
       },
+      git = {
+        mv = function(_, _) return true end,
+      },
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
