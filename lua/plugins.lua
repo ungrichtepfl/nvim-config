@@ -51,9 +51,9 @@ lazy.setup {
     opts = {
       columns = {
         "icon",
-        "permissions",
-        "size",
-        "mtime",
+        -- "permissions",
+        -- "size",
+        -- "mtime",
       },
       view_options = {
         show_hidden = true,
