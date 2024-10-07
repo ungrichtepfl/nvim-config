@@ -43,6 +43,7 @@ local servers = {
   "cssls",
   "angularls",
   "omnisharp", -- C#/dotnet
+  "zls",
 }
 
 mason.setup()
