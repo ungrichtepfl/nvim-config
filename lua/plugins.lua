@@ -408,6 +408,9 @@ lazy.setup {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
     },
+    opts = {
+      initial_state = false,
+    },
   },
 
   -- surround stuff

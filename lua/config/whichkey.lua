@@ -318,7 +318,7 @@ local mappings = {
     remap = false,
   },
   { "<leader>m", group = "Markdown", nowait = true, remap = false },
-  { "<leader>mp", "<cmd>Markview splitToggle<cr>", desc = "Preview markdown", nowait = true, remap = false },
+  { "<leader>mt", "<cmd>Markview toggle<cr>", desc = "Preview markdown (toggle Markview)", nowait = true, remap = false },
   { "<leader>n", group = "Neogen", nowait = true, remap = false },
   { "<leader>nF", "<cmd>Neogen file<cr>", desc = "File Docstring", nowait = true, remap = false },
   { "<leader>nc", "<cmd>Neogen class<cr>", desc = "Class Docstring", nowait = true, remap = false },
