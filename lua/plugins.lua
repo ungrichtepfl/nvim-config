@@ -409,7 +409,7 @@ lazy.setup {
       "nvim-tree/nvim-web-devicons",
     },
     opts = {
-      initial_state = false,
+      preview = "enable",
     },
   },
 
