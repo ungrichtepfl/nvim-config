@@ -37,6 +37,9 @@ vim.opt.guifont = "monospace:h17" -- the font used in graphical neovim applicati
 -- vim.opt.guifont = "JetBrainsMono Nerd Font Mono:h17" -- the font used in graphical neovim applications
 vim.opt.shortmess:append "c"
 
+-- Disable deprecation warnings
+vim.g.deprecated = 0
+
 -- other way to set options in vimscript instead of lua
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]

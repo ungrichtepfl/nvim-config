@@ -4,15 +4,7 @@ if not status_ok then
   return
 end
 
-gitsigns.setup {
-  signs = {
-    add = { text = "▎" },
-    change = { text = "▎" },
-    delete = { text = "契" },
-    topdelete = { text = "契" },
-    changedelete = { text = "▎" },
-  },
-}
+gitsigns.setup {}
 
 vim.api.nvim_set_hl(0, "GitSignsAdd", { link = "GitSignsAdd" })
 vim.api.nvim_set_hl(0, "GitSignsAddLn", { link = "GitSignsAddLn" })
