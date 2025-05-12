@@ -7,7 +7,8 @@
 -- local colorscheme = "moonfly"
 -- local colorscheme = "terafox"
 -- local colorscheme = "rosebones"
-local colorscheme = "kanagawa"
+-- local colorscheme = "kanagawa"
+local colorscheme = "kanso"
 
 local status_ok_color_plug, color_plug = pcall(require, colorscheme)
 if status_ok_color_plug then
@@ -15,6 +16,12 @@ if status_ok_color_plug then
     color_plug.setup {
       style = "night",
     }
+
+  elseif colorscheme == "kanso" then
+    color_plug.setup{
+      compile = true
+    }
+    colorscheme = colorscheme .. "-zen"
   elseif colorscheme == "kanagawa" then
     color_plug.setup {
       compile = true,
