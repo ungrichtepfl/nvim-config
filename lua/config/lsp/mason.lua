@@ -16,11 +16,6 @@ if not status_ok_lsp_conf then
   return
 end
 
-local status_ok_update_all, mason_update_all = pcall(require, "mason-update-all")
-if not status_ok_update_all then vim.notify '"mason-update-all" plugin not found.' end
-
-mason_update_all.setup()
-
 local servers = {
   "arduino_language_server",
   "asm_lsp",

@@ -192,7 +192,7 @@ lazy.setup {
   }, -- enable LSP
   {
     "williamboman/mason.nvim",
-    dependencies = "neovim/nvim-lspconfig",
+    dependencies = {"neovim/nvim-lspconfig", "neovim/nvim-lspconfig"},
   },
   {
     "williamboman/mason-lspconfig.nvim",
@@ -205,10 +205,6 @@ lazy.setup {
   {
     "mhartington/formatter.nvim",
     config = function() require "config.formatter" end,
-  },
-  {
-    "RubixDev/mason-update-all",
-    dependencies = "neovim/nvim-lspconfig",
   },
   {
     "b0o/schemastore.nvim",
