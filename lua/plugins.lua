@@ -30,8 +30,15 @@ lazy.setup {
   { "kyazdani42/nvim-web-devicons" },
   -- neovim lua language server
   {
-    "folke/neodev.nvim",
-    config = function() require "config.neodev" end,
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
   },
   -- better Bdelete
   { "famiu/bufdelete.nvim" },
@@ -183,7 +190,7 @@ lazy.setup {
 
   -- snippets
   { "L3MON4D3/LuaSnip",            build = "make install_jsregexp" }, --snippet engine
-  { "rafamadriz/friendly-snippets" },                      -- a bunch of snippets to use
+  { "rafamadriz/friendly-snippets" },                                 -- a bunch of snippets to use
 
   -- LSP
   {
@@ -192,7 +199,7 @@ lazy.setup {
   }, -- enable LSP
   {
     "williamboman/mason.nvim",
-    dependencies = {"neovim/nvim-lspconfig", "neovim/nvim-lspconfig"},
+    dependencies = { "neovim/nvim-lspconfig", "neovim/nvim-lspconfig" },
   },
   {
     "williamboman/mason-lspconfig.nvim",

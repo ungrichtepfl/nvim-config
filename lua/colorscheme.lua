@@ -22,6 +22,7 @@ if status_ok_color_plug then
       compile = true
     }
     colorscheme = colorscheme .. "-zen"
+    -- colorscheme = colorscheme .. "-ink"
   elseif colorscheme == "kanagawa" then
     color_plug.setup {
       compile = true,
