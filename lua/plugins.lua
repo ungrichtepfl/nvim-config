@@ -513,6 +513,13 @@ lazy.setup {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function() require "config.harpoon" end,
   },
+  -- get rid of bad habits:
+  {
+    "m4xshen/hardtime.nvim",
+    lazy = false,
+    dependencies = { "MunifTanjim/nui.nvim" },
+    opts = {},
+  },
   -- obsidian
   {
     "epwalsh/obsidian.nvim",
