@@ -477,7 +477,13 @@ lazy.setup {
     "bbjornstad/pretty-fold.nvim", -- fork that works with nvim 0.10
     config = function() require "config.pretty-fold" end,
   },
-
+  -- nice scrolling
+  {
+    "karb94/neoscroll.nvim",
+    opts = {
+      duration_multiplier = 0.8
+    },
+  },
   -- Github copilot
   {
     "github/copilot.vim",
