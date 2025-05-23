@@ -45,6 +45,7 @@ mason.setup()
 -- needs to be after manson setup:
 mason_lspconfig.setup {
   ensure_installed = servers,
+  automatic_enable = false, -- They are anabled below.
 }
 
 -- servers not installed by mason-lspconfig
