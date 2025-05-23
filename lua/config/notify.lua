@@ -10,6 +10,8 @@ notify.setup {
   timeout = 500,
 }
 
+vim.notify = notify
+
 local tele_status_ok, telescope = pcall(require, "telescope")
 if not tele_status_ok then
   vim.notify "'telescope' plugin not found."

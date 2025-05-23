@@ -6,7 +6,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out,                            "WarningMsg" },
+      { out, "WarningMsg" },
       { "\nPress any key to exit..." },
     }, true, {})
     vim.fn.getchar()
@@ -25,7 +25,7 @@ end
 -- Install your plugins here
 lazy.setup {
   -- useful APIs
-  { "nvim-lua/popup.nvim" },   -- An implementation of the Popup API from vim in Neovim
+  { "nvim-lua/popup.nvim" }, -- An implementation of the Popup API from vim in Neovim
   { "nvim-lua/plenary.nvim" }, -- Useful lua functions used ny lots of plugins
   { "kyazdani42/nvim-web-devicons" },
   -- neovim lua language server
@@ -153,10 +153,10 @@ lazy.setup {
     lazy = false,
     priority = 1000,
   },
-  { "rebelot/kanagawa.nvim",              lazy = true },
-  { "briones-gabriel/darcula-solid.nvim", lazy = true,      dependencies = "rktjmp/lush.nvim" },
-  { "EdenEast/nightfox.nvim",             lazy = true },
-  { "bluz71/vim-moonfly-colors",          name = "moonfly", lazy = false,                     priority = 1000 },
+  { "rebelot/kanagawa.nvim", lazy = true },
+  { "briones-gabriel/darcula-solid.nvim", lazy = true, dependencies = "rktjmp/lush.nvim" },
+  { "EdenEast/nightfox.nvim", lazy = true },
+  { "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000 },
 
   -- cmp plugins
   {
@@ -189,8 +189,8 @@ lazy.setup {
   },
 
   -- snippets
-  { "L3MON4D3/LuaSnip",            build = "make install_jsregexp" }, --snippet engine
-  { "rafamadriz/friendly-snippets" },                                 -- a bunch of snippets to use
+  { "L3MON4D3/LuaSnip", build = "make install_jsregexp" }, --snippet engine
+  { "rafamadriz/friendly-snippets" }, -- a bunch of snippets to use
 
   -- LSP
   {
@@ -220,7 +220,7 @@ lazy.setup {
   {
     "MrcJkb/haskell-tools.nvim",
     version = "^4", -- Recommended
-    lazy = false,   -- This plugin is already lazy
+    lazy = false, -- This plugin is already lazy
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     config = function() require "config.haskell_tools" end,
   },
@@ -232,7 +232,7 @@ lazy.setup {
   {
     "mrcjkb/rustaceanvim",
     version = "^5", -- Recommended
-    lazy = false,   -- This plugin is already lazy
+    lazy = false, -- This plugin is already lazy
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     config = function() require "config.rustaceanvim" end,
   },
@@ -481,7 +481,7 @@ lazy.setup {
   {
     "karb94/neoscroll.nvim",
     opts = {
-      duration_multiplier = 0.8
+      duration_multiplier = 0.8,
     },
   },
   -- Github copilot
@@ -523,8 +523,12 @@ lazy.setup {
   {
     "m4xshen/hardtime.nvim",
     lazy = false,
-    dependencies = { "MunifTanjim/nui.nvim" },
-    opts = {},
+    dependencies = { "rcarriga/nvim-notify", "MunifTanjim/nui.nvim" },
+    opts = {
+      restriction_mode = "hint",
+      enabled = false,
+      timeout = 500,
+    },
   },
   -- obsidian
   {
