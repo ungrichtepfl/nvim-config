@@ -8,6 +8,12 @@ vim.cmd [[
     autocmd FileType qf set nobuflisted
   augroup end
 
+  augroup _mail
+    autocmd!
+    " Disable text wrapping and format options in mail
+    autocmd FileType mail setlocal textwidth=0 wrapmargin=0 formatoptions-=t formatoptions-=a
+  augroup end
+
   augroup _git
     autocmd!
     autocmd FileType gitcommit setlocal wrap
