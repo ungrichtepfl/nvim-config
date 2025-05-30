@@ -84,6 +84,12 @@ lazy.setup {
 
     config = true,
   },
+  -- nicer quickfix
+  {
+    "stevearc/quicker.nvim",
+    event = "FileType qf",
+    opts = {},
+  },
 
   -- bufferline
   {
