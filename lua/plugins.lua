@@ -225,7 +225,7 @@ lazy.setup {
   },
   {
     "MrcJkb/haskell-tools.nvim",
-    version = "^4", -- Recommended
+    version = "^5", -- Recommended
     lazy = false, -- This plugin is already lazy
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     config = function() require "config.haskell_tools" end,
@@ -237,7 +237,7 @@ lazy.setup {
 
   {
     "mrcjkb/rustaceanvim",
-    version = "^5", -- Recommended
+    version = "^6", -- Recommended
     lazy = false, -- This plugin is already lazy
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     config = function() require "config.rustaceanvim" end,
