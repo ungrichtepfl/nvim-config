@@ -1,5 +1,2 @@
-require "options"
-require "keymaps"
-require "plugins"
-require "colorscheme"
-require "autocommands"
+require("config.options") -- NOTE: Must be loaded first
+require("config.lazy")
