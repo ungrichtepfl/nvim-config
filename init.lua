@@ -1,2 +1,3 @@
 require "config.options" -- NOTE: Must be loaded first
-require "config.lazy"
+require "config.keymaps"
+require "config.lazy" -- Takes care of the plugins
