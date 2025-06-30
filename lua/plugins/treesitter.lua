@@ -67,8 +67,6 @@ return {
           callback = function(event)
             local bufnr = event.buf
             vim.treesitter.start(bufnr)
-            vim.wo.foldmethod = "expr"
-            vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- Use treesitter for folds
             vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" -- Use treesitter for indentation
           end,
         })
