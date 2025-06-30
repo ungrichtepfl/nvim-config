@@ -20,4 +20,5 @@ vim.opt.smartindent = true -- Smart indent based on code syntax
 vim.opt.nrformats = "bin,hex,alpha" -- ctrl-x and ctrl-a behaviour
 vim.opt.wildmode = "full" -- Make autocomplete in command mode more like zsh
 vim.opt.history = 200 -- How many commands should be remembered
+vim.opt.undofile = true -- enable persistent undo
 ----
