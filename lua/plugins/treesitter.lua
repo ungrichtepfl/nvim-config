@@ -4,7 +4,7 @@ return {
     branch = "main",
     build = ":TSUpdate",
     lazy = false,
-    config = function(_, _)
+    init = function()
       local ensure_installed = {
         "arduino",
         "asm",
@@ -110,8 +110,7 @@ return {
       },
     },
 
-    config = function(_, opts)
-      require("nvim-treesitter-textobjects").setup(opts)
+    init = function()
       local select_keymaps = {
         -- You can use the capture groups defined in textobjects.scm
         ["aa"] = "@parameter.outer",
