@@ -1,8 +1,8 @@
--- LEADER KEYS --
+---- LEADER KEYS ----
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- GENERAL OPTIONS --
+----  GENERAL OPTIONS ------
 vim.opt.scrolloff = 8 -- Show at least X lines above the cursor
 vim.opt.sidescrolloff = 8 --Show at least X columns left and right to the cursor
 vim.opt.cursorline = true -- highlight the current line
@@ -16,3 +16,8 @@ vim.opt.softtabstop = 4 -- Insert 4 spaces when pressing <Tab>
 vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.autoindent = true -- Copy indent from current line
 vim.opt.smartindent = true -- Smart indent based on code syntax
+--
+vim.opt.nrformats = "bin,hex,alpha" -- ctrl-x and ctrl-a behaviour
+vim.opt.wildmode = "full" -- Make autocomplete in command mode more like zsh
+vim.opt.history = 200 -- How many commands should be remembered
+----
