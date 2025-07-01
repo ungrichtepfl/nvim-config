@@ -2,8 +2,21 @@ return {
   {
     "stevearc/oil.nvim",
     opts = {
+      view_options = {
+        show_hidden = true,
+        is_always_hidden = function(name, _) return name == ".." end,
+      },
+      columns = {
+        "icon",
+        "permissions",
+        "size",
+        "mtime",
+      },
       win_options = {
         signcolumn = "yes:2",
+      },
+      git = {
+        mv = function(_, _) return true end,
       },
     },
     dependencies = { { "echasnovski/mini.icons", opts = {} } },

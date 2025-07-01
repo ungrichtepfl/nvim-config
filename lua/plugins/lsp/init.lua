@@ -138,7 +138,7 @@ return {
   {
     "saghen/blink.cmp",
     -- optional: provides snippets for the snippet source
-    dependencies = { "rafamadriz/friendly-snippets" },
+    dependencies = { { "rafamadriz/friendly-snippets" }, { "echasnovski/mini.icons" } },
 
     -- use a release tag to download pre-built binaries
     version = "1.*",
@@ -161,6 +161,7 @@ return {
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
       keymap = { preset = "default" },
+      signature = { enabled = false },
 
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
@@ -169,12 +170,48 @@ return {
       },
 
       -- (Default) Only show the documentation popup when manually triggered
-      completion = { documentation = { auto_show = false } },
+      completion = {
+        documentation = { auto_show = false },
+        menu = {
+          draw = {
+            components = {
+              -- Use mini.icons
+              kind_icon = {
+                text = function(ctx)
+                  local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return kind_icon
+                end,
+                -- (optional) use highlights from mini.icons
+                highlight = function(ctx)
+                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return hl
+                end,
+              },
+              kind = {
+                -- (optional) use highlights from mini.icons
+                highlight = function(ctx)
+                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return hl
+                end,
+              },
+            },
+          },
+        },
+      },
 
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
+        providers = {
+          path = {
+            opts = {
+              get_cwd = function(_) -- Use cwd for path completions and not buffer directory
+                return vim.fn.getcwd()
+              end,
+            },
+          },
+        },
       },
 
       -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance

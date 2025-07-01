@@ -67,7 +67,6 @@ return {
           callback = function(event)
             local bufnr = event.buf
             vim.treesitter.start(bufnr)
-            vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" -- Use treesitter for indentation
           end,
         })
       end
