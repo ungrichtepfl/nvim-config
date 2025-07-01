@@ -16,4 +16,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Setup lazy.nvim
-require("lazy").setup "plugins" -- load all plugins in "lua/plugins"
+require("lazy").setup {
+  spec = {
+    import = "plugins", -- load all plugins in "lua/plugins"
+  },
+  change_detection = {
+    enabled = false,
+    notify = false,
+  },
+}
