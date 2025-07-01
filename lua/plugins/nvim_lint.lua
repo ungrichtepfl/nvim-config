@@ -1,6 +1,7 @@
 return {
   "mfussenegger/nvim-lint",
-  config = function(lint, _)
+  config = function(_, _)
+    local lint = require "lint"
     lint.linters_by_ft = {
       bash = { "shellcheck" },
       css = { "stylelint" },
@@ -11,6 +12,7 @@ return {
       scss = { "stylelint" },
       sh = { "shellcheck" },
       svelte = { "stylelint" },
+      make = { "checkmake" },
       -- NOTE: json is already handled by jsonls
       -- NOTE: yaml is already handled by yamlls
       -- NOTE: toml is already handled by taplo
@@ -20,7 +22,7 @@ return {
       python = { "mypy" },
     }
 
-    vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "InsertLeave" }, {
       callback = function()
         -- try_lint without arguments runs the linters defined in `linters_by_ft`
         -- for the current filetype

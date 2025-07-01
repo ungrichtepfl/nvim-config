@@ -20,7 +20,7 @@ return {
       markdown = { "prettierd", "prettier", stop_after_first = true },
       python = function(bufnr)
         if require("conform").get_formatter_info("ruff_format", bufnr).available then
-          return { "ruff_format" }
+          return {} -- Handled by ruff lsp
         else
           return { "isort", "black" }
         end
