@@ -101,7 +101,6 @@ return {
         dependencies = { "mason-org/mason.nvim", opts = {} },
         -- NOTE: Will be setup above in init function
       },
-      { "saghen/blink.cmp" }, -- Autocompletions
       {
         "mrcjkb/rustaceanvim",
         version = "^6",

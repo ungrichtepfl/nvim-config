@@ -22,5 +22,5 @@ vim.opt.wildmode = "full" -- Make autocomplete in command mode more like zsh
 vim.opt.history = 200 -- How many commands should be remembered
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.swapfile = false -- If a swapfile is used
-vim.opt.timeoutlen = 300  -- time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milliseconds)
 ----
