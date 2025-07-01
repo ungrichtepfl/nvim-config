@@ -21,7 +21,7 @@ return {
         float = {
           style = "minimal",
           border = "rounded",
-          source = "always",
+          source = true,
           header = "",
           prefix = "",
         },
@@ -100,6 +100,34 @@ return {
         "mason-org/mason-lspconfig.nvim",
         dependencies = { "mason-org/mason.nvim", opts = {} },
         -- NOTE: Will be setup above in init function
+      },
+      {
+        "mrcjkb/rustaceanvim",
+        version = "^6",
+        lazy = false, -- This plugin is already lazy
+        -- TODO: Setup keymaps corrently
+      },
+      {
+        "mrcjkb/haskell-tools.nvim",
+        version = "^5",
+        lazy = false, -- This plugin is already lazy
+        -- TODO: Setup keymaps corrently
+      },
+      {
+        "Hoffs/omnisharp-extended-lsp.nvim",
+        -- TODO: Setup keymaps if needed
+      },
+      {
+        -- Adds vim namespace to lua, makes writing configs much nicer:
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+          library = {
+            -- See the configuration section for more details
+            -- Load luvit types when the `vim.uv` word is found
+            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+          },
+        },
       },
     },
   },

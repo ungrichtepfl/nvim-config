@@ -17,8 +17,8 @@ return {
     settings = {
       lineLength = 120,
       lint = {
-        extendSelect = {"I"}
-      }
+        extendSelect = { "I" },
+      },
     },
   },
 }
