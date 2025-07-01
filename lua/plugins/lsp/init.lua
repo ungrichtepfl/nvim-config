@@ -105,14 +105,15 @@ return {
         "mrcjkb/rustaceanvim",
         version = "^6",
         lazy = false, -- This plugin is already lazy
-        -- TODO: Setup keymaps corrently
+        -- TODO: Setup keymaps correctly
       },
       {
         "mrcjkb/haskell-tools.nvim",
         version = "^5",
         lazy = false, -- This plugin is already lazy
-        -- TODO: Setup keymaps corrently
+        -- TODO: Setup keymaps correctly
       },
+      {  "b0o/schemastore.nvim"},
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
         -- TODO: Setup keymaps if needed

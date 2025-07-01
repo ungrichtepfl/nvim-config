@@ -163,7 +163,6 @@ local schemas = {
   },
 }
 local status_ok_schemastore, schemastore = pcall(require, "schemastore")
-if not status_ok_schemastore then vim.notify "'schemastore' plugin not found, using fallback json formats." end
 
 local function get_jsons()
   if status_ok_schemastore then
