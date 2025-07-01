@@ -2,7 +2,7 @@ local keymap = vim.keymap.set
 
 -- SWISS KEYBOARD --
 keymap("n", "ü", "[", { remap = true })
-keymap("n", "¨", "]", { remap = true })
+keymap("n", "ü", "[", { remap = true })
 
 --- Toggle Terminal ---
 keymap({ "n", "t" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
@@ -10,6 +10,9 @@ keymap({ "n", "t" }, "<C-t>", require("config.usercommands").toggle_terminal, { 
 -- Sourcing & Running --
 keymap("n", "<leader>x", "<cmd>split | terminal ./%<CR>", { desc = "Run current file" })
 keymap("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Source current file" })
+
+-- Insert --
+keymap("i", "<C-d>", "<C-o>x", { desc = "Delete one character forwards" })
 
 -- Normal --
 keymap("n", "<leader>sh", "<cmd>nohlsearch<CR>", { desc = "No Highlight" })

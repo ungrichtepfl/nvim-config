@@ -23,4 +23,5 @@ vim.opt.history = 200 -- How many commands should be remembered
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.swapfile = false -- If a swapfile is used
 vim.opt.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milliseconds)
+vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time (diagnostics, etc.)
 ----
