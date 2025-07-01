@@ -30,6 +30,7 @@ M.toggle_terminal = function()
   if not vim.api.nvim_win_is_valid(term_state.id.win) then
     term_state.id = create_window { buf = term_state.id.buf }
     if vim.bo[term_state.id.buf].buftype ~= "terminal" then vim.cmd.term() end
+    vim.cmd "normal i"
   else
     vim.api.nvim_win_hide(term_state.id.win)
   end

@@ -5,7 +5,7 @@ keymap("n", "ü", "[", { remap = true })
 keymap("n", "¨", "]", { remap = true })
 
 --- Toggle Terminal ---
-vim.keymap.set({ "n", "t" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
+keymap({ "n", "t" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
 
 -- Sourcing & Running --
 keymap("n", "<leader>x", "<cmd>split | terminal ./%<CR>", { desc = "Run current file" })

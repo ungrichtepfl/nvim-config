@@ -113,7 +113,7 @@ return {
         lazy = false, -- This plugin is already lazy
         -- TODO: Setup keymaps correctly
       },
-      {  "b0o/schemastore.nvim"},
+      { "b0o/schemastore.nvim" },
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
         -- TODO: Setup keymaps if needed
