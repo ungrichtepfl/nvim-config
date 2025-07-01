@@ -27,6 +27,97 @@ return {
         },
       }
       ------------------------------------------
+      ----------------- ON ATTACH --------------
+      ------------------------------------------
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          local bufnr = args.buf
+          ------------------------------------------
+          ----------------- KEYMAPS ---------------
+          ------------------------------------------
+          -- - 'omnifunc' is set to |vim.lsp.omnifunc()|, use |i_CTRL-X_CTRL-O| to trigger
+          --   completion.
+          -- - 'tagfunc' is set to |vim.lsp.tagfunc()|. This enables features like
+          --   go-to-definition, |:tjump|, and keymaps like |CTRL-]|, |CTRL-W_]|,
+          --   |CTRL-W_}| to utilize the language server.
+          -- - 'formatexpr' is set to |vim.lsp.formatexpr()|, so you can format lines via
+          --   |gq| if the language server supports it.
+          --   - To opt out of this use |gw| instead of gq, or clear 'formatexpr' on |LspAttach|.
+          -- - |K| is mapped to |vim.lsp.buf.hover()| unless |'keywordprg'| is customized or
+          --   a custom keymap for `K` exists.
+          -- - "grn" is mapped in Normal mode to |vim.lsp.buf.rename()|
+          -- - "gra" is mapped in Normal and Visual mode to |vim.lsp.buf.code_action()|
+          -- - "grr" is mapped in Normal mode to |vim.lsp.buf.references()|
+          -- - "gri" is mapped in Normal mode to |vim.lsp.buf.implementation()|
+          -- - "gO" is mapped in Normal mode to |vim.lsp.buf.document_symbol()|
+          -- - CTRL-S is mapped in Insert mode to |vim.lsp.buf.signature_help()|
+          vim.keymap.set("n", "K", function() vim.lsp.buf.hover { border = "rounded" } end, { buffer = args.buf })
+          vim.keymap.set(
+            "i",
+            "<C-S>",
+            function() vim.lsp.buf.signature_help { border = "rounded" } end,
+            { buffer = args.buf }
+          )
+          vim.keymap.set("n", "K", function() vim.lsp.buf.hover { border = "rounded" } end, { buffer = args.buf })
+
+          vim.keymap.set(
+            "n",
+            "gD",
+            function() require("fzf-lua").lsp_declarations() end,
+            { desc = "Go to declaration" }
+          )
+          vim.keymap.set("n", "gd", function() require("fzf-lua").lsp_definitions() end, { desc = "Go to definition" })
+          vim.keymap.set("n", "grr", function() require("fzf-lua").lsp_references() end, { desc = "Go to definition" })
+          vim.keymap.set(
+            "n",
+            "gri",
+            function() require("fzf-lua").lsp_implementations() end,
+            { desc = "Go to implementations" }
+          )
+          vim.keymap.set(
+            "n",
+            "g0",
+            function() require("fzf-lua").lsp_document_symbols() end,
+            { desc = "Show document symbols" }
+          )
+          vim.keymap.set(
+            "n",
+            "<leader>d",
+            function() require("fzf-lua").lsp_document_diagnostics() end,
+            { desc = "Workspace diagnostic" }
+          )
+          vim.keymap.set(
+            "n",
+            "<leader>D",
+            function() require("fzf-lua").lsp_workspace_diagnostics() end,
+            { desc = "Workspace diagnostic" }
+          )
+
+          ------------------------------------------
+          ----------------- AUTOCOMANDS ------------
+          ------------------------------------------
+
+          -- Only enable if the LSP supports documentHighlight
+          if client and client.supports_method "textDocument/documentHighlight" then
+            local group = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
+
+            vim.api.nvim_create_autocmd("CursorHold", {
+              group = group,
+              buffer = bufnr,
+              callback = function() vim.lsp.buf.document_highlight() end,
+            })
+
+            vim.api.nvim_create_autocmd("CursorMoved", {
+              group = group,
+              buffer = bufnr,
+              callback = function() vim.lsp.buf.clear_references() end,
+            })
+          end
+        end,
+      })
+
+      ------------------------------------------
       ----------------- SERVERS ----------------
       ------------------------------------------
       local mason_lspconfig = require "mason-lspconfig"
@@ -62,7 +153,11 @@ return {
       local all_servers = vim.tbl_deep_extend("force", auto_installed_servers, manual_installed_servers)
       -- Additional manual settings:
       for _, server in ipairs(all_servers) do
-        local opts = {}
+        local capabilities = {} -- specify your own
+        capabilities = vim.lsp.protocol.make_client_capabilities(capabilities) -- Includes the one from nvim per default
+        local opts = {
+          capabilities = capabilities,
+        }
         local server_status_ok, server_opts = pcall(require, "plugins.lsp.settings." .. server)
         if server_status_ok then
           opts = vim.tbl_deep_extend("force", server_opts, opts)
@@ -96,6 +191,7 @@ return {
       end
     end,
     dependencies = {
+      { "ibhagwan/fzf-lua", opts = {} },
       {
         "mason-org/mason-lspconfig.nvim",
         dependencies = { "mason-org/mason.nvim", opts = {} },
@@ -117,6 +213,9 @@ return {
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
         -- TODO: Setup keymaps if needed
+      },
+      {
+        "saghen/blink.cmp", -- For capabibilies
       },
       {
         -- Adds vim namespace to lua, makes writing configs much nicer:

@@ -2,7 +2,7 @@ local keymap = vim.keymap.set
 
 -- SWISS KEYBOARD --
 keymap("n", "ü", "[", { remap = true })
-keymap("n", "ü", "[", { remap = true })
+keymap("n", "¨", "[", { remap = true })
 
 --- Toggle Terminal ---
 keymap({ "n", "t" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })

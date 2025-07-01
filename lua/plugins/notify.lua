@@ -3,7 +3,7 @@ return {
   opts = {
     level = vim.log.levels.DEBUG,
     stages = "fade",
-    timeout = 500,
+    timeout = 2000,
   },
   enabled = function() return vim.env.COLORTERM == "truecolor" or vim.env.TERM == "xterm-truecolor" end,
   init = function()
