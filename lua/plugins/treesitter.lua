@@ -112,57 +112,72 @@ return {
     init = function()
       local select_keymaps = {
         -- You can use the capture groups defined in textobjects.scm
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["am"] = "@function.outer",
-        ["im"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["ab"] = "@block.outer",
-        ["ib"] = "@block.inner",
+        ["aa"] = { "@parameter.outer", "textobjects" },
+        ["ia"] = { "@parameter.inner", "textobjects" },
+        ["af"] = { "@function.outer", "textobjects" },
+        ["if"] = { "@function.inner", "textobjects" },
+        ["ac"] = { "@class.outer", "textobjects" },
+        ["ic"] = { "@class.inner", "textobjects" },
+        ["as"] = { "@local.scope", "locals" },
       }
 
       for k, v in pairs(select_keymaps) do
+        local desc = "ts-textobjects: select " .. v[1]
+        if type(v[1]) == "table" then
+          desc = desc .. table.concat(v[1], " ,")
+        else
+          desc = desc .. v[1]
+        end
         vim.keymap.set(
           { "x", "o" },
           k,
-          function() require("nvim-treesitter-textobjects.select").select_textobject(v, "textobjects") end,
-          { desc = "ts-textobjects: select " .. v }
+          function() require("nvim-treesitter-textobjects.select").select_textobject(v[1], v[2]) end,
+          { desc = desc }
         )
       end
 
       local move_keymaps = {
         goto_next_start = {
-          ["]m"] = "@function.outer",
-          ["]b"] = "@block.outer",
-          ["]]"] = "@class.outer",
+          ["]m"] = { "@function.outer", "textobjects" },
+          ["]n"] = { "@class.outer", "textobjects" },
+          ["]o"] = { "@conditional.outer", "textobjects" },
         },
         goto_next_end = {
-          ["]M"] = "@function.outer",
-          ["]B"] = "@block.outer",
-          ["]["] = "@class.outer",
+          ["]M"] = { "@function.outer", "textobjects" },
+          ["]N"] = { "@class.outer", "textobjects" },
+          ["]O"] = { "@conditional.outer", "textobjects" },
         },
         goto_previous_start = {
-          ["[m"] = "@function.outer",
-          ["[b"] = "@block.outer",
-          ["[["] = "@class.outer",
+          ["[m"] = { "@function.outer", "textobjects" },
+          ["[n"] = { "@class.outer", "textobjects" },
+          ["[o"] = { "@conditional.outer", "textobjects" },
         },
         goto_previous_end = {
-          ["[M"] = "@function.outer",
-          ["[B"] = "@block.outer",
-          ["[]"] = "@class.outer",
+          ["[M"] = { "@function.outer", "textobjects" },
+          ["[N"] = { "@class.outer", "textobjects" },
+          ["[O"] = { "@conditional.outer", "textobjects" },
+        },
+        goto_next = {
+          -- Start or end whichever is closer
+        },
+        goto_previous = {
+          -- Start or end whichever is closer
         },
       }
 
       for fn, maps in pairs(move_keymaps) do
         for k, v in pairs(maps) do
+          local desc = "ts-textobjects: " .. fn .. " "
+          if type(v[1]) == "table" then
+            desc = desc .. table.concat(v[1], " ,")
+          else
+            desc = desc .. v[1]
+          end
           vim.keymap.set(
             { "n", "x", "o" },
             k,
-            function() require("nvim-treesitter-textobjects.move")[fn](v, "textobjects") end,
-            { desc = "ts-textobjects: " .. fn .. " " .. v }
+            function() require("nvim-treesitter-textobjects.move")[fn](v[1], v[2]) end,
+            { desc = desc }
           )
         end
       end
@@ -188,7 +203,7 @@ return {
       vim.keymap.set({ "n", "x", "o" }, "t", repeatable_move.builtin_t_expr, { expr = true })
       vim.keymap.set({ "n", "x", "o" }, "T", repeatable_move.builtin_T_expr, { expr = true })
 
-      -- -- FIXME: Uncomment as soon as the hack above is fixed
+      -- -- FIXME: Uncomment as soon as the hack above is fixed (https://github.com/nvim-treesitter/nvim-treesitter-textobjects/issues/775)
       -- local ts_repeat_move = require "nvim-treesitter-textobjects.repeatable_move"
       --
       -- -- Repeat movement with ; and ,
