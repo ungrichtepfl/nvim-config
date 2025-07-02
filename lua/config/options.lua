@@ -9,6 +9,7 @@ vim.opt.cursorline = true -- highlight the current line
 vim.opt.number = true -- set numbered lines
 vim.opt.relativenumber = true -- set relative numbered lines
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
+vim.opt.mouse = "a"
 -- insert X spaces instead of tab:
 vim.opt.tabstop = 4 -- Width of a tab character
 vim.opt.shiftwidth = 4 -- Indent width for >>, <<, etc.

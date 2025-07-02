@@ -1,11 +1,85 @@
+local general_settings = vim.api.nvim_create_augroup("_general_settings", { clear = true })
+
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking text",
-  group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+  group = general_settings,
+  pattern = "*",
   callback = function() vim.highlight.on_yank { higroup = "Search", timeout = 200 } end,
 })
 
+-- q to close certain buffers
+vim.api.nvim_create_autocmd("FileType", {
+  group = general_settings,
+  pattern = { "qf", "help", "man", "lspinfo" },
+  callback = function() vim.keymap.set("n", "q", ":close<CR>", { buffer = true, silent = true }) end,
+})
+
+-- Disable auto-comment on newline
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  group = general_settings,
+  pattern = "*",
+  -- c: auto-wrap comments
+  -- r: auto-insert comment leader on <CR>
+  -- o: auto-insert comment leader on o/O
+  callback = function() vim.opt.formatoptions:remove { "c", "r", "o" } end,
+})
+
+-- Make quickfix buffers not listed
+vim.api.nvim_create_autocmd("FileType", {
+  group = general_settings,
+  pattern = "qf",
+  callback = function() vim.opt_local.buflisted = false end,
+})
+
+local mail_group = vim.api.nvim_create_augroup("_mail", { clear = true })
+
+-- No wrapping during mail
+vim.api.nvim_create_autocmd("FileType", {
+  group = mail_group,
+  pattern = "mail",
+  callback = function()
+    -- No wrapping
+    vim.opt_local.textwidth = 0
+    vim.opt_local.wrapmargin = 0
+    -- t – Auto-wrap text using textwidth
+    -- a – Auto formatting
+    vim.opt_local.formatoptions:remove { "t", "a" }
+    vim.opt_local.spell = true
+  end,
+})
+
+local git_group = vim.api.nvim_create_augroup("_git", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = git_group,
+  pattern = "gitcommit",
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+  end,
+})
+
+local markdown_group = vim.api.nvim_create_augroup("_markdown", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = markdown_group,
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+  end,
+})
+
+-- NOTE: Uncomment if window positions are weird
+-- local resize_group = vim.api.nvim_create_augroup("_auto_resize", { clear = true })
+-- vim.api.nvim_create_autocmd("VimResized", {
+--   group = resize_group,
+--   pattern = "*",
+--   callback = function()
+--     vim.cmd("tabdo wincmd =")
+--   end,
+-- })
+
 vim.api.nvim_create_autocmd("TermOpen", {
-  group = vim.api.nvim_create_augroup("custom-term-open", { clear = true }),
+  group = vim.api.nvim_create_augroup("_custom_term_open", { clear = true }),
   callback = function()
     vim.opt.number = false
     vim.opt.relativenumber = false
