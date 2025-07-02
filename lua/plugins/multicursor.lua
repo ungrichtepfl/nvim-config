@@ -8,7 +8,7 @@ return {
   {
     "jake-stewart/multicursor.nvim",
     branch = "1.0",
-    disabled = true, -- FIXME: There is a problem with blink.pairs
+    enabled = false, -- FIXME: There is a problem with blink.pairs
     opts = {},
     init = function()
       local mc = require "multicursor-nvim"
