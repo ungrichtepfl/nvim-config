@@ -2,7 +2,8 @@
 
 ## Installation
 
-You need `fd-find`, `ripgrep` and `xclip`/`xsel` (X11) or `wl-clipboard` (wayland).
+You need `fd-find`, `ripgrep` and `xclip`/`xsel` (X11) or `wl-clipboard`
+(wayland) and `fzf`.
 
 Also for python support:
 
@@ -21,10 +22,7 @@ npm i -g neovim
 #### Python
 
 ```shell
-mkdir $HOME/.virtualenvs
-cd $HOME/.virtualenvs
-python3 -m venv debugpy
-debugpy/bin/python -m pip install debugpy
+pipx install debugpy
 ```
 
 ## Get Healthy
@@ -33,6 +31,7 @@ In `nvim` use:
 
 ```nvim
 :checkhealth
+:checkhealth lsp
 ```
 
 ## Formatting
