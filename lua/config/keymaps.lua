@@ -16,7 +16,7 @@ keymap("n", "¨", "]", { remap = true })
 keymap({ "n", "t" }, "<leader>t", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
 
 -- Sourcing & Running --
-keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
+keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
 keymap("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Source current file" })
 
 -- Diagnostics --
