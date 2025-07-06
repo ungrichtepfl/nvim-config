@@ -2,37 +2,39 @@ local M = {}
 
 -- Toggle Terminal --
 local term_state = {
-  id = {
-    win = -1,
-    buf = -1,
-  },
+  win = -1,
+  buf = -1,
 }
 
-local function create_window(opts)
-  opts = opts or {}
+local function create_split_terminal(buf)
 
-  local buf = nil
-  if vim.api.nvim_buf_is_valid(opts.buf) then
-    buf = opts.buf
+  -- Open split and switch to it
+  vim.cmd("belowright split")
+
+  local win = vim.api.nvim_get_current_win()
+
+  if buf and vim.api.nvim_buf_is_valid(buf) then
+    vim.api.nvim_win_set_buf(win, buf)
   else
-    buf = vim.api.nvim_create_buf(false, true) -- No file, scratch buffer
+    buf = vim.api.nvim_create_buf(false, true) -- [listed, scratch]
+    vim.api.nvim_win_set_buf(win, buf)
+    vim.cmd("term") -- spawn terminal
+    vim.bo[buf].buflisted = false
   end
 
-  local win = vim.api.nvim_open_win(buf, true, {
-    split = "below",
-    height = 12,
-    win = 0,
-  })
+  vim.cmd("startinsert")
+
   return { buf = buf, win = win }
 end
 
 M.toggle_terminal = function()
-  if not vim.api.nvim_win_is_valid(term_state.id.win) then
-    term_state.id = create_window { buf = term_state.id.buf }
-    if vim.bo[term_state.id.buf].buftype ~= "terminal" then vim.cmd.term() end
-    vim.cmd "normal i"
+  if not vim.api.nvim_win_is_valid(term_state.win) then
+    local id = create_split_terminal(term_state.buf)
+    term_state.win = id.win
+    term_state.buf = id.buf
   else
-    vim.api.nvim_win_hide(term_state.id.win)
+    vim.api.nvim_win_hide(term_state.win)
+    term_state.win = -1
   end
 end
 
