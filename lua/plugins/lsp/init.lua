@@ -60,38 +60,52 @@ return {
             { buffer = args.buf }
           )
           vim.keymap.set("n", "K", function() vim.lsp.buf.hover { border = "rounded" } end, { buffer = args.buf })
+          vim.keymap.set("n", "grc", function() vim.lsp.codelens.run() end, {
+            desc = "Run codelens actions",
+            buffer = args.buf,
+          })
 
           vim.keymap.set(
             "n",
             "gD",
             function() require("fzf-lua").lsp_declarations() end,
-            { desc = "Go to declaration" }
+            { desc = "Go to declaration", buffer = args.buf }
           )
-          vim.keymap.set("n", "gd", function() require("fzf-lua").lsp_definitions() end, { desc = "Go to definition" })
-          vim.keymap.set("n", "grr", function() require("fzf-lua").lsp_references() end, { desc = "Go to definition" })
+          vim.keymap.set(
+            "n",
+            "gd",
+            function() require("fzf-lua").lsp_definitions() end,
+            { desc = "Go to definition", buffer = args.buf }
+          )
+          vim.keymap.set(
+            "n",
+            "grr",
+            function() require("fzf-lua").lsp_references() end,
+            { desc = "Go to definition", buffer = args.buf }
+          )
           vim.keymap.set(
             "n",
             "gri",
             function() require("fzf-lua").lsp_implementations() end,
-            { desc = "Go to implementations" }
+            { desc = "Go to implementations", buffer = args.buf }
           )
           vim.keymap.set(
             "n",
-            "g0",
+            "gO",
             function() require("fzf-lua").lsp_document_symbols() end,
-            { desc = "Show document symbols" }
+            { desc = "Show document symbols", buffer = args.buf }
           )
           vim.keymap.set(
             "n",
             "<leader>wd",
             function() require("fzf-lua").lsp_document_diagnostics() end,
-            { desc = "Workspace diagnostic" }
+            { desc = "Workspace diagnostic", buffer = args.buf }
           )
           vim.keymap.set(
             "n",
             "<leader>wD",
             function() require("fzf-lua").lsp_workspace_diagnostics() end,
-            { desc = "Workspace diagnostic" }
+            { desc = "Workspace diagnostic", buffer = args.buf }
           )
 
           ------------------------------------------
@@ -219,19 +233,57 @@ return {
       },
     },
   },
+  -- LSP and DAP tools
   {
     "mrcjkb/rustaceanvim",
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     version = "^6",
     lazy = false, -- This plugin is already lazy
-    -- TODO: Setup keymaps correctly
+    keys = {
+      {
+        "K", -- Override Neovim's built-in hover keymap with rustaceanvim's hover actions
+        function() vim.cmd.RustLsp { "hover", "actions" } end,
+        ft = "rust",
+      },
+    },
   },
   {
     "mrcjkb/haskell-tools.nvim",
     dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     version = "^5",
     lazy = false, -- This plugin is already lazy
-    -- TODO: Setup keymaps correctly
+    keys = {
+      {
+        "<space>lHs",
+        function() require("haskell-tools").hoogle.hoogle_signature() end,
+        ft = { "haskell", "cabal" },
+        desc = "Hoogle: Search type signature under cursor",
+      },
+      {
+        "<space>lHe",
+        function() require("haskell-tools").lsp.buf_eval_all() end,
+        ft = { "haskell", "cabal" },
+        desc = "Haskell: Evaluate all code snippets",
+      },
+      {
+        "<leader>lHr",
+        function() require("haskell-tools").repl.toggle() end,
+        ft = { "haskell", "cabal" },
+        desc = "REPL: Toggle GHCi for package",
+      },
+      {
+        "<leader>lHrb",
+        function() require("haskell-tools").repl.toggle(vim.api.nvim_buf_get_name(0)) end,
+        ft = { "haskell", "cabal" },
+        desc = "REPL: Toggle GHCi for current buffer",
+      },
+      {
+        "<leader>lHrq",
+        function() require("haskell-tools").repl.quit() end,
+        ft = { "haskell", "cabal" },
+        desc = "REPL: Quit GHCi session",
+      },
+    },
   },
   ---------------------------------
   --------- AUTOCOMPLETION --------

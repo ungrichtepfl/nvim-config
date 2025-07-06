@@ -1,7 +1,74 @@
 return {
   {
     "mfussenegger/nvim-dap",
-    init = function()
+    keys = {
+
+      { "<F5>", function() require("dap").continue() end, desc = "DAP: Start/Continue Debugging" },
+
+      { "<F10>", function() require("dap").step_over() end, desc = "DAP: Step Over" },
+      { "<F11>", function() require("dap").step_into() end, desc = "DAP: Step Into" },
+      { "<F12>", function() require("dap").step_out() end, desc = "DAP: Step Out" },
+
+      {
+
+        "<leader>db",
+        function() require("dap").toggle_breakpoint() end,
+        desc = "DAP: Toggle Breakpoint",
+      },
+      {
+
+        "<leader>dB",
+        function() require("dap").set_breakpoint() end,
+        desc = "DAP: Set Breakpoint (with condition)",
+      },
+
+      {
+
+        "<leader>dbl",
+        function() require("dap").set_breakpoint(nil, nil, vim.fn.input "Log point message: ") end,
+        desc = "DAP: Set Log Point",
+      },
+
+      { "<leader>dr", function() require("dap").repl.open() end, desc = "DAP: Open REPL" },
+      {
+
+        "<leader>dl",
+        function() require("dap").run_last() end,
+        desc = "DAP: Run Last Debug Session",
+      },
+
+      {
+        "<leader>dh",
+        function() require("dap.ui.widgets").hover() end,
+        mode = { "n", "v" },
+        desc = "DAP: Hover (variable value)",
+      },
+      {
+        "<leader>dp",
+        function() require("dap.ui.widgets").preview() end,
+        mode = { "n", "v" },
+        desc = "DAP: Preview Expression",
+      },
+
+      {
+        "<leader>df",
+        function()
+          local widgets = require "dap.ui.widgets"
+          widgets.centered_float(widgets.frames)
+        end,
+        desc = "DAP: Show Call Stack",
+      },
+
+      {
+        "<leader>ds",
+        function()
+          local widgets = require "dap.ui.widgets"
+          widgets.centered_float(widgets.scopes)
+        end,
+        desc = "DAP: Show Scopes (Variables)",
+      },
+    },
+    config = function()
       -- NOTE: Checkout https://codeberg.org/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
       -- on how to setup different adapters
 
@@ -49,67 +116,31 @@ return {
         numhl = "",
       })
 
-      -- Keymappins:
-      vim.keymap.set("n", "<F5>", function() require("dap").continue() end, { desc = "DAP: Start/Continue Debugging" })
+      -- Configurations
+      local adapters = { "python", { "codelldb", { "c", "rust", "cpp" } }, "haskell" }
+      local dap = require "dap"
+      for _, item in ipairs(adapters) do
+        local adapter = item
+        if type(item) == "table" then adapter = item[1] end
 
-      vim.keymap.set("n", "<F10>", function() require("dap").step_over() end, { desc = "DAP: Step Over" })
-      vim.keymap.set("n", "<F11>", function() require("dap").step_into() end, { desc = "DAP: Step Into" })
-      vim.keymap.set("n", "<F12>", function() require("dap").step_out() end, { desc = "DAP: Step Out" })
-
-      vim.keymap.set(
-        "n",
-        "<leader>db",
-        function() require("dap").toggle_breakpoint() end,
-        { desc = "DAP: Toggle Breakpoint" }
-      )
-      vim.keymap.set(
-        "n",
-        "<leader>dB",
-        function() require("dap").set_breakpoint() end,
-        { desc = "DAP: Set Breakpoint (with condition)" }
-      )
-
-      vim.keymap.set(
-        "n",
-        "<leader>lp",
-        function() require("dap").set_breakpoint(nil, nil, vim.fn.input "Log point message: ") end,
-        { desc = "DAP: Set Log Point" }
-      )
-
-      vim.keymap.set("n", "<leader>dr", function() require("dap").repl.open() end, { desc = "DAP: Open REPL" })
-      vim.keymap.set(
-        "n",
-        "<leader>dl",
-        function() require("dap").run_last() end,
-        { desc = "DAP: Run Last Debug Session" }
-      )
-
-      vim.keymap.set(
-        { "n", "v" },
-        "<leader>dh",
-        function() require("dap.ui.widgets").hover() end,
-        { desc = "DAP: Hover (variable value)" }
-      )
-      vim.keymap.set(
-        { "n", "v" },
-        "<leader>dp",
-        function() require("dap.ui.widgets").preview() end,
-        { desc = "DAP: Preview Expression" }
-      )
-
-      vim.keymap.set("n", "<leader>df", function()
-        local widgets = require "dap.ui.widgets"
-        widgets.centered_float(widgets.frames)
-      end, { desc = "DAP: Show Call Stack" })
-
-      vim.keymap.set("n", "<leader>ds", function()
-        local widgets = require "dap.ui.widgets"
-        widgets.centered_float(widgets.scopes)
-      end, { desc = "DAP: Show Scopes (Variables)" })
+        local setting = require("plugins.dap.settings." .. adapter)
+        if setting.adapter then dap.adapters[adapter] = setting.adapter end
+        if setting.configurations then
+          local fts = { adapter }
+          if type(item) == "table" then fts = item[2] end
+          for _, ft in ipairs(fts) do
+            dap.configurations[ft] = dap.configurations[ft] or {}
+            for _, config in ipairs(setting.configurations) do
+              table.insert(dap.configurations[ft], config)
+            end
+          end
+        end
+      end
     end,
     dependencies = {
       { "neovim/nvim-lspconfig" },
       { "Joakker/lua-json5", build = "./install.sh" },
+      { "mfussenegger/nvim-dap-python" },
     },
   },
   {
@@ -177,102 +208,33 @@ return {
   {
     "mfussenegger/nvim-dap-python",
     dependencies = { "mfussenegger/nvim-dap" },
+    keys = {
+      {
+        "<leader>dPm",
+        function() require("dap-python").test_method() end,
+        ft = "python",
+        desc = "Run python test method",
+      },
+      {
+        "<leader>dPc",
+        function() require("dap-python").test_class() end,
+        ft = "python",
+        desc = "Run python test class",
+      },
+      {
+        "<leader>dPs",
+        function()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+          require("dap-python").debug_selection()
+        end,
+        mode = "v",
+        ft = "python",
+        desc = "Debug python selection",
+      },
+    },
     config = function(_, _) -- Does not work with opts as it does not accept a table
       require("dap-python").setup "~/.virtualenvs/debugpy/bin/python"
-
-      -- Keymappings:
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "python",
-        callback = function()
-          vim.keymap.set(
-            "n",
-            "<leader>dPm",
-            ":lua require('dap-python').test_method()<CR>",
-            { desc = "Run python test method" }
-          )
-
-          vim.keymap.set(
-            "n",
-            "<leader>dPc",
-            ":lua require('dap-python').test_class()<CR>",
-            { desc = "Run python test class" }
-          )
-
-          vim.keymap.set(
-            "v",
-            "<leader>dPs",
-            "<ESC>:lua require('dap-python').debug_selection()<CR>",
-            { desc = "Debug python selection" }
-          )
-        end,
-      })
-
       -- Additional settings:
-      table.insert(require("dap").configurations.python, {
-        type = "python",
-        request = "launch",
-        module = "flask",
-        name = "Flask Dir",
-        args = {
-          --[[ "--debug", ]]
-          "run",
-          "--no-debugger",
-          "--host",
-          "0.0.0.0",
-        },
-        env = {
-          --[[ FLASK_DEBUG=0, ]]
-          FLASK_APP = function() return vim.fn.input("Local flask folder > ", vim.fn.getcwd(), "file") end,
-          --[[ FLASK_ENV = "development" ]]
-        },
-        jinja = true,
-        justMyCode = false,
-      })
-
-      table.insert(require("dap").configurations.python, {
-        type = "python",
-        request = "launch",
-        module = "flask",
-        name = "Flask app.py in current directory",
-        args = {
-          --[[ "--debug", ]]
-          "run",
-          "--no-debugger",
-          "--host",
-          "0.0.0.0",
-        },
-        env = {
-          --[[ FLASK_DEBUG=0, ]]
-          FLASK_APP = "app.py",
-          --[[ FLASK_ENV = "development" ]]
-        },
-        jinja = true,
-        justMyCode = false,
-      })
-
-      table.insert(require("dap").configurations.python, {
-        type = "python",
-        request = "attach localhost port 5678",
-        connect = {
-          port = 5678,
-          host = "127.0.0.1",
-        },
-        mode = "remote",
-        name = "Container Attach Debug",
-        cwd = vim.fn.getcwd(),
-        pathMappings = {
-          {
-            localRoot = function()
-              return vim.fn.input("Local code folder > ", vim.fn.getcwd(), "file")
-              --"/home/alpha2phi/workspace/alpha2phi/python-apps/ml-yolo/backend", -- Local folder the code lives
-            end,
-            remoteRoot = function()
-              return vim.fn.input("Container code folder > ", "/", "file")
-              -- "/fastapi", -- Wherever your Python code lives in the container.
-            end,
-          },
-        },
-      })
     end,
   },
 }
