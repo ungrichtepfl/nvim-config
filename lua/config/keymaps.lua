@@ -69,6 +69,8 @@ keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
 keymap("n", "<leader>W", ":w!<CR>", { desc = "Write file forced" })
 keymap("n", "<leader>Q", ":q!<CR>", { desc = "Quit window forced" })
 
+keymap("n", "<c-t><c-t>", ":tabclose<CR>", { desc = "Close a tabpage." })
+
 -- Visual --
 -- Stay in indent mode
 keymap("v", ">", ">gv", { desc = "Stay in indent mode right" })

@@ -83,13 +83,13 @@ return {
           )
           vim.keymap.set(
             "n",
-            "<leader>d",
+            "<leader>wd",
             function() require("fzf-lua").lsp_document_diagnostics() end,
             { desc = "Workspace diagnostic" }
           )
           vim.keymap.set(
             "n",
-            "<leader>D",
+            "<leader>wD",
             function() require("fzf-lua").lsp_workspace_diagnostics() end,
             { desc = "Workspace diagnostic" }
           )
@@ -197,18 +197,6 @@ return {
         dependencies = { "mason-org/mason.nvim", opts = {} },
         -- NOTE: Will be setup above in init function
       },
-      {
-        "mrcjkb/rustaceanvim",
-        version = "^6",
-        lazy = false, -- This plugin is already lazy
-        -- TODO: Setup keymaps correctly
-      },
-      {
-        "mrcjkb/haskell-tools.nvim",
-        version = "^5",
-        lazy = false, -- This plugin is already lazy
-        -- TODO: Setup keymaps correctly
-      },
       { "b0o/schemastore.nvim" },
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
@@ -230,6 +218,20 @@ return {
         },
       },
     },
+  },
+  {
+    "mrcjkb/rustaceanvim",
+    dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
+    version = "^6",
+    lazy = false, -- This plugin is already lazy
+    -- TODO: Setup keymaps correctly
+  },
+  {
+    "mrcjkb/haskell-tools.nvim",
+    dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
+    version = "^5",
+    lazy = false, -- This plugin is already lazy
+    -- TODO: Setup keymaps correctly
   },
   ---------------------------------
   --------- AUTOCOMPLETION --------
