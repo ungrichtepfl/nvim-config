@@ -85,4 +85,4 @@ keymap("x", "<S-j>", ":move '>+1<CR>gv-gv", { desc = "Move text up" })
 keymap("x", "<S-k>", ":move '<-2<CR>gv-gv", { desc = "Move text down" })
 
 -- Terminal --
-keymap("t", "<leader><ESC>", "<C-\\><C-n>", { desc = "Leave Terminal Mode" })
+keymap("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Leave Terminal Mode" })
