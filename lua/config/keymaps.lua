@@ -8,12 +8,25 @@ local keymap = vim.keymap.set
 --   term_mode = "t",
 --   command_mode = "c",
 
+local function get_keyboard_layout()
+  local handle = io.popen "setxkbmap -query"
+  if handle then
+    local result = handle:read "*a"
+    handle:close()
+    return result
+  end
+end
+
+local layout_info = get_keyboard_layout()
 -- SWISS KEYBOARD --
-keymap("n", "ü", "[", { remap = true })
-keymap("n", "¨", "]", { remap = true })
+if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
+  keymap("n", "ü", "[", { remap = true })
+  keymap("n", "¨", "]", { remap = true })
+  keymap("n", "ö", ";", { remap = true })
+end
 
 --- Toggle Terminal ---
-keymap({ "n", "t" }, "<leader>t", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
+keymap({ "n", "t" }, "<a-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
 
 -- Sourcing & Running --
 keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
