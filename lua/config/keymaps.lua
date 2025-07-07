@@ -23,6 +23,7 @@ if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
   keymap("n", "ü", "[", { remap = true })
   keymap("n", "¨", "]", { remap = true })
   keymap("n", "ö", ";", { remap = true })
+  keymap("n", "é", ",", { remap = true })
 end
 
 --- Toggle Terminal ---
@@ -46,9 +47,11 @@ vim.keymap.set("n", "]d", function()
   }
 end, { desc = "Go to previous diagnostics" })
 
--- Insert --
-keymap("i", "<C-l>", "<C-o>x", { desc = "Delete one character forwards" })
-keymap("i", "<C-$>", "<C-o>d$", { desc = "Delete to end of line" })
+-- Insert and Command --
+keymap({"i", "c"}, "<C-l>", "<C-o>x", { desc = "Delete one character forwards" })
+keymap({"i", "c"}, "<C-$>", "<C-o>d$", { desc = "Delete to end of line" })
+keymap({"i", "c"}, "<A-h>", "<Left>", { desc = "Move cursor left" })
+keymap({"i", "c"}, "<A-l>", "<Right>", { desc = "Move cursor right" })
 
 -- Normal --
 -- Resize with arrowskey
