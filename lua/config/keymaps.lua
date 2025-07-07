@@ -1,12 +1,18 @@
 local keymap = vim.keymap.set
 
--- Modes
---   normal_mode = "n",
---   insert_mode = "i",
---   visual_mode = "v",
---   visual_block_mode = "x",
---   term_mode = "t",
---   command_mode = "c",
+--          Mode  | Norm | Ins | Cmd | Vis | Sel | Opr | Term | Lang | ~
+-- Command        +------+-----+-----+-----+-----+-----+------+------+ ~
+-- [nore]map      | yes  |  -  |  -  | yes | yes | yes |  -   |  -   |
+-- n[nore]map     | yes  |  -  |  -  |  -  |  -  |  -  |  -   |  -   |
+-- [nore]map!     |  -   | yes | yes |  -  |  -  |  -  |  -   |  -   |
+-- i[nore]map     |  -   | yes |  -  |  -  |  -  |  -  |  -   |  -   |
+-- c[nore]map     |  -   |  -  | yes |  -  |  -  |  -  |  -   |  -   |
+-- v[nore]map     |  -   |  -  |  -  | yes | yes |  -  |  -   |  -   |
+-- x[nore]map     |  -   |  -  |  -  | yes |  -  |  -  |  -   |  -   |
+-- s[nore]map     |  -   |  -  |  -  |  -  | yes |  -  |  -   |  -   |
+-- o[nore]map     |  -   |  -  |  -  |  -  |  -  | yes |  -   |  -   |
+-- t[nore]map     |  -   |  -  |  -  |  -  |  -  |  -  | yes  |  -   |
+-- l[nore]map     |  -   | yes | yes |  -  |  -  |  -  |  -   | yes  |
 
 local function get_keyboard_layout()
   local handle = io.popen "setxkbmap -query"
@@ -85,15 +91,9 @@ keymap("n", "<c-t><c-t>", ":tabclose<CR>", { desc = "Close a tabpage." })
 
 -- Visual --
 -- Stay in indent mode
-keymap("v", ">", ">gv", { desc = "Stay in indent mode right" })
-keymap("v", "<", "<gv", { desc = "Stay in indent mode left" })
-
--- Move text up and down
-keymap("v", "<S-j>", ":move .+1<CR>==", { desc = "Move text up" })
-keymap("v", "<S-k>", ":move .-2<CR>==", { desc = "Move text down" })
-keymap("v", "p", '"_dP', { desc = "Leave previous yank in buffer" })
-
--- Visual Block --
+keymap("x", ">", ">gv", { desc = "Stay in indent mode right" })
+keymap("x", "<", "<gv", { desc = "Stay in indent mode left" })
+keymap("x", "p", '"_dP', { desc = "Leave previous yank in buffer" }) -- Do not trigger in select mode
 -- Move text up and down
 keymap("x", "<S-j>", ":move '>+1<CR>gv-gv", { desc = "Move text up" })
 keymap("x", "<S-k>", ":move '<-2<CR>gv-gv", { desc = "Move text down" })
