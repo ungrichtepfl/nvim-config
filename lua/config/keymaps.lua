@@ -24,16 +24,24 @@ if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
   keymap("n", "¨", "]", { remap = true })
   keymap("n", "ö", ";", { remap = true })
   keymap("n", "é", ",", { remap = true })
+  keymap("n", "gö", "g;")
+  keymap("n", "gé", "g,")
 end
 
 --- Toggle Terminal ---
 keymap({ "n", "t" }, "<a-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
 
--- Sourcing & Running --
+--- Sourcing & Running ---
 keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
 keymap("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Source current file" })
 
--- Diagnostics --
+--- Keymaps ---
+keymap({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
+keymap("n", "gp", '"+p', { desc = "Paste from system clipboard" })
+-- Paste in Visual with `P` to not copy selected text (`:h v_P`):
+keymap("x", "gp", '"+P', { desc = "Paste from system clipboard" })
+
+--- Diagnostics ---
 vim.keymap.set("n", "[d", function()
   vim.diagnostic.jump {
     count = -1,
@@ -48,10 +56,10 @@ vim.keymap.set("n", "]d", function()
 end, { desc = "Go to previous diagnostics" })
 
 -- Insert and Command --
-keymap({"i", "c"}, "<C-l>", "<C-o>x", { desc = "Delete one character forwards" })
-keymap({"i", "c"}, "<C-$>", "<C-o>d$", { desc = "Delete to end of line" })
-keymap({"i", "c"}, "<A-h>", "<Left>", { desc = "Move cursor left" })
-keymap({"i", "c"}, "<A-l>", "<Right>", { desc = "Move cursor right" })
+keymap({ "i", "c" }, "<C-l>", "<C-o>x", { desc = "Delete one character forwards" })
+keymap({ "i", "c" }, "<C-$>", "<C-o>d$", { desc = "Delete to end of line" })
+keymap({ "i", "c" }, "<A-h>", "<Left>", { desc = "Move cursor left" })
+keymap({ "i", "c" }, "<A-l>", "<Right>", { desc = "Move cursor right" })
 
 -- Normal --
 -- Resize with arrowskey

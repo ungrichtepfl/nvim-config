@@ -8,7 +8,7 @@ vim.opt.sidescrolloff = 8 --Show at least X columns left and right to the cursor
 vim.opt.cursorline = true -- highlight the current line
 vim.opt.number = true -- set numbered lines
 vim.opt.relativenumber = true -- set relative numbered lines
-vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
+-- vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.opt.mouse = "a" -- Fully allow mouse
 -- { insert X spaces instead of tab:
 vim.opt.tabstop = 4 -- Width of a tab character
