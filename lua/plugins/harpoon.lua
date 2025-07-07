@@ -3,7 +3,7 @@ return {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     opts = {},
-    enabled = true, -- Enable if marks are not enough
+    enabled = false, -- Enable if marks are not enough
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
       { "<leader>a", function() require("harpoon"):list():add() end, desc = "Add buffer to harpoon list" },
