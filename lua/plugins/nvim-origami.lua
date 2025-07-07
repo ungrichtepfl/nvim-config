@@ -4,17 +4,20 @@ return {
     event = "VeryLazy",
     opts = {
       autoFold = {
-        enabled = false, -- Generates an error in oil.nvim
+        enabled = false, -- FIXME: Generates an error in oil.nvim if true
+      },
+      foldKeymaps = {
+        setup = false, -- modifies `h` and `l`
       },
       foldtext = {
         lineCount = {
           template = "󰁂 %d",
         },
       },
-    }, -- needed even when using default config
+    },
 
-    -- recommended: disable vim's auto-folding
     init = function()
+      -- disable vim's auto-folding:
       vim.opt.foldlevel = 99
       vim.opt.foldlevelstart = 99
     end,
