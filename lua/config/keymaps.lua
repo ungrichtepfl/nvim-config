@@ -61,13 +61,14 @@ keymap("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Switch to next buffer" })
 keymap("n", "<S-h>", "<cmd>bprev<CR>", { desc = "Switch to previous buffer" })
 keymap("n", "<A-j>", "<cmd>cnext<CR>", { desc = "Switch to next quickfix item" })
 keymap("n", "<A-k>", "<cmd>cprev<CR>", { desc = "Switch to previous quickfix item" })
-keymap("n", "<A-c>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
-keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
+keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
+keymap("n", "<A-o>", "<cmd>cwindow<CR>", { desc = "Open quickfix list" })
 
 keymap("n", "<leader>s", "<cmd>nohlsearch<CR>", { desc = "No Highlight" })
 keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
 keymap("n", "<leader>W", ":w!<CR>", { desc = "Write file forced" })
-keymap("n", "<leader>Q", ":q!<CR>", { desc = "Quit window forced" })
+keymap("n", "<leader>c", "<C-w>c", { desc = "Close window" })
+keymap("n", "<leader>Q", ":conf q<CR>", { desc = "Close window with confirmation" })
 
 keymap("n", "<c-t><c-t>", ":tabclose<CR>", { desc = "Close a tabpage." })
 
