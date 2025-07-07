@@ -18,8 +18,8 @@ local function get_keyboard_layout()
 end
 
 local layout_info = get_keyboard_layout()
--- SWISS KEYBOARD --
 if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
+  -- SWISS KEYBOARD --
   keymap("n", "ü", "[", { remap = true })
   keymap("n", "¨", "]", { remap = true })
   keymap("n", "ö", ";", { remap = true })
