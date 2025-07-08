@@ -7,9 +7,8 @@ local term_state = {
 }
 
 local function create_split_terminal(buf)
-
   -- Open split and switch to it
-  vim.cmd("belowright split")
+  vim.cmd "belowright split"
 
   local win = vim.api.nvim_get_current_win()
 
@@ -18,11 +17,11 @@ local function create_split_terminal(buf)
   else
     buf = vim.api.nvim_create_buf(false, true) -- [listed, scratch]
     vim.api.nvim_win_set_buf(win, buf)
-    vim.cmd("term") -- spawn terminal
+    vim.cmd "term" -- spawn terminal
     vim.bo[buf].buflisted = false
   end
 
-  vim.cmd("startinsert")
+  vim.cmd "startinsert"
 
   return { buf = buf, win = win }
 end

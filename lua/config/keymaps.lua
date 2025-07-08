@@ -26,16 +26,14 @@ end
 local layout_info = get_keyboard_layout()
 if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
   -- SWISS KEYBOARD --
-  keymap("n", "ü", "[", { remap = true })
-  keymap("n", "¨", "]", { remap = true })
-  keymap("n", "ö", ";", { remap = true })
-  keymap("n", "é", ",", { remap = true })
-  keymap("n", "gö", "g;")
-  keymap("n", "gé", "g,")
+  keymap({ "n", "x" }, "ö", ";")
+  keymap({ "n", "x" }, "gö", "g;")
+  keymap({ "n", "x" }, "ü", "[", { remap = true })
+  keymap({ "n", "x" }, "¨", "]", { remap = true })
 end
 
 --- Toggle Terminal ---
-keymap({ "n", "t" }, "<a-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
+keymap({ "n", "t", "i" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
 
 --- Sourcing & Running ---
 keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
@@ -62,10 +60,15 @@ vim.keymap.set("n", "]d", function()
 end, { desc = "Go to previous diagnostics" })
 
 -- Insert and Command --
-keymap({ "i", "c" }, "<C-l>", "<C-o>x", { desc = "Delete one character forwards" })
-keymap({ "i", "c" }, "<C-$>", "<C-o>d$", { desc = "Delete to end of line" })
-keymap({ "i", "c" }, "<A-h>", "<Left>", { desc = "Move cursor left" })
-keymap({ "i", "c" }, "<A-l>", "<Right>", { desc = "Move cursor right" })
+keymap({ "i", "c" }, "<C-e>", "<C-o>$", { desc = "Go to end of line" })
+keymap({ "i", "c" }, "<C-a>", "<C-o>0", { desc = "Go to beginning of line" })
+keymap({ "i", "c" }, "<C-b>", "<Left>", { desc = "Move cursor backwards" })
+keymap({ "i", "c" }, "<C-f>", "<Right>", { desc = "Move cursor forwards" })
+keymap({ "i", "c" }, "<A-b>", "<C-o>b", { desc = "Move cursor back one word" })
+keymap({ "i", "c" }, "<A-f>", "<C-o>w", { desc = "Move cursor forward one word" })
+keymap({ "i", "c" }, "<C-d>", "<Del>", { desc = "Delete one character forward" })
+keymap({ "i", "c" }, "<C-l>", "<C-o>d$", { desc = "Clear all AFTER cursor" }) -- NOTE: C-k is already taken
+keymap({ "i", "c" }, "<A-d>", "<C-o>dw", { desc = "delete the word FROM the cursor" })
 
 -- Normal --
 -- Resize with arrowskey
