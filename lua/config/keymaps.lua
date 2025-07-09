@@ -26,6 +26,10 @@ end
 local layout_info = get_keyboard_layout()
 if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
   -- SWISS KEYBOARD --
+  keymap({ "i", "c" }, "<A-ü>", "[")
+  keymap({ "i", "c" }, "<A-¨>", "]")
+  keymap({ "i", "c" }, "<C-ü>", "{")
+  keymap({ "i", "c" }, "<C-¨>", "}")
   keymap({ "n", "x" }, "ö", ";")
   keymap({ "n", "x" }, "gö", "g;")
   keymap({ "n", "x" }, "ü", "[", { remap = true })
