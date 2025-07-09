@@ -26,15 +26,17 @@ end
 local layout_info = get_keyboard_layout()
 if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
   -- SWISS KEYBOARD --
-  keymap({ "i", "c" }, "<A-ü>", "[")
-  keymap({ "i", "c" }, "<A-¨>", "]")
-  keymap({ "i", "c" }, "<C-ü>", "{")
-  keymap({ "i", "c" }, "<C-¨>", "}")
+  keymap({ "i", "c" }, "<A-ü>", "[", { remap = true })
+  keymap({ "i", "c" }, "<A-¨>", "]", { remap = true })
+  keymap({ "i", "c" }, "<C-ü>", "{", { remap = true })
+  keymap({ "i", "c" }, "<C-¨>", "}", { remap = true })
   keymap({ "n", "x" }, "ö", ";")
   keymap({ "n", "x" }, "gö", "g;")
   keymap({ "n", "x" }, "ü", "[", { remap = true })
   keymap({ "n", "x" }, "¨", "]", { remap = true })
 end
+
+
 
 --- Toggle Terminal ---
 keymap({ "n", "t", "i" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
