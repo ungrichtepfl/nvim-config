@@ -14,17 +14,17 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function() vim.keymap.set("n", "q", ":close<CR>", { buffer = true, silent = true }) end,
 })
 
--- Disable auto-comment on newline
+-- Disable auto-comment on newline (leave here as maybe I want it on some ft in the future)
 vim.api.nvim_create_autocmd("BufWinEnter", {
   group = general_settings,
   pattern = "*",
   -- c: auto-wrap comments
   -- r: auto-insert comment leader on <CR>
   -- o: auto-insert comment leader on o/O
-  callback = function() vim.opt.formatoptions:remove { "c", "r", "o" } end,
+  callback = function() vim.opt_local.formatoptions:remove { "c", "r", "o" } end,
 })
 
--- Make quickfix buffers not listed
+-- Make buffers not listed
 vim.api.nvim_create_autocmd("FileType", {
   group = general_settings,
   pattern = "qf",
@@ -81,7 +81,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("TermOpen", {
   group = vim.api.nvim_create_augroup("_custom_term_open", { clear = true }),
   callback = function()
-    vim.opt.number = false
-    vim.opt.relativenumber = false
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
   end,
 })
