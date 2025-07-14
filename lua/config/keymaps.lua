@@ -28,15 +28,13 @@ if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
   -- SWISS KEYBOARD --
   keymap({ "i", "c" }, "<A-ü>", "[", { remap = true })
   keymap({ "i", "c" }, "<A-¨>", "]", { remap = true })
-  keymap({ "i", "c" }, "<C-ü>", "{", { remap = true })
-  keymap({ "i", "c" }, "<C-¨>", "}", { remap = true })
+  keymap({ "i", "c" }, "<C-ä>", "{", { remap = true })
+  keymap({ "i", "c" }, "<C-$>", "}", { remap = true })
   keymap({ "n", "x" }, "ö", ";")
   keymap({ "n", "x" }, "gö", "g;")
   keymap({ "n", "x" }, "ü", "[", { remap = true })
   keymap({ "n", "x" }, "¨", "]", { remap = true })
 end
-
-
 
 --- Toggle Terminal ---
 keymap({ "n", "t", "i" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
@@ -66,15 +64,15 @@ vim.keymap.set("n", "]d", function()
 end, { desc = "Go to previous diagnostics" })
 
 -- Insert and Command --
-keymap({ "i", "c" }, "<C-e>", "<C-o>$", { desc = "Go to end of line" })
-keymap({ "i", "c" }, "<C-a>", "<C-o>0", { desc = "Go to beginning of line" })
+keymap({ "i" }, "<C-e>", "<End>", { desc = "Go to end of line" }) -- C-e already taken in command
+keymap({ "i", "c" }, "<C-a>", "<Home>", { desc = "Go to beginning of line" })
 keymap({ "i", "c" }, "<C-b>", "<Left>", { desc = "Move cursor backwards" })
 keymap({ "i", "c" }, "<C-f>", "<Right>", { desc = "Move cursor forwards" })
-keymap({ "i", "c" }, "<A-b>", "<C-o>b", { desc = "Move cursor back one word" })
-keymap({ "i", "c" }, "<A-f>", "<C-o>w", { desc = "Move cursor forward one word" })
 keymap({ "i", "c" }, "<C-d>", "<Del>", { desc = "Delete one character forward" })
-keymap({ "i", "c" }, "<C-l>", "<C-o>d$", { desc = "Clear all AFTER cursor" }) -- NOTE: C-k is already taken
-keymap({ "i", "c" }, "<A-d>", "<C-o>dw", { desc = "delete the word FROM the cursor" })
+keymap({ "i" }, "<A-b>", "<C-o>b", { desc = "Move cursor back one word" })
+keymap({ "i" }, "<A-f>", "<C-o>w", { desc = "Move cursor forward one word" })
+keymap({ "i" }, "<C-l>", "<C-o>d$", { desc = "Clear all AFTER cursor" }) -- NOTE: C-k is already taken
+keymap({ "i" }, "<A-d>", "<C-o>dw", { desc = "delete the word FROM the cursor" })
 
 -- Normal --
 -- Resize with arrowskey
@@ -90,7 +88,7 @@ keymap("n", "<A-k>", "<cmd>cprev<CR>", { desc = "Switch to previous quickfix ite
 keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
 keymap("n", "<A-o>", "<cmd>cwindow<CR>", { desc = "Open quickfix list" })
 
-keymap("n", "<leader>s", "<cmd>nohlsearch<CR>", { desc = "No Highlight" })
+keymap("n", "<C-l>", ":<C-u>nohlsearch<CR><C-l>", { desc = "Redraw screen and unhighlight" })
 keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
 keymap("n", "<leader>W", ":w!<CR>", { desc = "Write file forced" })
 keymap("n", "<leader>c", "<C-w>c", { desc = "Close window" })
