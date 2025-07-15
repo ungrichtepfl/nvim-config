@@ -44,10 +44,10 @@ keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>"
 keymap("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Source current file" })
 
 --- Keymaps ---
-keymap({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
-keymap("n", "gp", '"+p', { desc = "Paste from system clipboard" })
+keymap({ "n", "x" }, "cy", '"+y', { desc = "Copy to system clipboard" })
+keymap("n", "cp", '"+p', { desc = "Paste from system clipboard" })
 -- Paste in Visual with `P` to not copy selected text (`:h v_P`):
-keymap("x", "gp", '"+P', { desc = "Paste from system clipboard" })
+keymap("x", "cp", '"+P', { desc = "Paste from system clipboard" })
 
 --- Diagnostics ---
 vim.keymap.set("n", "[d", function()
