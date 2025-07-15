@@ -326,6 +326,7 @@ return {
       completion = {
         documentation = { auto_show = false },
         menu = {
+          auto_show = false,
           draw = {
             components = {
               -- Use mini.icons
