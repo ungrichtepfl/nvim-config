@@ -36,6 +36,10 @@ if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
   keymap({ "n", "x" }, "¨", "]", { remap = true })
 end
 
+-- Make ESC more ergonomic
+keymap({ "i", "v", "x", "s", "o" }, "jk", "<ESC>")
+keymap({ "c" }, "jk", "<C-C>")
+
 --- Toggle Terminal ---
 keymap({ "n", "t", "i" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
 
@@ -50,13 +54,13 @@ keymap("n", "cp", '"+p', { desc = "Paste from system clipboard" })
 keymap("x", "cp", '"+P', { desc = "Paste from system clipboard" })
 
 --- Diagnostics ---
-vim.keymap.set("n", "[d", function()
+keymap("n", "[d", function()
   vim.diagnostic.jump {
     count = -1,
     float = true, -- Show diagnostics by default
   }
 end, { desc = "Go to next diagnostics" })
-vim.keymap.set("n", "]d", function()
+keymap("n", "]d", function()
   vim.diagnostic.jump {
     count = 1,
     float = true, -- Show diagnostics by default
@@ -93,7 +97,15 @@ keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
 keymap("n", "<leader>W", ":w!<CR>", { desc = "Write file forced" })
 keymap("n", "<leader>c", "<C-w>c", { desc = "Close window" })
 keymap("n", "<leader>Q", ":conf q<CR>", { desc = "Close window with confirmation" })
-
+keymap("n", "<leader>f", ":find ", { desc = "Find file" })
+keymap("n", "<leader>g", ":vimgrep  **/*<LEFT><LEFT><LEFT><LEFT><LEFT>", { desc = "Find expression" })
+keymap("n", "<leader>e", ":Explore<CR>", { desc = "Open file explorer" })
+-- Copy Full File-Path
+keymap("n", "<leader>pa", function()
+  local path = vim.fn.expand "%:p"
+  vim.fn.setreg("+", path)
+  print("file:", path)
+end)
 keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage." })
 
 -- Visual --
