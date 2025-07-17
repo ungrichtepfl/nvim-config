@@ -90,7 +90,7 @@ keymap("n", "<S-h>", "<cmd>bprev<CR>", { desc = "Switch to previous buffer" })
 keymap("n", "<A-j>", "<cmd>cnext<CR>", { desc = "Switch to next quickfix item" })
 keymap("n", "<A-k>", "<cmd>cprev<CR>", { desc = "Switch to previous quickfix item" })
 keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
-keymap("n", "<A-o>", "<cmd>cwindow<CR>", { desc = "Open quickfix list" })
+keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
 
 keymap("n", "<C-l>", ":<C-u>nohlsearch<CR><C-l>", { desc = "Redraw screen and unhighlight" })
 keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
@@ -105,8 +105,8 @@ keymap("n", "<leader>pa", function()
   local path = vim.fn.expand "%:p"
   vim.fn.setreg("+", path)
   print("file:", path)
-end)
-keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage." })
+end, {desc = "Copy full file path"})
+keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage" })
 
 -- Visual --
 -- Stay in indent mode

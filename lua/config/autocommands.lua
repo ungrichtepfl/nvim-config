@@ -44,7 +44,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 -- Set filetype-specific settings
 vim.api.nvim_create_autocmd("FileType", {
   group = general_settings,
-  pattern = { "lua", "python" },
+  pattern = { "python" },
   callback = function()
     vim.opt_local.tabstop = 4
     vim.opt_local.shiftwidth = 4
@@ -53,12 +53,13 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("FileType", {
   group = general_settings,
-  pattern = { "javascript", "typescript", "json", "html", "css" },
+  pattern = { "c", "cpp", "rust", "javascript", "typescript", "json", "html", "css" },
   callback = function()
     vim.opt_local.tabstop = 2
     vim.opt_local.shiftwidth = 2
   end,
 })
+
 local mail_group = vim.api.nvim_create_augroup("_mail", { clear = true })
 
 -- No wrapping during mail
