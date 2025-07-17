@@ -37,7 +37,7 @@ if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
 end
 
 -- Make ESC more ergonomic
-keymap({ "i", "v", "x", "s", "o" }, "jk", "<ESC>")
+keymap({ "i" }, "jk", "<ESC>")
 keymap({ "c" }, "jk", "<C-C>")
 
 --- Toggle Terminal ---
@@ -46,9 +46,11 @@ keymap({ "n", "t", "i" }, "<C-t>", require("config.usercommands").toggle_termina
 --- Sourcing & Running ---
 keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
 keymap("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Source current file" })
+keymap("n", "<leader><leader>v", ":so<cr>", { desc = "Source current file" })
 
 --- Keymaps ---
 keymap({ "n", "x" }, "cy", '"+y', { desc = "Copy to system clipboard" })
+keymap({ "n" }, "cY", '"+Y', { desc = "Copy to system clipboard" })
 keymap("n", "cp", '"+p', { desc = "Paste from system clipboard" })
 -- Paste in Visual with `P` to not copy selected text (`:h v_P`):
 keymap("x", "cp", '"+P', { desc = "Paste from system clipboard" })

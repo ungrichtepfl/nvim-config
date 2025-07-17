@@ -20,7 +20,7 @@ vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.autoindent = true -- Copy indent from current line
 vim.opt.smartindent = true -- Smart indent based on code syntax
 -- }
-vim.opt.nrformats = "bin,hex,alpha" -- ctrl-x and ctrl-a behaviour
+vim.opt.nrformats = "bin,hex" -- ctrl-x and ctrl-a behaviour
 vim.opt.completeopt = "menuone,noselect,fuzzy" -- How completion should work
 vim.opt.wildmode = "longest:full,full" -- Prioritize exact matches
 vim.opt.wildignore:append { "*.o", "*.obj", "*.pyc", "*.class", "*.jar" }
