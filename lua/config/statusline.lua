@@ -45,20 +45,27 @@ local function mode_icon()
   local mode = vim.fn.mode()
   local modes = {
     n = "NORMAL",
-    i = "INSERT",
+    no = "N-PENDING",
     v = "VISUAL",
     V = "V-LINE",
-    ["\22"] = "V-BLOCK", -- Ctrl-V
-    c = "COMMAND",
+    [""] = "V-BLOCK",
     s = "SELECT",
     S = "S-LINE",
-    ["\19"] = "S-BLOCK", -- Ctrl-S
+    [""] = "S-BLOCK",
+    i = "INSERT",
+    ic = "INSERT",
     R = "REPLACE",
-    r = "REPLACE",
+    Rv = "V-REPLACE",
+    c = "COMMAND",
+    cv = "EX",
+    ce = "NORMAL",
+    r = "PROMPT",
+    rm = "MORE",
+    ["r?"] = "CONFIRM",
     ["!"] = "SHELL",
     t = "TERMINAL",
   }
-  return (modes[mode] or "  ") .. mode:upper()
+  return modes[mode] or ("  " .. mode:upper())
 end
 
 _G.mode_icon = mode_icon
@@ -72,6 +79,7 @@ vim.cmd [[
 
 -- Function to change statusline based on window focus
 local function setup_dynamic_statusline()
+  vim.opt.showmode = false
   vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
     group = default_statusline_autogroup,
     callback = function()
