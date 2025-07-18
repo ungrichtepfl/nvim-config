@@ -75,9 +75,10 @@ keymap({ "i", "c" }, "<C-a>", "<Home>", { desc = "Go to beginning of line" })
 keymap({ "i", "c" }, "<C-b>", "<Left>", { desc = "Move cursor backwards" })
 keymap({ "i", "c" }, "<C-f>", "<Right>", { desc = "Move cursor forwards" })
 keymap({ "i", "c" }, "<C-d>", "<Del>", { desc = "Delete one character forward" })
+-- <C-o> does not work in command mode
 keymap({ "i" }, "<A-b>", "<C-o>b", { desc = "Move cursor back one word" })
 keymap({ "i" }, "<A-f>", "<C-o>w", { desc = "Move cursor forward one word" })
-keymap({ "i" }, "<C-l>", "<C-o>d$", { desc = "Clear all AFTER cursor" }) -- NOTE: C-k is already taken
+keymap({ "i" }, "<C-m>", "<C-o>d$", { desc = "Clear all AFTER cursor" }) -- NOTE: C-k is already taken
 keymap({ "i" }, "<A-d>", "<C-o>dw", { desc = "delete the word FROM the cursor" })
 
 -- Normal --
@@ -94,11 +95,12 @@ keymap("n", "<A-k>", "<cmd>cprev<CR>", { desc = "Switch to previous quickfix ite
 keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
 keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
 
-keymap("n", "<C-l>", ":<C-u>nohlsearch<CR><C-l>", { desc = "Redraw screen and unhighlight" })
+keymap("n", "<C-l>", "<cmd>nohlsearch<CR><C-l>", { desc = "Redraw screen and unhighlight" })
+keymap("i", "<C-l>", "<cmd>nohlsearch<CR>", { desc = "Unhighlight" })
 keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
 keymap("n", "<leader>W", ":w!<CR>", { desc = "Write file forced" })
 keymap("n", "<leader>c", "<C-w>c", { desc = "Close window" })
-keymap("n", "<leader>Q", ":conf q<CR>", { desc = "Close window with confirmation" })
+keymap("n", "<leader>q", ":conf q<CR>", { desc = "Close window with confirmation" })
 keymap("n", "<leader>f", ":find ", { desc = "Find file" })
 keymap("n", "<leader>g", ":vimgrep  **/*<LEFT><LEFT><LEFT><LEFT><LEFT>", { desc = "Find expression" })
 keymap("n", "<leader>e", ":Explore<CR>", { desc = "Open file explorer" })
@@ -106,8 +108,8 @@ keymap("n", "<leader>e", ":Explore<CR>", { desc = "Open file explorer" })
 keymap("n", "<leader>pa", function()
   local path = vim.fn.expand "%:p"
   vim.fn.setreg("+", path)
-  print("file:", path)
-end, {desc = "Copy full file path"})
+  vim.notify("Copied path to clipboard: " .. path)
+end, { desc = "Copy full file path" })
 keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage" })
 
 -- Visual --
