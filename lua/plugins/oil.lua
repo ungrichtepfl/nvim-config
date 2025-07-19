@@ -23,7 +23,7 @@ return {
     dependencies = { { "echasnovski/mini.icons", opts = {} }, "folke/snacks.nvim" },
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
     lazy = false,
-    keys = { { "<leader>e", ":Oil<cr>", desc = "Toggle Oil" } },
+    keys = { { "<leader>e", "<cmd>Oil<cr>", desc = "Toggle Oil" } },
     init = function()
       vim.api.nvim_create_autocmd("User", { -- Enable renaming with lsp
         pattern = "OilActionsPost",
