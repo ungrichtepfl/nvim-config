@@ -90,8 +90,8 @@ keymap("n", "<A-Right>", ":vertical resize +1<CR>", { desc = "Resize vertical pl
 
 keymap("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Switch to next buffer" })
 keymap("n", "<S-h>", "<cmd>bprev<CR>", { desc = "Switch to previous buffer" })
-keymap("n", "<A-j>", "<cmd>cnext<CR>", { desc = "Switch to next quickfix item" })
-keymap("n", "<A-k>", "<cmd>cprev<CR>", { desc = "Switch to previous quickfix item" })
+keymap("n", "<A-n>", "<cmd>cnext<CR>", { desc = "Switch to next quickfix item" })
+keymap("n", "<A-p>", "<cmd>cprev<CR>", { desc = "Switch to previous quickfix item" })
 keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
 keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
 
@@ -114,9 +114,10 @@ keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage" })
 
 -- Mark handling
 keymap("n", "<leader>a", require("config.utils").add_mark, { desc = "Add a mark at current cursor position" })
-keymap("n", "<C-h>", function() require("config.utils").goto_mark "H" end, { desc = "Jump to mark H" })
-keymap("n", "<C-j>", function() require("config.utils").goto_mark "J" end, { desc = "Jump to mark J" })
-keymap("n", "<C-k>", function() require("config.utils").goto_mark "K" end, { desc = "Jump to mark K" })
+keymap("n", "<A-h>", function() require("config.utils").goto_mark "H" end, { desc = "Jump to mark H" })
+keymap("n", "<A-j>", function() require("config.utils").goto_mark "J" end, { desc = "Jump to mark J" })
+keymap("n", "<A-k>", function() require("config.utils").goto_mark "K" end, { desc = "Jump to mark K" })
+keymap("n", "<A-l>", function() require("config.utils").goto_mark "L" end, { desc = "Jump to mark L" })
 keymap("n", "<leader>m", "mM", { desc = "Set global mark M" })
 keymap("n", "<leader><leader>m", "`M", { desc = "Go to global mark M" })
 
