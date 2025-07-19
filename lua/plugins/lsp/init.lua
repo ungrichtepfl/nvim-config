@@ -1,6 +1,37 @@
+local auto_installed_servers = { -- NOTE: Automatically installed lsp
+  "arduino_language_server",
+  "asm_lsp",
+  "gopls",
+  "jsonls",
+  "pyright",
+  "lua_ls",
+  "bashls",
+  "clangd", -- C/C++
+  "cmake",
+  "dockerls",
+  "marksman", -- Markdown
+  -- "remark_ls", -- Markdown
+  "yamlls",
+  "elmls",
+  "taplo", -- TOML
+  "lemminx", -- "XML"
+  "ts_ls",
+  "html",
+  "cssls",
+  "angularls",
+  "omnisharp", -- C#/dotnet
+  "zls",
+}
+local manual_installed_servers = { -- NOTE: Manually installed servers
+  "hls", -- Haskell, installed by ghcup
+  "rust_analyzer", -- Installed by rustup
+  "ruff", -- install locally to be sure which version is used
+}
+
 return {
   {
     "neovim/nvim-lspconfig", -- NOTE: Data only repo
+    lazy = "VeryLazy",
     config = function()
       ------------------------------------------
       --------------- DIAGNOSTICS --------------
@@ -134,36 +165,6 @@ return {
       ------------------------------------------
       ----------------- SERVERS ----------------
       ------------------------------------------
-      local mason_lspconfig = require "mason-lspconfig"
-      local auto_installed_servers = { -- NOTE: Automatically installed lsp
-        "arduino_language_server",
-        "asm_lsp",
-        "gopls",
-        "jsonls",
-        "pyright",
-        "lua_ls",
-        "bashls",
-        "clangd", -- C/C++
-        "cmake",
-        "dockerls",
-        "marksman", -- Markdown
-        -- "remark_ls", -- Markdown
-        "yamlls",
-        "elmls",
-        "taplo", -- TOML
-        "lemminx", -- "XML"
-        "ts_ls",
-        "html",
-        "cssls",
-        "angularls",
-        "omnisharp", -- C#/dotnet
-        "zls",
-      }
-      local manual_installed_servers = { -- NOTE: Manually installed servers
-        "hls", -- Haskell, installed by ghcup
-        "rust_analyzer", -- Installed by rustup
-        "ruff", -- install locally to be sure which version is used
-      }
       local all_servers = vim.tbl_deep_extend("force", auto_installed_servers, manual_installed_servers)
       -- Additional manual settings:
       for _, server in ipairs(all_servers) do
@@ -178,11 +179,6 @@ return {
           vim.lsp.config(server, opts)
         end
       end
-
-      -- Automatically enabled and installed servers
-      mason_lspconfig.setup {
-        ensure_installed = auto_installed_servers,
-      }
 
       -- Manually enable servers:
       for _, server in ipairs(manual_installed_servers) do
@@ -205,11 +201,6 @@ return {
       end
     end,
     dependencies = {
-      {
-        "mason-org/mason-lspconfig.nvim",
-        dependencies = { "mason-org/mason.nvim", opts = {} },
-        -- NOTE: Will be setup above in init function
-      },
       { "b0o/schemastore.nvim" },
       {
         "Hoffs/omnisharp-extended-lsp.nvim",
@@ -221,6 +212,15 @@ return {
     },
   },
   -- LSP and DAP tools
+  {
+    "mason-org/mason-lspconfig.nvim",
+    lazy = "VeryLazy",
+    opts = {
+      ensure_installed = auto_installed_servers,
+    },
+    dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
+  },
+  { "mason-org/mason.nvim", opts = {} },
   {
     -- Adds vim namespace to lua, makes writing configs much nicer:
     "folke/lazydev.nvim",
