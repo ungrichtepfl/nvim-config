@@ -1,7 +1,7 @@
 return {
   "lewis6991/gitsigns.nvim",
   opts = {
-    attach_to_untracked = true,
+    attach_to_untracked = false,
     on_attach = function(bufnr)
       local gitsigns = require "gitsigns"
 

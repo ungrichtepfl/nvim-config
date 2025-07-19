@@ -187,15 +187,15 @@ return {
       -- Manually enable servers:
       for _, server in ipairs(manual_installed_servers) do
         if server == "rust_analyzer" then
-          local status_ok, _ = pcall(require, "rustaceanvim")
-          if status_ok then
+          local installed = require("lazy.core.config").plugins["rustaceanvim"]
+          if installed then
             -- Don't load rust_analyzer if rustaceanvim is loaded
             goto continue
           end
         end
         if server == "hls" then
-          local status_ok, _ = pcall(require, "haskell-tools")
-          if status_ok then
+          local installed = require("lazy.core.config").plugins["haskell-tools"]
+          if installed then
             -- Don't load haskell_language_server if haskell_tools is loaded
             goto continue
           end
@@ -205,7 +205,6 @@ return {
       end
     end,
     dependencies = {
-      { "ibhagwan/fzf-lua", opts = {} },
       {
         "mason-org/mason-lspconfig.nvim",
         dependencies = { "mason-org/mason.nvim", opts = {} },
@@ -219,24 +218,23 @@ return {
       {
         "saghen/blink.cmp", -- For capabibilies
       },
-      {
-        -- Adds vim namespace to lua, makes writing configs much nicer:
-        "folke/lazydev.nvim",
-        ft = "lua", -- only load on lua files
-        opts = {
-          library = {
-            -- See the configuration section for more details
-            -- Load luvit types when the `vim.uv` word is found
-            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-          },
-        },
-      },
     },
   },
   -- LSP and DAP tools
   {
+    -- Adds vim namespace to lua, makes writing configs much nicer:
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  {
     "mrcjkb/rustaceanvim",
-    dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     version = "^6",
     lazy = false, -- This plugin is already lazy
     keys = {
@@ -249,7 +247,6 @@ return {
   },
   {
     "mrcjkb/haskell-tools.nvim",
-    dependencies = { "neovim/nvim-lspconfig", "mfussenegger/nvim-dap" },
     version = "^5",
     lazy = false, -- This plugin is already lazy
     keys = {
@@ -284,6 +281,37 @@ return {
         desc = "REPL: Quit GHCi session",
       },
     },
+  },
+  {
+    "ibhagwan/fzf-lua",
+    dependencies = { "echasnovski/mini.icons" },
+    opts = {
+      {
+        "hide", -- To have a better resume
+      },
+    },
+    keys = {
+      { "<leader>f", "<cmd> FzfLua files<cr>", desc = "Find files" },
+      { "<leader>g", "<cmd> FzfLua live_grep<cr>", desc = "Grep word in all files" },
+      { "<leader>r", "<cmd> FzfLua resume<cr>", desc = "Resume fzf picker" },
+      { "<leader>b", "<cmd> FzfLua buffers<cr>", desc = "List of all open buffers" },
+      { "<leader>om", "<cmd> FzfLua marks<cr>", desc = "List of all marks" },
+      { "<leader>op", "<cmd> FzfLua manpages<cr>", desc = "List all manpages" },
+      { "<leader>oc", "<cmd> FzfLua commands<cr>", desc = "List vim commands" },
+      { "<leader>oh", "<cmd> FzfLua command_history<cr>", desc = "Show command history" },
+      { "<leader>ot", "<cmd> FzfLua filetypes<cr>", desc = "List available filetypes" },
+      { "<leader>ogc", "<cmd> FzfLua git_commits<cr>", desc = "List git commits" },
+      { "<leader>ogC", "<cmd> FzfLua git_bcommits<cr>", desc = "List git commits of the buffer" },
+      { "<leader>ogs", "<cmd> FzfLua git_status<cr>", desc = "Show git status" },
+      { "<leader>ogb", "<cmd> FzfLua git_branches<cr>", desc = "List git branches" },
+      { "[w", "<cmd> FzfLua grep_cword<cr>", desc = "Grep for word under cursor" },
+      { "[W", "<cmd> FzfLua grep_cWORD<cr>", desc = "Grep for WORD under cursor" },
+    },
+    config = function(_, opts)
+      local fzf = require "fzf-lua"
+      fzf.setup(opts)
+      fzf.register_ui_select()
+    end,
   },
   ---------------------------------
   --------- AUTOCOMPLETION --------
@@ -326,7 +354,7 @@ return {
       completion = {
         documentation = { auto_show = false },
         menu = {
-          auto_show = true,
+          auto_show = false,
           draw = {
             components = {
               -- Use mini.icons

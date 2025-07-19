@@ -41,7 +41,7 @@ keymap({ "i" }, "jk", "<ESC>")
 keymap({ "c" }, "jk", "<C-C>")
 
 --- Toggle Terminal ---
-keymap({ "n", "t", "i" }, "<C-t>", require("config.usercommands").toggle_terminal, { desc = "Toggle Terminal" })
+keymap({ "n", "t", "i" }, "<C-t>", require("config.utils").toggle_terminal, { desc = "Toggle Terminal" })
 
 --- Sourcing & Running ---
 keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
@@ -111,6 +111,14 @@ keymap("n", "<leader>pa", function()
   vim.notify("Copied path to clipboard: " .. path)
 end, { desc = "Copy full file path" })
 keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage" })
+
+-- Mark handling
+keymap("n", "<leader>a", require("config.utils").add_mark, { desc = "Add a mark at current cursor position" })
+keymap("n", "<C-h>", function() require("config.utils").goto_mark "H" end, { desc = "Jump to mark H" })
+keymap("n", "<C-j>", function() require("config.utils").goto_mark "J" end, { desc = "Jump to mark J" })
+keymap("n", "<C-k>", function() require("config.utils").goto_mark "K" end, { desc = "Jump to mark K" })
+keymap("n", "<leader>m", "mM", { desc = "Set global mark M" })
+keymap("n", "<leader><leader>m", "`M", { desc = "Go to global mark M" })
 
 -- Visual --
 -- Stay in indent mode

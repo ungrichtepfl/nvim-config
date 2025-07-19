@@ -8,8 +8,9 @@ return {
     branch = "1.0",
     enabled = false, -- FIXME: There is a problem with blink.pairs
     opts = {},
-    init = function()
+    config = function(_, opts)
       local mc = require "multicursor-nvim"
+      mc.setup(opts)
 
       local set = vim.keymap.set
 

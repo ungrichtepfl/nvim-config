@@ -226,7 +226,5 @@ return {
   init = function()
     vim.api.nvim_clear_autocmds { group = "_default_statusline" } -- Do not redraw the default one
     vim.opt.showmode = false -- we don't need to see things like -- INSERT -- anymore
-
-    vim.api.nvim_clear_autocmds { group = vim.api.nvim_create_augroup("MyGroup", {}) }
   end,
 }

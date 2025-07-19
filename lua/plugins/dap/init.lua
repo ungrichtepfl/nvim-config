@@ -138,9 +138,11 @@ return {
       end
     end,
     dependencies = {
-      { "neovim/nvim-lspconfig" },
       { "Joakker/lua-json5", build = "./install.sh" },
-      { "mfussenegger/nvim-dap-python" },
+      {
+        "theHamsta/nvim-dap-virtual-text", -- Only load when dap is loaded
+        opts = {},
+      },
     },
   },
   {
@@ -191,19 +193,15 @@ return {
         },
       },
     },
-    init = function()
+    config = function(_, opts)
       local dap, dapui = require "dap", require "dapui"
+      dapui.setup(opts)
       -- NOTE: Uncomment to automcatically open:
       -- dap.listeners.before.attach.dapui_config = function() dapui.open() end
       -- dap.listeners.before.launch.dapui_config = function() dapui.open() end
       dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
       dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
     end,
-  },
-  {
-    "theHamsta/nvim-dap-virtual-text",
-    opts = {},
-    dependencies = { "mfussenegger/nvim-dap" },
   },
   {
     "mfussenegger/nvim-dap-python",
