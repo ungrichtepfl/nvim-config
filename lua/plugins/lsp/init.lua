@@ -31,7 +31,7 @@ local manual_installed_servers = { -- NOTE: Manually installed servers
 return {
   {
     "neovim/nvim-lspconfig", -- NOTE: Data only repo
-    lazy = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       ------------------------------------------
       --------------- DIAGNOSTICS --------------
@@ -214,13 +214,13 @@ return {
   -- LSP and DAP tools
   {
     "mason-org/mason-lspconfig.nvim",
-    lazy = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       ensure_installed = auto_installed_servers,
     },
     dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
   },
-  { "mason-org/mason.nvim", opts = {} },
+  { "mason-org/mason.nvim", cmd = "Mason", opts = {} },
   {
     -- Adds vim namespace to lua, makes writing configs much nicer:
     "folke/lazydev.nvim",
