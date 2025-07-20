@@ -12,7 +12,7 @@ return {
   opts = {
     mappings = {
       -- you can call require("blink.pairs.mappings").enable() and require("blink.pairs.mappings").disable() to enable/disable mappings at runtime
-      enabled = false,
+      enabled = true,
       -- you may also disable with `vim.g.pairs = false` (global) or `vim.b.pairs = false` (per-buffer)
       disabled_filetypes = {},
       -- see the defaults: https://github.com/Saghen/blink.pairs/blob/main/lua/blink/pairs/config/mappings.lua#L12
@@ -32,4 +32,7 @@ return {
     },
     debug = false,
   },
+  init = function()
+    vim.g.pairs = false -- NOTE: Somehow disabling it above does not work properly (weird enter behaviour in insert mode)
+  end,
 }
