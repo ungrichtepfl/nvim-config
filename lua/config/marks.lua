@@ -61,17 +61,11 @@ function mark_state:remove_mark(mark)
   vim.notify("Removed mark " .. mark)
 end
 
-function mark_state:show_marks_fzf(fzf)
-  local items = {}
-  for _, m in ipairs(self.marks_set) do
-    local fn = utils.mark_filename(m)
-    fn = vim.fn.fnamemodify(fn, ":.")
-    if fn then table.insert(items, string.format("%s: %s", m, fn)) end
-  end
-
+function mark_state:show_marks_fzf(fzf, items)
   fzf.fzf_exec(items, {
     prompt = "Marked Files> ",
     fzf_opts = {
+      ["--header"] = ":: <ctrl-d> to Delete Mark\n:: <ctrl-a> to Delete ALL Marks",
       ["--preview"] = "bat --style=numbers --color=always $(echo {} | sed 's/^\\([A-Za-z]\\): //')",
     },
     actions = {
@@ -96,9 +90,30 @@ function mark_state:show_marks_fzf(fzf)
   })
 end
 
+function mark_state:show_marks_builtin(items)
+  vim.ui.select(items, {
+    prompt = "Marked files>",
+  }, function(selected)
+    if selected then
+      local mark = selected:match "^(%a):"
+      if mark then goto_mark(mark) end
+    end
+  end)
+end
+
 function mark_state:show_marks()
+  local items = {}
+  for _, m in ipairs(self.marks_set) do
+    local fn = utils.mark_filename(m)
+    fn = vim.fn.fnamemodify(fn, ":.")
+    if fn then table.insert(items, string.format("%s: %s", m, fn)) end
+  end
   local ok, fzf = pcall(require, "fzf-lua")
-  if ok then self:show_marks_fzf(fzf) end
+  if ok then
+    self:show_marks_fzf(fzf, items)
+  else
+    self:show_marks_builtin(items)
+  end
 end
 
 local keymap = vim.keymap.set
