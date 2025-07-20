@@ -26,7 +26,7 @@ local function create_split_terminal(buf)
   return { buf = buf, win = win }
 end
 
-M.toggle_terminal = function()
+function M.toggle_terminal()
   if not vim.api.nvim_win_is_valid(term_state.win) then
     local id = create_split_terminal(term_state.buf)
     term_state.win = id.win
@@ -37,39 +37,17 @@ M.toggle_terminal = function()
   end
 end
 
--- My own [harpoon](https://github.com/ThePrimeagen/harpoon/tree/harpoon2) implementation
-
-local harpoon = {
-  index = "J",
-}
-
-local function update_index()
-  if harpoon.index == "H" then
-    harpoon.index = "J"
-  elseif harpoon.index == "J" then
-    harpoon.index = "K"
-  elseif harpoon.index == "K" then
-    harpoon.index = "H"
+function M.mark_filename(mark)
+  for _, m in ipairs(vim.fn.getmarklist()) do
+    if m.mark:sub(2, 2) == mark then return m.file end
   end
+  return nil
 end
 
-local function goto_last_edited()
+function M.goto_last_edited()
   local mark = vim.api.nvim_buf_get_mark(0, ".")
   local lcount = vim.api.nvim_buf_line_count(0)
   if mark[1] > 0 and mark[1] <= lcount then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
 end
-
-M.goto_mark = function(mark)
-  vim.cmd("'" .. mark)
-  goto_last_edited()
-end
-
-M.add_mark = function()
-  vim.cmd("normal m" .. harpoon.index)
-  vim.notify("Added mark: " .. harpoon.index)
-  update_index()
-end
-
-M.goto_last_edited = goto_last_edited
 
 return M

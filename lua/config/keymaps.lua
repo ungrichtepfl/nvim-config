@@ -26,8 +26,8 @@ end
 local layout_info = get_keyboard_layout()
 if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
   -- SWISS KEYBOARD --
-  keymap({ "i", "c" }, "<A-ü>", "[", { remap = true })
-  keymap({ "i", "c" }, "<A-¨>", "]", { remap = true })
+  keymap({ "i", "c" }, "<C-ü>", "[", { remap = true })
+  keymap({ "i", "c" }, "<C-¨>", "]", { remap = true })
   keymap({ "i", "c" }, "<C-ä>", "{", { remap = true })
   keymap({ "i", "c" }, "<C-$>", "}", { remap = true })
   keymap({ "n", "x" }, "ö", ";")
@@ -111,15 +111,6 @@ keymap("n", "<leader>pa", function()
   vim.notify("Copied path to clipboard: " .. path)
 end, { desc = "Copy full file path" })
 keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage" })
-
--- Mark handling
-keymap("n", "<leader>a", require("config.utils").add_mark, { desc = "Add a mark at current cursor position" })
-keymap("n", "<A-h>", function() require("config.utils").goto_mark "H" end, { desc = "Jump to mark H" })
-keymap("n", "<A-j>", function() require("config.utils").goto_mark "J" end, { desc = "Jump to mark J" })
-keymap("n", "<A-k>", function() require("config.utils").goto_mark "K" end, { desc = "Jump to mark K" })
-keymap("n", "<A-l>", function() require("config.utils").goto_mark "L" end, { desc = "Jump to mark L" })
-keymap("n", "<leader>m", "mM", { desc = "Set global mark M" })
-keymap("n", "<leader><leader>m", "`M", { desc = "Go to global mark M" })
 
 -- Visual --
 -- Stay in indent mode
