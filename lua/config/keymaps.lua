@@ -70,8 +70,10 @@ keymap("n", "]d", function()
 end, { desc = "Go to previous diagnostics" })
 
 -- Insert and Command --
-keymap({ "i" }, "<C-e>", "<End>", { desc = "Go to end of line" }) -- C-e already taken in command
-keymap({ "i", "c" }, "<C-a>", "<Home>", { desc = "Go to beginning of line" })
+keymap({ "i" }, "<C-e>", "<End>", { desc = "Go to end of line" })
+keymap({ "c" }, "<A-e>", "<End>", { desc = "Go to end of line" }) -- C-e already taken in command
+keymap({ "i" }, "<C-a>", "<Home>", { desc = "Go to beginning of line" })
+keymap({ "c" }, "<A-a>", "<Home>", { desc = "Go to beginning of line" })
 keymap({ "i", "c" }, "<C-b>", "<Left>", { desc = "Move cursor backwards" })
 keymap({ "i", "c" }, "<C-f>", "<Right>", { desc = "Move cursor forwards" })
 keymap({ "i", "c" }, "<C-d>", "<Del>", { desc = "Delete one character forward" })
