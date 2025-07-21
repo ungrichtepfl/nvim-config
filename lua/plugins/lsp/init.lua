@@ -290,6 +290,7 @@ return {
         "hide", -- To have a better resume
       },
     },
+    cmd = "FzfLua",
     keys = {
       { "<leader>f", "<cmd> FzfLua files<cr>", desc = "Find files" },
       { "<leader>g", "<cmd> FzfLua live_grep<cr>", desc = "Grep word in all files" },
