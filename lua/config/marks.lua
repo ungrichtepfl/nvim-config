@@ -17,6 +17,9 @@ local function get_file(dir)
 end
 
 function mark_state:load()
+  for _, m in ipairs(self.marks) do
+    vim.cmd("delmark " .. m)
+  end
   local filepath = get_file(get_dir())
   if vim.fn.filereadable(filepath) == 0 then
     -- File does not exist
@@ -53,11 +56,10 @@ function mark_state:load()
     local fn = self.marks_set[m]
     if fn then
       local bufnr = vim.fn.bufadd(vim.fn.expand(fn))
-      vim.fn.bufload(bufnr)
+      local loaded = vim.fn.bufloaded(bufnr) == 1
+      if not loaded then vim.fn.bufload(bufnr) end
       vim.api.nvim_buf_set_mark(bufnr, m, 1, 0, {})
-      vim.api.nvim_buf_delete(bufnr, { unload = true })
-    else
-      vim.cmd("delmark " .. m)
+      if not loaded then vim.api.nvim_buf_delete(bufnr, { unload = true }) end
     end
   end
 end
