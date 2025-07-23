@@ -1,4 +1,5 @@
 local keymap = vim.keymap.set
+local utils = require "config.utils"
 
 --          Mode  | Norm | Ins | Cmd | Vis | Sel | Opr | Term | Lang | ~
 -- Command        +------+-----+-----+-----+-----+-----+------+------+ ~
@@ -14,24 +15,14 @@ local keymap = vim.keymap.set
 -- t[nore]map     |  -   |  -  |  -  |  -  |  -  |  -  | yes  |  -   |
 -- l[nore]map     |  -   | yes | yes |  -  |  -  |  -  |  -   | yes  |
 
-local function get_keyboard_layout()
-  local handle = io.popen "setxkbmap -query"
-  if handle then
-    local result = handle:read "*a"
-    handle:close()
-    return result
-  end
-end
-
-local layout_info = get_keyboard_layout()
-if not layout_info or (layout_info and layout_info:match "layout:%s+ch") then
-  -- SWISS KEYBOARD --
+-- SWISS KEYBOARD --
+if utils.is_swiss_keyboard() then
   keymap({ "i", "c" }, "<C-ü>", "[", { remap = true })
   keymap({ "i", "c" }, "<C-¨>", "]", { remap = true })
   keymap({ "i", "c" }, "<C-ä>", "{", { remap = true })
   keymap({ "i", "c" }, "<C-$>", "}", { remap = true })
   keymap({ "n", "x" }, "gö", "g;")
-  keymap({ "n", "x" }, "ö", ";", { remap = true })
+  keymap({ "n", "x" }, "ö", ";")
   keymap({ "n", "x" }, "ü", "[", { remap = true })
   keymap({ "n", "x" }, "¨", "]", { remap = true })
 end
@@ -41,7 +32,7 @@ keymap({ "i" }, "jk", "<ESC>")
 keymap({ "c" }, "jk", "<C-C>")
 
 --- Toggle Terminal ---
-keymap({ "n", "t", "i" }, "<C-t>", require("config.utils").toggle_terminal, { desc = "Toggle Terminal" })
+keymap({ "n", "t", "i" }, "<C-t>", utils.toggle_terminal, { desc = "Toggle Terminal" })
 
 --- Sourcing & Running ---
 keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above

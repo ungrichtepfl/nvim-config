@@ -64,4 +64,18 @@ function M.unescape_path(escaped)
   return escaped:gsub("%%(%x%x)", function(hex) return string.char(tonumber(hex, 16)) end)
 end
 
+local function get_keyboard_layout()
+  local handle = io.popen "setxkbmap -query"
+  if handle then
+    local result = handle:read "*a"
+    handle:close()
+    return result
+  end
+end
+
+function M.is_swiss_keyboard()
+  local layout_info = get_keyboard_layout()
+  return layout_info and layout_info:match "layout:%s+ch"
+end
+
 return M
