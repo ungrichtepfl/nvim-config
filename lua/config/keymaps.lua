@@ -101,6 +101,8 @@ keymap("n", "<leader>pa", function()
   vim.notify("Copied path to clipboard: " .. path)
 end, { desc = "Copy full file path" })
 keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage" })
+keymap("n", "<leader>m", "mM", { desc = "Set global mark M" })
+keymap("n", "<leader><leader>m", "`M", { desc = "Go to global mark M" })
 
 -- Visual --
 -- Stay in indent mode
