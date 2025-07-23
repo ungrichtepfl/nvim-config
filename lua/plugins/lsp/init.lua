@@ -342,7 +342,11 @@ return {
       -- C-k: Toggle signature help (if signature.enabled = true)
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
-      keymap = { preset = "default" },
+      keymap = {
+        preset = "default",
+        ["<C-p>"] = { "show_and_insert", "select_prev", "fallback_to_mappings" },
+        ["<C-n>"] = { "show_and_insert", "select_next", "fallback_to_mappings" },
+      },
       signature = { enabled = true },
 
       appearance = {

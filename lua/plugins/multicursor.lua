@@ -1,7 +1,14 @@
 return {
   {
     "mg979/vim-visual-multi",
-    init = function() vim.g.VM_mouse_mappings = 1 end,
+    init = function()
+      vim.g.VM_mouse_mappings = 1
+      vim.cmd [[
+        let g:VM_maps = {}
+        let g:VM_maps['Find Under']         = '<C-m>'  " replace C-n
+        let g:VM_maps['Find Subword Under'] = '<C-m>'  " replace visual C-n
+      ]]
+    end,
   },
   {
     "jake-stewart/multicursor.nvim",
