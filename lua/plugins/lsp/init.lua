@@ -247,7 +247,7 @@ return {
   },
   {
     "mrcjkb/haskell-tools.nvim",
-    version = "^5",
+    version = "^6",
     lazy = false, -- This plugin is already lazy
     keys = {
       {
