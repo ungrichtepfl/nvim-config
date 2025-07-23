@@ -82,8 +82,6 @@ keymap("n", "<A-Left>", ":vertical resize -1<CR>", { desc = "Resize vertical min
 keymap("n", "<A-Right>", ":vertical resize +1<CR>", { desc = "Resize vertical plus" })
 
 keymap("n", "gm", "<cmd>bm<CR>", { desc = "Go to next modified buffer" })
-keymap("n", "<A-n>", "<cmd>cnext<CR>", { desc = "Switch to next quickfix item" })
-keymap("n", "<A-p>", "<cmd>cprev<CR>", { desc = "Switch to previous quickfix item" })
 keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
 keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
 
