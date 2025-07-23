@@ -26,7 +26,7 @@ return {
   opts = {
     open_for_directories = true,
     keymaps = {
-      show_help = "<f1>",
+      show_help = "g?",
     },
   },
   init = function()
