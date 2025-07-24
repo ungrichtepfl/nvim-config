@@ -66,7 +66,8 @@ keymap({ "c" }, "<A-e>", "<End>", { desc = "Go to end of line" }) -- C-e already
 keymap({ "i" }, "<C-a>", "<Home>", { desc = "Go to beginning of line" })
 keymap({ "c" }, "<A-a>", "<Home>", { desc = "Go to beginning of line" })
 keymap({ "i", "c" }, "<C-b>", "<Left>", { desc = "Move cursor backwards" })
-keymap({ "i", "c" }, "<C-f>", "<Right>", { desc = "Move cursor forwards" })
+keymap({ "i" }, "<C-f>", "<Right>", { desc = "Move cursor forwards" })
+keymap({ "c" }, "<A-f>", "<Right>", { desc = "Move cursor forwards" }) -- C-f already taken in command
 keymap({ "i", "c" }, "<C-d>", "<Del>", { desc = "Delete one character forward" })
 -- <C-o> does not work in command mode
 keymap({ "i" }, "<A-b>", "<C-o>b", { desc = "Move cursor back one word" })
