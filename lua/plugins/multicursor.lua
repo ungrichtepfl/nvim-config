@@ -2,7 +2,10 @@ return {
   {
     "mg979/vim-visual-multi",
     init = function()
-      -- HACK: Somehow Enter starts VisualMulti mode and only this disable it: https://github.com/mg979/vim-visual-multi/issues/293
+      -- HACK: Somehow Enter starts VisualMulti mode
+      -- when custom mappings are added
+      -- and only the following autocommand disables it.
+      -- See https://github.com/mg979/vim-visual-multi/issues/293
       local visual_multi_group = vim.api.nvim_create_augroup("_visual_multi", { clear = true })
       vim.api.nvim_create_autocmd("VimEnter", {
         group = visual_multi_group,
