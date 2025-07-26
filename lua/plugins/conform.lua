@@ -17,6 +17,7 @@ return {
       toml = { "prettierd", "prettier", stop_after_first = true },
       yaml = { "prettierd", "prettier", stop_after_first = true },
       markdown = { "prettierd", "prettier", stop_after_first = true },
+      json = { "prettierd", "prettier", stop_after_first = true },
       python = function(bufnr)
         if require("conform").get_formatter_info("ruff_format", bufnr).available then
           return {} -- Handled by ruff lsp
