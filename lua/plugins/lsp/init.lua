@@ -190,7 +190,7 @@ return {
           end
         end
         if server == "hls" then
-          local installed = require("lazy.core.config").plugins["haskell-tools"]
+          local installed = require("lazy.core.config").plugins["haskell-tools.nvim"]
           if installed then
             -- Don't load haskell_language_server if haskell_tools is loaded
             goto continue
