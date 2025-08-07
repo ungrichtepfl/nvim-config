@@ -286,15 +286,37 @@ return {
     "ibhagwan/fzf-lua",
     dependencies = { "echasnovski/mini.icons" },
     opts = {
-      {
-        "hide", -- To have a better resume
+      files = {
+        git_icons = true,
+        -- NOTE: using rg with sortr=modified displays recently modified files at the
+        --  top of the fzf input file list. Using the --tiebreak=index prefers
+        --  the files on top of the list.
+        --  CAVEAT: rg now runs SINGLE THREADED!
+        cmd = [[rg --files --color=never --hidden --files -g "!.git" --sortr=modified]],
+        fzf_opts = {
+          ["--tiebreak"] = "index",
+        },
+      },
+      keymap = {
+        builtin = {
+          true,
+          ["<M-j>"] = "preview-down",
+          ["<M-k>"] = "preview-up",
+          ["<C-d>"] = "preview-page-down",
+          ["<C-u>"] = "preview-page-up",
+        },
+        fzf = {
+          true,
+          ["ctrl-d"] = "preview-page-down",
+          ["ctrl-u"] = "preview-page-up",
+          ["ctrl-q"] = "select-all+accept",
+        },
       },
     },
     cmd = "FzfLua",
     keys = {
       { "<leader>f", "<cmd> FzfLua files<cr>", desc = "Find files" },
       { "<leader>g", "<cmd> FzfLua live_grep<cr>", desc = "Grep word in all files" },
-      { "<leader>r", "<cmd> FzfLua resume<cr>", desc = "Resume fzf picker" },
       { "<leader>b", "<cmd> FzfLua buffers<cr>", desc = "List of all open buffers" },
       { "<leader>s", "<cmd> FzfLua git_status<cr>", desc = "Show git status" },
       { "<leader>om", "<cmd> FzfLua marks<cr>", desc = "List of all marks" },
