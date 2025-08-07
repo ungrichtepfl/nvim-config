@@ -36,8 +36,8 @@ keymap({ "n", "t", "i" }, "<C-t>", utils.toggle_terminal, { desc = "Toggle Termi
 
 --- Sourcing & Running ---
 keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
-keymap("n", "<leader><leader>x", "<cmd>source %<CR>", { desc = "Source current file" })
-keymap("n", "<leader><leader>v", ":so<cr>", { desc = "Source current file" })
+keymap("n", "<leader><leader>x", "<cmd>!source %<CR>", { desc = "Source current file" })
+keymap("n", "<leader><leader>v", ":so<cr>", { desc = "Source current vim config file" })
 
 --- Keymaps ---
 keymap({ "n", "x" }, "my", '"+y', { desc = "Copy to system clipboard" })
@@ -102,6 +102,15 @@ keymap("n", "<leader>pa", function()
   vim.notify("Copied path to clipboard: " .. path)
 end, { desc = "Copy full file path" })
 keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage" })
+keymap("n", "<a-t><a-n>", function()
+  vim.cmd.tabnew()
+  local ok, fzf = pcall(require, "fzf-lua")
+  if ok then
+    fzf.files()
+  else
+    vim.api.nvim_feedkeys(":find ", "n", true)
+  end
+end, { desc = "Open a new tabpage" })
 keymap("n", "<leader>m", "mM", { desc = "Set global mark M" })
 keymap("n", "<leader><leader>m", "`M", { desc = "Go to global mark M" })
 
