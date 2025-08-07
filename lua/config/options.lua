@@ -10,6 +10,7 @@ vim.opt.sidescrolloff = 8 --Show at least X columns left and right to the cursor
 vim.opt.cursorline = true -- highlight the current line
 vim.opt.number = true -- keymap numbered lines
 vim.opt.relativenumber = true -- keymap relative numbered lines
+vim.opt.hlsearch = false -- Do not highlight all searches
 -- vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.opt.mouse = "a" -- Fully allow mouse
 -- { insert X spaces instead of tab:

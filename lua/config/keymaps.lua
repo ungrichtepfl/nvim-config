@@ -86,6 +86,7 @@ keymap("n", "gm", "<cmd>bm<CR>", { desc = "Go to next modified buffer" })
 keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
 keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
 
+keymap("n", "<C-h>", "<cmd>set hlsearch<CR>", { desc = "Highlight all the searches" })
 keymap("n", "<C-l>", "<cmd>nohlsearch<CR><C-l>", { desc = "Redraw screen and unhighlight" })
 keymap("i", "<C-l>", "<cmd>nohlsearch<CR>", { desc = "Unhighlight" })
 keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
