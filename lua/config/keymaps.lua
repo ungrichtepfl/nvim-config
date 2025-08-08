@@ -87,8 +87,16 @@ keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
 keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
 
 keymap("n", "<C-h>", "<cmd>set hlsearch<CR>", { desc = "Highlight all the searches" })
-keymap("n", "<C-l>", "<cmd>nohlsearch<CR><C-l>", { desc = "Redraw screen and unhighlight" })
-keymap("i", "<C-l>", "<cmd>nohlsearch<CR>", { desc = "Unhighlight" })
+keymap("n", "<C-l>", "<cmd>set nohlsearch<CR><C-l>", { desc = "Redraw screen and unhighlight" })
+keymap("i", "<C-l>", "<cmd>set nohlsearch<CR>", { desc = "Unhighlight" })
+-- Taken from help to highlight while searching
+vim.cmd [[ 
+  augroup vimrc-incsearch-highlight
+  autocmd!
+  autocmd CmdlineEnter /,\? :set hlsearch
+  autocmd CmdlineLeave /,\? :set nohlsearch
+  augroup END
+]]
 keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
 keymap("n", "<leader>W", ":w!<CR>", { desc = "Write file forced" })
 keymap("n", "<leader>q", ":conf q<CR>", { desc = "Close window with confirmation" })
