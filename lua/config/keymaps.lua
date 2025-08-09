@@ -134,3 +134,4 @@ keymap("x", "<S-k>", ":move '<-2<CR>gv-gv", { desc = "Move text down" })
 
 -- Terminal --
 keymap("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Leave Terminal Mode" })
+keymap("t", "jkjk", "<C-\\><C-n>", { desc = "Leave Terminal Mode" })
