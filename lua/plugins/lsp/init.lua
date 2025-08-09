@@ -370,7 +370,6 @@ return {
         ["<C-n>"] = { "show_and_insert", "select_next", "fallback_to_mappings" },
       },
       signature = { enabled = true },
-
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
@@ -380,9 +379,11 @@ return {
       -- (Default) Only show the documentation popup when manually triggered
       completion = {
         documentation = { auto_show = false },
+
         menu = {
           auto_show = false,
           draw = {
+            columns = { { "kind_icon" }, { "label", "label_description", "source_name" } },
             components = {
               -- Use mini.icons
               kind_icon = {
