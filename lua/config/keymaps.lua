@@ -17,10 +17,13 @@ local utils = require "config.utils"
 
 -- SWISS KEYBOARD --
 if utils.is_swiss_keyboard() then
-  keymap({ "i", "c" }, "<C-ü>", "[", { remap = true })
-  keymap({ "i", "c" }, "<C-¨>", "]", { remap = true })
-  keymap({ "i", "c" }, "<C-ä>", "{", { remap = true })
-  keymap({ "i", "c" }, "<C-$>", "}", { remap = true })
+  keymap({ "n", "v", "i", "t" }, "<C-ü>", "<ESC>")
+  keymap({ "c" }, "<C-ü>", "<C-C>")
+  keymap({ "t" }, "<C-ü><C-ü>", "<C-\\><C-n>")
+  keymap({ "i", "c" }, "<A-ü>", "[", { remap = true })
+  keymap({ "i", "c" }, "<A-¨>", "]", { remap = true })
+  keymap({ "i", "c" }, "<A-ä>", "{", { remap = true })
+  keymap({ "i", "c" }, "<A-$>", "}", { remap = true })
   keymap({ "n", "x" }, "gö", "g;")
   keymap({ "n", "x" }, "ö", ";")
   keymap({ "n", "x" }, "ü", "[", { remap = true })
@@ -43,6 +46,7 @@ keymap("n", "<leader><leader>v", ":so<cr>", { desc = "Source current vim config 
 keymap({ "n", "x" }, "my", '"+y', { desc = "Copy to system clipboard" })
 keymap({ "n" }, "mY", '"+Y', { desc = "Copy to system clipboard" })
 keymap("n", "mp", '"+p', { desc = "Paste from system clipboard" })
+keymap("n", "mP", '"+P', { desc = "Paste from system clipboard" })
 -- Paste in Visual with `P` to not copy selected text (`:h v_P`):
 keymap("x", "mp", '"+P', { desc = "Paste from system clipboard" })
 
