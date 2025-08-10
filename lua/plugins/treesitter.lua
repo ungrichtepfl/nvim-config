@@ -187,10 +187,10 @@ return {
 
       -- vim way: ; goes to the direction you were moving.
       if require("config.utils").is_swiss_keyboard() then
-        vim.keymap.set({ "n", "x", "o" }, "ö", ts_repeat_move.repeat_last_move, { expr = true })
+        vim.keymap.set({ "n", "x", "o" }, "ö", ts_repeat_move.repeat_last_move)
       end
-      vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move, { expr = true })
-      vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite, { expr = true })
+      vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
+      vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
 
       -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
       vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
