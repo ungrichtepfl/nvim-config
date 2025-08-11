@@ -42,7 +42,7 @@ git clone --branch "$latest_version" --depth 1 "https://github.com/$REPO.git"
 cd ueberzugpp
 
 # Build
-cmake -DCMAKE_BUILD_TYPE=Release -B build
+cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_OPENCV=OFF -B build
 cmake --build build --parallel
 mkdir -p "$INSTALL_DIR"
 cp build/ueberzugpp "$INSTALL_DIR/"
