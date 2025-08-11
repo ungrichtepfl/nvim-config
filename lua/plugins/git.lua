@@ -27,7 +27,7 @@ return {
       {
         "<leader>vpu",
         "<cmd>Neogit push<cr>",
-        desc = "Git pull",
+        desc = "Git push",
       },
       {
         "<leader>vl",
