@@ -366,20 +366,20 @@ return {
       -- See :h blink-cmp-config-keymap for defining your own keymap
       keymap = {
         preset = "default",
-        ["<C-p>"] = { "show_and_insert", "select_prev", "fallback_to_mappings" },
-        ["<C-n>"] = { "show_and_insert", "select_next", "fallback_to_mappings" },
+        ["<C-Space>"] = { "show_and_insert", "show_documentation", "hide_documentation" },
+        ["<C-z>"] = { "select_and_accept" }, -- Nicer for swiss keyboard
       },
-      signature = { enabled = true },
-      appearance = {
-        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- Adjusts spacing to ensure icons are aligned
-        nerd_font_variant = "mono",
+      signature = { enabled = false }, -- Ctrl-s is enough
+      cmdline = {
+        keymap = {
+          preset = "cmdline",
+          ["<C-Space>"] = { "show_and_insert", "show_documentation", "hide_documentation" },
+          ["<C-z>"] = { "select_and_accept" }, -- Nicer for swiss keyboard
+        },
       },
-
       -- (Default) Only show the documentation popup when manually triggered
       completion = {
         documentation = { auto_show = false },
-
         menu = {
           auto_show = false,
           draw = {
@@ -412,7 +412,7 @@ return {
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = { "buffer", "path", "snippets", "lsp" },
         providers = {
           path = {
             opts = {
