@@ -76,7 +76,7 @@ keymap({ "i", "c" }, "<C-d>", "<Del>", { desc = "Delete one character forward" }
 -- <C-o> does not work in command mode
 keymap({ "i" }, "<A-b>", "<C-o>b", { desc = "Move cursor back one word" })
 keymap({ "i" }, "<A-f>", "<C-o>w", { desc = "Move cursor forward one word" })
-keymap({ "i" }, "<C-m>", "<C-o>d$", { desc = "Clear all AFTER cursor" }) -- NOTE: C-k is already taken
+keymap({ "i" }, "<C-k>", "<C-o>d$", { desc = "Clear all AFTER cursor" })
 keymap({ "i" }, "<A-d>", "<C-o>dw", { desc = "delete the word FROM the cursor" })
 
 -- Normal --
@@ -138,4 +138,4 @@ keymap("x", "<S-k>", ":move '<-2<CR>gv-gv", { desc = "Move text down" })
 
 -- Terminal --
 keymap("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Leave Terminal Mode" })
-keymap("t", "jkjk", "<C-\\><C-n>", { desc = "Leave Terminal Mode" })
+keymap("t", "jk", "<C-\\><C-n>", { desc = "Leave Terminal Mode" })
