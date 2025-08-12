@@ -39,7 +39,7 @@ keymap({ "n", "t", "i" }, "<C-t>", utils.toggle_terminal, { desc = "Toggle Termi
 
 --- Sourcing & Running ---
 keymap("n", "<leader>x", "<cmd>bo split | terminal %:p<CR><cmd>startinsert!<CR>", { desc = "Run current file" }) -- TODO: Feed in toggle terminal command of above
-keymap("n", "<leader><leader>x", "<cmd>!source %<CR>", { desc = "Source current file" })
+keymap("n", "<leader><leader>x", ":!source %<CR>", { desc = "Source current file" })
 keymap("n", "<leader><leader>v", ":so<cr>", { desc = "Source current vim config file" })
 
 --- Keymaps ---
@@ -81,10 +81,10 @@ keymap({ "i" }, "<A-d>", "<C-o>dw", { desc = "delete the word FROM the cursor" }
 
 -- Normal --
 -- Resize with arrowskey
-keymap("n", "<A-Up>", ":resize +1<CR>", { desc = "Resize horizontal plus" })
-keymap("n", "<A-Down>", ":resize -1<CR>", { desc = "Resize horizontal minus" })
-keymap("n", "<A-Left>", ":vertical resize -1<CR>", { desc = "Resize vertical minus" })
-keymap("n", "<A-Right>", ":vertical resize +1<CR>", { desc = "Resize vertical plus" })
+keymap("n", "<A-Up>", ":resize +1<CR>", { silent = true, desc = "Resize horizontal plus" })
+keymap("n", "<A-Down>", ":resize -1<CR>", { silent = true, desc = "Resize horizontal minus" })
+keymap("n", "<A-Left>", ":vertical resize -1<CR>", { silent = true, desc = "Resize vertical minus" })
+keymap("n", "<A-Right>", ":vertical resize +1<CR>", { silent = true, desc = "Resize vertical plus" })
 
 keymap("n", "gm", "<cmd>bm<CR>", { desc = "Go to next modified buffer" })
 keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
@@ -101,20 +101,20 @@ vim.cmd [[
   autocmd CmdlineLeave /,\? :set nohlsearch
   augroup END
 ]]
-keymap("n", "<leader>w", ":w<CR>", { desc = "Write file" })
-keymap("n", "<leader>W", ":w!<CR>", { desc = "Write file forced" })
-keymap("n", "<leader>q", ":conf q<CR>", { desc = "Close window with confirmation" })
+keymap("n", "<leader>w", ":w<CR>", { silent = true, desc = "Write file" })
+keymap("n", "<leader>W", ":w!<CR>", { silent = true, desc = "Write file forced" })
+keymap("n", "<leader>q", ":conf q<CR>", { silent = true, desc = "Close window with confirmation" })
 keymap("n", "<leader>c", ":make ", { desc = "Compile file" })
 keymap("n", "<leader>f", ":find ", { desc = "Find file" })
 keymap("n", "<leader>g", ":vimgrep  **/*<LEFT><LEFT><LEFT><LEFT><LEFT>", { desc = "Find expression" })
-keymap("n", "<leader>e", ":Explore<CR>", { desc = "Open file explorer" })
+keymap("n", "<leader>e", ":Explore<CR>", { silent = true, desc = "Open file explorer" })
 -- Copy Full File-Path
 keymap("n", "<leader>pa", function()
   local path = vim.fn.expand "%:p"
   vim.fn.setreg("+", path)
   vim.notify("Copied path to clipboard: " .. path)
 end, { desc = "Copy full file path" })
-keymap("n", "<a-t><a-t>", ":tabclose<CR>", { desc = "Close a tabpage" })
+keymap("n", "<a-t><a-t>", ":tabclose<CR>", { silent = true, desc = "Close a tabpage" })
 keymap("n", "<a-t><a-n>", function()
   vim.cmd.tabnew()
   local ok, fzf = pcall(require, "fzf-lua")
@@ -133,8 +133,8 @@ keymap("x", ">", ">gv", { desc = "Stay in indent mode right" })
 keymap("x", "<", "<gv", { desc = "Stay in indent mode left" })
 keymap("x", "p", '"_dP', { desc = "Leave previous yank in buffer" }) -- Do not trigger in select mode
 -- Move text up and down
-keymap("x", "<S-j>", ":move '>+1<CR>gv-gv", { desc = "Move text up" })
-keymap("x", "<S-k>", ":move '<-2<CR>gv-gv", { desc = "Move text down" })
+keymap("x", "<S-j>", ":move '>+1<CR>gv-gv", { silent = true, desc = "Move text up" })
+keymap("x", "<S-k>", ":move '<-2<CR>gv-gv", { silent = true, desc = "Move text down" })
 
 -- Terminal --
 keymap("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Leave Terminal Mode" })
