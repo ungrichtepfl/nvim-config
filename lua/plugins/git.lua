@@ -38,7 +38,14 @@ return {
   },
   {
     "sindrets/diffview.nvim",
-    opts = {},
+    opts = {
+      file_panel = {
+        win_config = {
+          position = "left",
+          width = math.floor(vim.o.columns / 5),
+        },
+      },
+    },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "DiffviewOpen",
     keys = {
