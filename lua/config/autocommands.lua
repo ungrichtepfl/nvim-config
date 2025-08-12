@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("FileType", {
   group = general_settings,
   pattern = { "qf", "help", "man", "lspinfo", "vim" },
-  callback = function() vim.keymap.set("n", "q", ":close<CR>") end,
+  callback = function() vim.keymap.set("n", "q", ":close<CR>", { buffer = true }) end,
 })
 
 -- Disable auto-comment on newline (leave here as maybe I want it on some ft in the future)
