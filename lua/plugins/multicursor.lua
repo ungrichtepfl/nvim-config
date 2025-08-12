@@ -1,23 +1,7 @@
 return {
   {
     "mg979/vim-visual-multi",
-    init = function()
-      -- HACK: Somehow Enter starts VisualMulti mode
-      -- when custom mappings are added
-      -- and only the following autocommand disables it.
-      -- See https://github.com/mg979/vim-visual-multi/issues/293
-      local visual_multi_group = vim.api.nvim_create_augroup("_visual_multi", { clear = true })
-      vim.api.nvim_create_autocmd("VimEnter", {
-        group = visual_multi_group,
-        callback = function() vim.cmd.nunmap "<enter>" end,
-      })
-      vim.g.VM_mouse_mappings = 1
-      vim.cmd [[
-        let g:VM_maps = {}
-        let g:VM_maps['Find Under']         = '<C-m>'  " replace C-n
-        let g:VM_maps['Find Subword Under'] = '<C-m>'  " replace visual C-n
-      ]]
-    end,
+    init = function() vim.g.VM_mouse_mappings = 1 end,
   },
   {
     "jake-stewart/multicursor.nvim",
