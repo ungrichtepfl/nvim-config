@@ -5,45 +5,46 @@ vim.g.maplocalleader = " "
 vim.cmd.colorscheme "habamax"
 
 ----  GENERAL OPTIONS ------
-vim.opt.scrolloff = 8 -- Show at least X lines above the cursor
-vim.opt.sidescrolloff = 8 --Show at least X columns left and right to the cursor
-vim.opt.cursorline = true -- highlight the current line
-vim.opt.number = true -- keymap numbered lines
-vim.opt.relativenumber = true -- keymap relative numbered lines
-vim.opt.hlsearch = false -- Do not highlight all searches
--- vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
-vim.opt.mouse = "a" -- Fully allow mouse
+-- TODO: Change vim.opt to vim.o in the future:
+vim.o.scrolloff = 8 -- Show at least X lines above the cursor
+vim.o.sidescrolloff = 8 --Show at least X columns left and right to the cursor
+vim.o.cursorline = true -- highlight the current line
+vim.o.number = true -- keymap numbered lines
+vim.o.relativenumber = true -- keymap relative numbered lines
+vim.o.hlsearch = false -- Do not highlight all searches
+-- vim.o.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
+vim.o.mouse = "a" -- Fully allow mouse
 -- { insert X spaces instead of tab:
-vim.opt.tabstop = 2 -- Width of a tab character
-vim.opt.shiftwidth = 2 -- Indent width for >>, <<, etc.
-vim.opt.softtabstop = 2 -- Insert X spaces when pressing <Tab>
-vim.opt.expandtab = true -- Convert tabs to spaces
-vim.opt.autoindent = true -- Copy indent from current line
-vim.opt.smartindent = true -- Smart indent based on code syntax
+vim.o.tabstop = 2 -- Width of a tab character
+vim.o.shiftwidth = 2 -- Indent width for >>, <<, etc.
+vim.o.softtabstop = 2 -- Insert X spaces when pressing <Tab>
+vim.o.expandtab = true -- Convert tabs to spaces
+vim.o.autoindent = true -- Copy indent from current line
+vim.o.smartindent = true -- Smart indent based on code syntax
 -- }
-vim.opt.nrformats = "bin,hex" -- ctrl-x and ctrl-a behaviour
-vim.opt.completeopt = "menuone,noselect,fuzzy" -- How completion should work
-vim.opt.wildmode = "longest:full,full" -- Prioritize exact matches
+vim.o.nrformats = "bin,hex" -- ctrl-x and ctrl-a behaviour
+vim.o.completeopt = "menuone,noselect,fuzzy" -- How completion should work
+vim.o.wildmode = "longest:full,full" -- Prioritize exact matches
 vim.opt.wildignore:append { "*.o", "*.obj", "*.pyc", "*.class", "*.jar" }
-vim.opt.history = 200 -- How many commands should be remembered
-vim.opt.writebackup = false -- Do not write a backup file for the current unsaved bufferchanges
-vim.opt.undofile = true -- enable persistent undo
-vim.opt.swapfile = false -- If a swapfile is used
-vim.opt.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milliseconds)
-vim.opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time (diagnostics, etc.)
-vim.opt.pumheight = 10 -- Otherwise the popup windows are too big
-vim.opt.synmaxcol = 300 -- Only highlight a line with less then X columns
-vim.opt.updatetime = 300 -- default is 4000ms (4 seconds), so 300ms is much snappier (triggers Curserhold)
-vim.opt.timeoutlen = 500 -- Wait milliseconds for mapped secence to complete
-vim.opt.ttimeoutlen = 0 -- Milliseconds to wait for a key code sequence to complete
+vim.o.history = 200 -- How many commands should be remembered
+vim.o.writebackup = false -- Do not write a backup file for the current unsaved bufferchanges
+vim.o.undofile = true -- enable persistent undo
+vim.o.swapfile = false -- If a swapfile is used
+vim.o.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milliseconds)
+vim.o.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time (diagnostics, etc.)
+vim.o.pumheight = 10 -- Otherwise the popup windows are too big
+vim.o.synmaxcol = 300 -- Only highlight a line with less then X columns
+vim.o.updatetime = 300 -- default is 4000ms (4 seconds), so 300ms is much snappier (triggers Curserhold)
+vim.o.timeoutlen = 500 -- Wait milliseconds for mapped secence to complete
+vim.o.ttimeoutlen = 0 -- Milliseconds to wait for a key code sequence to complete
 vim.opt.iskeyword:append "-" -- What characters are considered as a "word"
 vim.opt.path:append "**" -- Such that "find" also considers subdirectories
-vim.opt.splitbelow = true -- New window will be opened below
-vim.opt.splitright = true -- New window will be on the right side
-vim.opt.foldmethod = "expr" -- Use foldexpr as fold
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- Which foldexpr to use
-vim.opt.foldlevel = 99 -- Do not start folded in
+vim.o.splitbelow = true -- New window will be opened below
+vim.o.splitright = true -- New window will be on the right side
+vim.o.foldmethod = "expr" -- Use foldexpr as fold
+vim.o.foldexpr = "nvim_treesitter#foldexpr()" -- Which foldexpr to use
+vim.o.foldlevel = 99 -- Do not start folded in
 vim.opt.diffopt:append "linematch:60" -- As recommended in help
 -- Performance improvements
-vim.opt.maxmempattern = 20000 -- Increase memory for regex matches
+vim.o.maxmempattern = 20000 -- Increase memory for regex matches
 ----

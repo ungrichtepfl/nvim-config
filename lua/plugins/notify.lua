@@ -9,7 +9,7 @@ return {
   },
   enabled = function() return vim.env.COLORTERM == "truecolor" or vim.env.TERM == "xterm-truecolor" end,
   init = function()
-    vim.opt.termguicolors = true
+    vim.o.termguicolors = true
     vim.notify = require "notify"
   end,
 }

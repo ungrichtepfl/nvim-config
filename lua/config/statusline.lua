@@ -79,10 +79,11 @@ vim.cmd [[
 
 -- Function to change statusline based on window focus
 local function setup_dynamic_statusline()
-  vim.opt.showmode = false
+  vim.o.showmode = false
   vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
     group = default_statusline_autogroup,
     callback = function()
+      -- TODO: Change to vim.bo in the future
       vim.opt_local.statusline = table.concat {
         "  ",
         "%#StatusLineBold#",
