@@ -366,15 +366,15 @@ return {
       -- See :h blink-cmp-config-keymap for defining your own keymap
       keymap = {
         preset = "default",
-        ["<C-Space>"] = { "show_and_insert", "show_documentation", "hide_documentation" },
-        ["<C-z>"] = { "select_and_accept" }, -- Nicer for swiss keyboard
+        ["<C-z>"] = { "show_and_insert", "select_and_accept", "fallback" }, -- Nicer for swiss keyboard
+        ["<C-y>"] = { "show_and_insert", "select_and_accept" },
       },
       signature = { enabled = false }, -- Ctrl-s is enough
       cmdline = {
         keymap = {
           preset = "cmdline",
-          ["<C-Space>"] = { "show_and_insert", "show_documentation", "hide_documentation" },
-          ["<C-z>"] = { "select_and_accept" }, -- Nicer for swiss keyboard
+          ["<C-z>"] = { "show_and_insert", "select_and_accept", "fallback" }, -- Nicer for swiss keyboard
+          ["<C-y>"] = { "show_and_insert", "select_and_accept" },
         },
       },
       -- (Default) Only show the documentation popup when manually triggered
