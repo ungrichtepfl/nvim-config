@@ -43,12 +43,12 @@ keymap("n", "<leader><leader>x", ":!source %<CR>", { desc = "Source current file
 keymap("n", "<leader><leader>v", ":so<cr>", { desc = "Source current vim config file" })
 
 --- Keymaps ---
-keymap({ "n", "x" }, "my", '"+y', { desc = "Copy to system clipboard" })
-keymap({ "n" }, "mY", '"+Y', { desc = "Copy to system clipboard" })
-keymap("n", "mp", '"+p', { desc = "Paste from system clipboard" })
-keymap("n", "mP", '"+P', { desc = "Paste from system clipboard" })
+keymap({ "n", "x" }, "by", '"+y', { desc = "Copy to system clipboard" })
+keymap({ "n" }, "bY", '"+Y', { desc = "Copy to system clipboard" })
+keymap("n", "bp", '"+p', { desc = "Paste from system clipboard" })
+keymap("n", "bP", '"+P', { desc = "Paste from system clipboard" })
 -- Paste in Visual with `P` to not copy selected text (`:h v_P`):
-keymap("x", "mp", '"+P', { desc = "Paste from system clipboard" })
+keymap("x", "bp", '"+P', { desc = "Paste from system clipboard" })
 
 --- Diagnostics ---
 keymap("n", "[d", function()
