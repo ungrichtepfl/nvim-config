@@ -21,14 +21,14 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   -- c: auto-wrap comments
   -- r: auto-insert comment leader on <CR>
   -- o: auto-insert comment leader on o/O
-  callback = function() vim.opt_local.formatoptions:remove { "c", "r", "o" } end,
+  callback = function() vim.bo.formatoptions = vim.bo.formatoptions:gsub("c", ""):gsub("r", ""):gsub("o", "") end,
 })
 
 -- Make buffers not listed
 vim.api.nvim_create_autocmd("FileType", {
   group = general_settings,
   pattern = "qf",
-  callback = function() vim.opt_local.buflisted = false end,
+  callback = function() vim.bo.buflisted = false end,
 })
 
 -- Return to last edit position when opening files
@@ -42,8 +42,8 @@ vim.api.nvim_create_autocmd("FileType", {
   group = general_settings,
   pattern = { "python" },
   callback = function()
-    vim.opt_local.tabstop = 4
-    vim.opt_local.shiftwidth = 4
+    vim.bo.tabstop = 4
+    vim.bo.shiftwidth = 4
   end,
 })
 
@@ -51,8 +51,8 @@ vim.api.nvim_create_autocmd("FileType", {
   group = general_settings,
   pattern = { "c", "cpp", "rust", "javascript", "typescript", "json", "html", "css" },
   callback = function()
-    vim.opt_local.tabstop = 2
-    vim.opt_local.shiftwidth = 2
+    vim.bo.tabstop = 2
+    vim.bo.shiftwidth = 2
   end,
 })
 
@@ -64,12 +64,12 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "mail",
   callback = function()
     -- No wrapping
-    vim.opt_local.textwidth = 0
-    vim.opt_local.wrapmargin = 0
+    vim.bo.textwidth = 0
+    vim.bo.wrapmargin = 0
     -- t – Auto-wrap text using textwidth
     -- a – Auto formatting
-    vim.opt_local.formatoptions:remove { "t", "a" }
-    vim.opt_local.spell = true
+    vim.bo.formatoptions = vim.bo.formatoptions:gsub("t", ""):gsub("a", "")
+    vim.wo[0][0].spell = true
   end,
 })
 
@@ -78,8 +78,8 @@ vim.api.nvim_create_autocmd("FileType", {
   group = git_group,
   pattern = "gitcommit",
   callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
+    vim.wo[0][0].wrap = true
+    vim.wo[0][0].spell = true
   end,
 })
 
@@ -88,8 +88,8 @@ vim.api.nvim_create_autocmd("FileType", {
   group = markdown_group,
   pattern = "markdown",
   callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
+    vim.wo[0][0].wrap = true
+    vim.wo[0][0].spell = true
   end,
 })
 
@@ -106,7 +106,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("TermOpen", {
   group = vim.api.nvim_create_augroup("_custom_term_open", { clear = true }),
   callback = function()
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
+    vim.wo[0][0].number = false
+    vim.wo[0][0].relativenumber = false
   end,
 })

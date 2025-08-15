@@ -43,7 +43,7 @@ return {
   init = function()
     vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
       pattern = vault_path .. "/*.md",
-      callback = function() vim.opt_local.conceallevel = 2 end,
+      callback = function() vim.wo[0][0].conceallevel = 2 end,
       desc = "Set conceallevel=2 for markdown in vault",
     })
   end,

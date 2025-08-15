@@ -84,7 +84,7 @@ local function setup_dynamic_statusline()
     group = default_statusline_autogroup,
     callback = function()
       -- TODO: Change to vim.bo in the future
-      vim.opt_local.statusline = table.concat {
+      vim.wo[0][0].statusline = table.concat {
         "  ",
         "%#StatusLineBold#",
         "%{v:lua.mode_icon()}",
@@ -104,7 +104,7 @@ local function setup_dynamic_statusline()
 
   vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave" }, {
     group = default_statusline_autogroup,
-    callback = function() vim.opt_local.statusline = "  %f %h%m%r │ %{v:lua.file_type()} | %=  %l:%c   %P " end,
+    callback = function() vim.wo[0][0].statusline = "  %f %h%m%r │ %{v:lua.file_type()} | %=  %l:%c   %P " end,
   })
 end
 

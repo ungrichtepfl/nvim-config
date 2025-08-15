@@ -5,7 +5,6 @@ vim.g.maplocalleader = " "
 vim.cmd.colorscheme "habamax"
 
 ----  GENERAL OPTIONS ------
--- TODO: Change vim.opt to vim.o in the future:
 vim.o.scrolloff = 8 -- Show at least X lines above the cursor
 vim.o.sidescrolloff = 8 --Show at least X columns left and right to the cursor
 vim.o.cursorline = true -- highlight the current line
@@ -25,7 +24,7 @@ vim.o.smartindent = true -- Smart indent based on code syntax
 vim.o.nrformats = "bin,hex" -- ctrl-x and ctrl-a behaviour
 vim.o.completeopt = "menuone,noselect,fuzzy" -- How completion should work
 vim.o.wildmode = "longest:full,full" -- Prioritize exact matches
-vim.opt.wildignore:append { "*.o", "*.obj", "*.pyc", "*.class", "*.jar" }
+vim.o.wildignore = vim.o.wildignore .. "*.o,*.obj,*.pyc,*.class*.jar"
 vim.o.history = 200 -- How many commands should be remembered
 vim.o.writebackup = false -- Do not write a backup file for the current unsaved bufferchanges
 vim.o.undofile = true -- enable persistent undo
@@ -37,14 +36,13 @@ vim.o.synmaxcol = 300 -- Only highlight a line with less then X columns
 vim.o.updatetime = 300 -- default is 4000ms (4 seconds), so 300ms is much snappier (triggers Curserhold)
 vim.o.timeoutlen = 500 -- Wait milliseconds for mapped secence to complete
 vim.o.ttimeoutlen = 0 -- Milliseconds to wait for a key code sequence to complete
-vim.opt.iskeyword:append "-" -- What characters are considered as a "word"
-vim.opt.path:append "**" -- Such that "find" also considers subdirectories
+vim.o.iskeyword = vim.o.iskeyword .. ",-" -- What characters are considered as a "word"
+vim.o.path = vim.o.path .. ",**" -- Such that "find" also considers subdirectories
 vim.o.splitbelow = true -- New window will be opened below
 vim.o.splitright = true -- New window will be on the right side
 vim.o.foldmethod = "expr" -- Use foldexpr as fold
 vim.o.foldexpr = "nvim_treesitter#foldexpr()" -- Which foldexpr to use
 vim.o.foldlevel = 99 -- Do not start folded in
-vim.opt.diffopt:append "linematch:60" -- As recommended in help
 -- Performance improvements
 vim.o.maxmempattern = 20000 -- Increase memory for regex matches
 ----

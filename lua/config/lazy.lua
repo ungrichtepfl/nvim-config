@@ -13,8 +13,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     os.exit(1)
   end
 end
--- TODO: Change to vim.o in the future
-vim.opt.rtp:prepend(lazypath)
+
+vim.o.rtp =lazypath .. "," .. vim.o.rtp
 
 -- Setup lazy.nvim
 require("lazy").setup {
