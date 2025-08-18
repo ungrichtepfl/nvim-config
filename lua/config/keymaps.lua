@@ -43,12 +43,12 @@ keymap("n", "<leader><leader>x", ":!source %<CR>", { desc = "Source current file
 keymap("n", "<leader><leader>v", ":so<cr>", { desc = "Source current vim config file" })
 
 --- Keymaps ---
-keymap({ "n", "x" }, "by", '"+y', { desc = "Copy to system clipboard" })
-keymap({ "n" }, "bY", '"+Y', { desc = "Copy to system clipboard" })
-keymap("n", "bp", '"+p', { desc = "Paste from system clipboard" })
-keymap("n", "bP", '"+P', { desc = "Paste from system clipboard" })
+keymap({ "n", "x" }, "<leader>y", '"+y', { desc = "Copy to system clipboard" })
+keymap({ "n" }, "<leader>Y", '"+Y', { desc = "Copy to system clipboard" })
+keymap("n", "<leader>p", '"+p', { desc = "Paste from system clipboard" })
+keymap("n", "<leader>P", '"+P', { desc = "Paste from system clipboard" })
 -- Paste in Visual with `P` to not copy selected text (`:h v_P`):
-keymap("x", "bp", '"+P', { desc = "Paste from system clipboard" })
+keymap("x", "<leader>p", '"+P', { desc = "Paste from system clipboard" })
 
 --- Diagnostics ---
 keymap("n", "[d", function()
@@ -109,7 +109,7 @@ keymap("n", "<leader>f", ":find ", { desc = "Find file" })
 keymap("n", "<leader>g", ":vimgrep  **/*<LEFT><LEFT><LEFT><LEFT><LEFT>", { desc = "Find expression" })
 keymap("n", "<leader>e", ":Explore<CR>", { silent = true, desc = "Open file explorer" })
 -- Copy Full File-Path
-keymap("n", "<leader>pa", function()
+keymap("n", "<leader>C", function()
   local path = vim.fn.expand "%:p"
   vim.fn.setreg("+", path)
   vim.notify("Copied path to clipboard: " .. path)
