@@ -376,6 +376,14 @@ return {
           ["<C-z>"] = { "show_and_insert", "select_and_accept", "fallback" }, -- Nicer for swiss keyboard
           ["<C-y>"] = { "show_and_insert", "select_and_accept" },
         },
+        sources = function()
+          local type = vim.fn.getcmdtype()
+          -- Search forward and backward
+          if type == "/" or type == "?" then return { "buffer" } end
+          -- Commands
+          if type == ":" or type == "@" then return { "cmdline", "path", "buffer" } end
+          return {}
+        end,
       },
       -- (Default) Only show the documentation popup when manually triggered
       completion = {
