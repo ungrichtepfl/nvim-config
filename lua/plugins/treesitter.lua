@@ -224,4 +224,9 @@ return {
     lazy = false,
     opts = {},
   },
+  {
+    "windwp/nvim-ts-autotag",
+    opts = {},
+    lazy = false,
+  },
 }
