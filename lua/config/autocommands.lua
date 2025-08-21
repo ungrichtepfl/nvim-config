@@ -70,12 +70,6 @@ vim.api.nvim_create_autocmd("FileType", {
     -- a – Auto formatting
     vim.bo.formatoptions = vim.bo.formatoptions:gsub("t", ""):gsub("a", "")
     vim.wo[0][0].spell = true
-    vim.keymap.set( -- FIXME: Somehow neomutt adds another keymap
-      "n",
-      "<leader>q",
-      ":conf q<CR>",
-      { buffer = true, silent = true, desc = "Close window with confirmation" }
-    )
   end,
 })
 

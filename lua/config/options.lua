@@ -1,6 +1,7 @@
 ---- LEADER KEYS ----
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = "-"
+
 ---- Default colorscheme ----
 vim.cmd.colorscheme "habamax"
 
