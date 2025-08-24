@@ -235,7 +235,7 @@ return {
   },
   {
     "mrcjkb/rustaceanvim",
-    version = "^6",
+    version = "*",
     lazy = false, -- This plugin is already lazy
     keys = {
       {
@@ -247,7 +247,7 @@ return {
   },
   {
     "mrcjkb/haskell-tools.nvim",
-    version = "^6",
+    version = "*",
     lazy = false, -- This plugin is already lazy
     keys = {
       {
@@ -345,7 +345,7 @@ return {
     dependencies = { { "rafamadriz/friendly-snippets" }, { "echasnovski/mini.icons" } },
 
     -- use a release tag to download pre-built binaries
-    version = "1.*",
+    version = "*",
     -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
     -- build = 'cargo build --release',
     -- If you use nix, you can build from source using latest nightly rust with:
