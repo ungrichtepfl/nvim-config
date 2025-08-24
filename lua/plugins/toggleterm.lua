@@ -9,7 +9,7 @@ return {
     },
     {
       "<leader>x",
-      '<cmd>TermExec cmd="%:p"<cr>',
+      '<cmd>2TermExec go_back=0 cmd="%:p"<cr>',
       mode = { "n" },
       desc = "Run current file",
     },
