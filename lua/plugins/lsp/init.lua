@@ -300,8 +300,8 @@ return {
       keymap = {
         builtin = {
           true,
-          ["<M-j>"] = "preview-down",
-          ["<M-k>"] = "preview-up",
+          ["<C-j>"] = "preview-down",
+          ["<C-k>"] = "preview-up",
           ["<C-d>"] = "preview-page-down",
           ["<C-u>"] = "preview-page-up",
         },
@@ -368,6 +368,8 @@ return {
         preset = "default",
         ["<C-z>"] = { "show_and_insert", "select_and_accept", "fallback" }, -- Nicer for swiss keyboard
         ["<C-y>"] = { "show_and_insert", "select_and_accept" },
+        ["<C-j>"] = { "scroll_documentation_down", "fallback" },
+        ["<C-k>"] = { "scroll_documentation_up", "fallback" },
       },
       signature = { enabled = false }, -- Ctrl-s is enough
       cmdline = {
