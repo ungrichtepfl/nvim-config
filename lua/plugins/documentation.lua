@@ -1,7 +1,6 @@
 return {
   {
     "kkoomen/vim-doge",
-    cmd = "DogeGenerate",
     lazy = false, -- Already lazy on filetypes
     build = [[:call doge#install()]],
     keys = {
