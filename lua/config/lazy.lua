@@ -14,7 +14,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 
-vim.o.rtp =lazypath .. "," .. vim.o.rtp
+vim.o.rtp = lazypath .. "," .. vim.o.rtp
 
 -- Setup lazy.nvim
 require("lazy").setup {
