@@ -12,6 +12,7 @@ return {
   opts = {
     -- Define your formatters
     formatters_by_ft = {
+      rust = { "cargo format" },
       lua = { "stylua" },
       javascript = { "prettierd", "prettier", stop_after_first = true },
       toml = { "prettierd", "prettier", stop_after_first = true },
