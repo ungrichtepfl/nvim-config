@@ -285,6 +285,7 @@ return {
   {
     "ibhagwan/fzf-lua",
     dependencies = { "echasnovski/mini.icons" },
+    event = "VimEnter", -- Needed for ui select to work properly
     opts = {
       files = {
         git_icons = true,
