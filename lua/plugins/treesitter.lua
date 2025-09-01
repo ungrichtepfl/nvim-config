@@ -109,8 +109,21 @@ return {
       },
     },
     lazy = false,
-    config = function(_, opts)
+    config = function(opts, _)
       require("nvim-treesitter-textobjects").setup(opts)
+      vim.keymap.set(
+        "n",
+        "gs",
+        function() require("nvim-treesitter-textobjects.swap").swap_next "@parameter.inner" end,
+        { desc = "Swap inner parameter in function" }
+      )
+      vim.keymap.set(
+        "n",
+        "gS",
+        function() require("nvim-treesitter-textobjects.swap").swap_next "@parameter.outer" end,
+        { desc = "Swap outer parameter in function" }
+      )
+
       local select_keymaps = {
         -- You can use the capture groups defined in textobjects.scm
         ["aa"] = { "@parameter.outer", "textobjects" },
@@ -139,24 +152,28 @@ return {
 
       local move_keymaps = {
         goto_next_start = {
-          ["]m"] = { "@function.outer", "textobjects" },
+          ["]f"] = { "@function.outer", "textobjects" },
           ["]n"] = { "@class.outer", "textobjects" },
           ["]o"] = { "@conditional.outer", "textobjects" },
+          ["]w"] = { "@loop.outer", "textobjects" },
         },
         goto_next_end = {
-          ["]M"] = { "@function.outer", "textobjects" },
+          ["]F"] = { "@function.outer", "textobjects" },
           ["]N"] = { "@class.outer", "textobjects" },
           ["]O"] = { "@conditional.outer", "textobjects" },
+          ["]W"] = { "@loop.outer", "textobjects" },
         },
         goto_previous_start = {
-          ["[m"] = { "@function.outer", "textobjects" },
+          ["[f"] = { "@function.outer", "textobjects" },
           ["[n"] = { "@class.outer", "textobjects" },
           ["[o"] = { "@conditional.outer", "textobjects" },
+          ["[w"] = { "@loop.outer", "textobjects" },
         },
         goto_previous_end = {
-          ["[M"] = { "@function.outer", "textobjects" },
+          ["[F"] = { "@function.outer", "textobjects" },
           ["[N"] = { "@class.outer", "textobjects" },
           ["[O"] = { "@conditional.outer", "textobjects" },
+          ["[W"] = { "@loop.outer", "textobjects" },
         },
         goto_next = {
           -- Start or end whichever is closer
