@@ -115,23 +115,27 @@ return {
         "n",
         "gs",
         function() require("nvim-treesitter-textobjects.swap").swap_next "@parameter.inner" end,
-        { desc = "Swap inner parameter in function" }
+        { desc = "Swap with next parameter in function" }
       )
       vim.keymap.set(
         "n",
         "gS",
-        function() require("nvim-treesitter-textobjects.swap").swap_next "@parameter.outer" end,
-        { desc = "Swap outer parameter in function" }
+        function() require("nvim-treesitter-textobjects.swap").swap_previous "@parameter.inner" end,
+        { desc = "Swap with previous parameter in function" }
       )
 
       local select_keymaps = {
         -- You can use the capture groups defined in textobjects.scm
         ["aa"] = { "@parameter.outer", "textobjects" },
         ["ia"] = { "@parameter.inner", "textobjects" },
-        ["af"] = { "@function.outer", "textobjects" },
-        ["if"] = { "@function.inner", "textobjects" },
-        ["ac"] = { "@class.outer", "textobjects" },
-        ["ic"] = { "@class.inner", "textobjects" },
+        ["am"] = { "@function.outer", "textobjects" },
+        ["im"] = { "@function.inner", "textobjects" },
+        ["an"] = { "@class.outer", "textobjects" },
+        ["in"] = { "@class.inner", "textobjects" },
+        ["ao"] = { "@conditional.outer", "textobjects" },
+        ["io"] = { "@conditional.inner", "textobjects" },
+        ["af"] = { "@loop.outer", "textobjects" },
+        ["if"] = { "@loop.inner", "textobjects" },
         ["as"] = { "@local.scope", "locals" },
       }
 
@@ -152,24 +156,28 @@ return {
 
       local move_keymaps = {
         goto_next_start = {
+          ["]a"] = { "@parameter.inner", "textobjects" },
           ["]m"] = { "@function.outer", "textobjects" },
           ["]n"] = { "@class.outer", "textobjects" },
           ["]o"] = { "@conditional.outer", "textobjects" },
           ["]f"] = { "@loop.outer", "textobjects" },
         },
         goto_next_end = {
+          ["]A"] = { "@parameter.inner", "textobjects" },
           ["]M"] = { "@function.outer", "textobjects" },
           ["]N"] = { "@class.outer", "textobjects" },
           ["]O"] = { "@conditional.outer", "textobjects" },
           ["]F"] = { "@loop.outer", "textobjects" },
         },
         goto_previous_start = {
+          ["[a"] = { "@parameter.inner", "textobjects" },
           ["[m"] = { "@function.outer", "textobjects" },
           ["[n"] = { "@class.outer", "textobjects" },
           ["[o"] = { "@conditional.outer", "textobjects" },
           ["[f"] = { "@loop.outer", "textobjects" },
         },
         goto_previous_end = {
+          ["[A"] = { "@parameter.inner", "textobjects" },
           ["[M"] = { "@function.outer", "textobjects" },
           ["[N"] = { "@class.outer", "textobjects" },
           ["[O"] = { "@conditional.outer", "textobjects" },
