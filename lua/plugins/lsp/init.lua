@@ -166,16 +166,18 @@ return {
       ----------------- SERVERS ----------------
       ------------------------------------------
       local all_servers = vim.tbl_deep_extend("force", auto_installed_servers, manual_installed_servers)
+      local blink = require "blink.cmp"
       -- Additional manual settings:
+      local capabilities = { -- specify your own
+      }
+      capabilities = blink.get_lsp_capabilities(capabilities)
       for _, server in ipairs(all_servers) do
-        local capabilities = {} -- specify your own
-        capabilities = vim.lsp.protocol.make_client_capabilities(capabilities) -- Includes the one from nvim per default
         local opts = {
           capabilities = capabilities,
         }
         local server_status_ok, server_opts = pcall(require, "plugins.lsp.settings." .. server)
         if server_status_ok then
-          opts = vim.tbl_deep_extend("force", server_opts, opts)
+          opts = vim.tbl_deep_extend("force", opts, server_opts)
           vim.lsp.config(server, opts)
         end
       end
