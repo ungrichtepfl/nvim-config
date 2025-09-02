@@ -42,8 +42,7 @@ vim.o.path = vim.o.path .. ",**" -- Such that "find" also considers subdirectori
 vim.o.splitbelow = true -- New window will be opened below
 vim.o.splitright = true -- New window will be on the right side
 vim.o.foldmethod = "expr" -- Use foldexpr as fold
-vim.o.foldexpr = "nvim_treesitter#foldexpr()" -- Which foldexpr to use
-vim.o.foldlevel = 99 -- Do not start folded in
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- Which foldexpr to use
 -- Performance improvements
 vim.o.maxmempattern = 20000 -- Increase memory for regex matches
 ----
