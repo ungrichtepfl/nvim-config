@@ -8,6 +8,9 @@ return {
           template = "󰁂 %d",
         },
       },
+      foldKeymaps = {
+        setup = false, -- modifies `h`, `l`, and `$`
+      },
     },
     init = function()
       -- disable vim's auto-folding for it to work properly:
