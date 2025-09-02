@@ -152,28 +152,28 @@ return {
 
       local move_keymaps = {
         goto_next_start = {
-          ["]f"] = { "@function.outer", "textobjects" },
+          ["]m"] = { "@function.outer", "textobjects" },
           ["]n"] = { "@class.outer", "textobjects" },
           ["]o"] = { "@conditional.outer", "textobjects" },
-          ["]w"] = { "@loop.outer", "textobjects" },
+          ["]f"] = { "@loop.outer", "textobjects" },
         },
         goto_next_end = {
-          ["]F"] = { "@function.outer", "textobjects" },
+          ["]M"] = { "@function.outer", "textobjects" },
           ["]N"] = { "@class.outer", "textobjects" },
           ["]O"] = { "@conditional.outer", "textobjects" },
-          ["]W"] = { "@loop.outer", "textobjects" },
+          ["]F"] = { "@loop.outer", "textobjects" },
         },
         goto_previous_start = {
-          ["[f"] = { "@function.outer", "textobjects" },
+          ["[m"] = { "@function.outer", "textobjects" },
           ["[n"] = { "@class.outer", "textobjects" },
           ["[o"] = { "@conditional.outer", "textobjects" },
-          ["[w"] = { "@loop.outer", "textobjects" },
+          ["[f"] = { "@loop.outer", "textobjects" },
         },
         goto_previous_end = {
-          ["[F"] = { "@function.outer", "textobjects" },
+          ["[M"] = { "@function.outer", "textobjects" },
           ["[N"] = { "@class.outer", "textobjects" },
           ["[O"] = { "@conditional.outer", "textobjects" },
-          ["[W"] = { "@loop.outer", "textobjects" },
+          ["[F"] = { "@loop.outer", "textobjects" },
         },
         goto_next = {
           -- Start or end whichever is closer
