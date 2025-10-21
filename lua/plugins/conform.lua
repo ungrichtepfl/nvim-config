@@ -20,6 +20,7 @@ return {
       markdown = { "prettierd", "prettier", stop_after_first = true },
       json = { "prettierd", "prettier", stop_after_first = true },
       haskell = { "fourmolu" },
+      elm = { "elm-format" },
       python = function(bufnr)
         if require("conform").get_formatter_info("ruff_format", bufnr).available then
           return {} -- Handled by ruff lsp
