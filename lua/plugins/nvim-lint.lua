@@ -5,20 +5,17 @@ return {
     lint.linters_by_ft = {
       bash = { "shellcheck" },
       css = { "stylelint" },
-      html = { "stylelint" },
+      scss = { "stylelint" },
       javascript = { "eslint_d" },
       javascriptreact = { "eslint_d" },
       markdown = { "markdownlint" },
-      scss = { "stylelint" },
       sh = { "shellcheck" },
-      svelte = { "stylelint" },
       make = { "checkmake" },
       -- NOTE: json is already handled by jsonls
       -- NOTE: yaml is already handled by yamlls
       -- NOTE: toml is already handled by taplo
       typescript = { "eslint_d" },
       typescriptreact = { "eslint_d" },
-      vue = { "stylelint" },
       python = { "mypy" },
     }
 
