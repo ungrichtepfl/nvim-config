@@ -285,6 +285,38 @@ return {
     },
   },
   {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    opts = {},
+    init = function()
+      -- reset keymaps for diagnostics
+      vim.keymap.set(
+        "n",
+        "[d",
+        function()
+          vim.diagnostic.jump {
+            count = -1,
+            float = false,
+          }
+        end,
+        { desc = "Go to next diagnostics" }
+      )
+      vim.keymap.set(
+        "n",
+        "]d",
+        function()
+          vim.diagnostic.jump {
+            count = 1,
+            float = false,
+          }
+        end,
+        { desc = "Go to previous diagnostics" }
+      )
+      vim.diagnostic.config { virtual_text = false } -- needs to be disabled
+    end,
+  },
+  {
     "ibhagwan/fzf-lua",
     dependencies = { "echasnovski/mini.icons" },
     event = "VimEnter", -- Needed for ui select to work properly
