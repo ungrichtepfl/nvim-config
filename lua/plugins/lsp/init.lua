@@ -288,8 +288,15 @@ return {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",
     priority = 1000,
-    opts = {},
-    init = function()
+    opts = {
+      options = {
+        override_open_float = true,
+        use_icons_from_diagnostic = true,
+        show_all_diags_on_cursorline = true,
+      },
+    },
+    config = function(_, opts)
+      require("tiny-inline-diagnostic").setup(opts)
       -- reset keymaps for diagnostics
       vim.keymap.set(
         "n",
