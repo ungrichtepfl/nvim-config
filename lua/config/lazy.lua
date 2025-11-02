@@ -18,6 +18,9 @@ vim.o.rtp = lazypath .. "," .. vim.o.rtp
 
 -- Setup lazy.nvim
 require("lazy").setup {
+  git = {
+    timeout = 60 * 60, -- For slow networks
+  },
   spec = {
     import = "plugins", -- load all plugins in "lua/plugins"
   },
