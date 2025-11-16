@@ -435,7 +435,7 @@ return {
         menu = {
           auto_show = false,
           draw = {
-            columns = { { "kind_icon" }, { "label", "label_description", "source_name" } },
+            columns = { { "kind_icon" }, { "label", "label_description" }, { "source_name" } },
             components = {
               -- Use mini.icons
               kind_icon = {
