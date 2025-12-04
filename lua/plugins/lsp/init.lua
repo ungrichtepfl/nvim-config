@@ -1,31 +1,38 @@
-local auto_installed_servers = { -- NOTE: Automatically installed lsp
-  "arduino_language_server",
-  "asm_lsp",
-  "gopls",
-  "jsonls",
-  "pyright",
-  "bashls",
-  "clangd", -- C/C++
-  "cmake",
-  "dockerls",
-  "marksman", -- Markdown
-  -- "remark_ls", -- Markdown
-  "yamlls",
-  "elmls",
-  "taplo", -- TOML
-  "lemminx", -- "XML"
-  "ts_ls",
-  "html",
-  "cssls",
-  "angularls",
-  "omnisharp", -- C#/dotnet
-  "zls",
+local lsp_servers = {
+  -- remark_ls=nil, -- Markdown
+  angularls = nil,
+  arduino_language_server = nil,
+  asm_lsp = nil,
+  bashls = nil,
+  clangd = nil, -- C/C++
+  cmake = nil,
+  cssls = "css-lsp",
+  dockerls = "dockerfile-language-server",
+  elmls = "elm-language-server",
+  gopls = nil,
+  hls = "haskell-language-server",
+  html = "html-lsp",
+  jsonls = "json-lsp",
+  lemminx = nil, -- "XML"
+  lua_ls = "lua-language-server",
+  marksman = nil, -- Markdown
+  omnisharp = nil, -- C#/dotnet
+  pyright = nil,
+  ruff = nil,
+  rust_analyzer = "rust-analyzer",
+  taplo = nil, -- TOML
+  ts_ls = "typescript-language-server",
+  yamlls = "yaml-language-server",
+  zls = nil,
 }
-local manual_installed_servers = { -- NOTE: Manually installed servers
-  "hls", -- Haskell, installed by ghcup
-  "rust_analyzer", -- Installed by rustup
-  "ruff", -- install locally to be sure which version is used
-  "lua_ls", -- problem with binary from mason (shared libraries not found)
+
+local mason_tools_to_install = {
+  "checkmake",
+  "markdownlint",
+  "shellcheck",
+  "markdownlint",
+  "prettierd",
+  "taplo",
 }
 
 return {
@@ -163,27 +170,47 @@ return {
       })
 
       ------------------------------------------
+      -------- MANSON TOOL INSTALLATION --------
+      ------------------------------------------
+      local mason_registry = require "mason-registry"
+      local function install_tool(tool)
+        local p = mason_registry.get_package(tool)
+        local is_globally_installed = vim.fn.executable(tool) == 1
+        if not is_globally_installed and not p:is_installed() then
+          p:install()
+        end
+      end
+
+      mason_registry.refresh(function()
+        for server, tool in pairs(lsp_servers) do
+          if tool == nil then tool = server end
+          install_tool(tool)
+        end
+        for _, tool in ipairs(mason_tools_to_install) do
+          install_tool(tool)
+        end
+      end)
+
+      ------------------------------------------
       ----------------- SERVERS ----------------
       ------------------------------------------
-      local all_servers = vim.tbl_deep_extend("force", auto_installed_servers, manual_installed_servers)
       local blink = require "blink.cmp"
       -- Additional manual settings:
       local capabilities = { -- specify your own
       }
       capabilities = blink.get_lsp_capabilities(capabilities)
-      for _, server in ipairs(all_servers) do
+      for server, _ in pairs(lsp_servers) do
+        -- CONFIG
+
         local opts = {
           capabilities = capabilities,
         }
         local server_status_ok, server_opts = pcall(require, "plugins.lsp.settings." .. server)
-        if server_status_ok then
-          opts = vim.tbl_deep_extend("force", opts, server_opts)
-          vim.lsp.config(server, opts)
-        end
-      end
+        if server_status_ok then opts = vim.tbl_deep_extend("force", opts, server_opts) end
+        vim.lsp.config(server, opts)
 
-      -- Manually enable servers:
-      for _, server in ipairs(manual_installed_servers) do
+        -- ENABLE
+
         if server == "rust_analyzer" then
           local installed = require("lazy.core.config").plugins["rustaceanvim"]
           if installed then
@@ -191,7 +218,7 @@ return {
             goto continue
           end
         end
-        if server == "hls" then
+        if server == "haskell-language-server" then
           local installed = require("lazy.core.config").plugins["haskell-tools.nvim"]
           if installed then
             -- Don't load haskell_language_server if haskell_tools is loaded
@@ -214,14 +241,6 @@ return {
     },
   },
   -- LSP and DAP tools
-  {
-    "mason-org/mason-lspconfig.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      ensure_installed = auto_installed_servers,
-    },
-    dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
-  },
   { "mason-org/mason.nvim", cmd = "Mason", opts = {} },
   {
     -- Adds vim namespace to lua, makes writing configs much nicer:
