@@ -4,7 +4,6 @@ local auto_installed_servers = { -- NOTE: Automatically installed lsp
   "gopls",
   "jsonls",
   "pyright",
-  "lua_ls",
   "bashls",
   "clangd", -- C/C++
   "cmake",
@@ -26,6 +25,7 @@ local manual_installed_servers = { -- NOTE: Manually installed servers
   "hls", -- Haskell, installed by ghcup
   "rust_analyzer", -- Installed by rustup
   "ruff", -- install locally to be sure which version is used
+  "lua_ls", -- problem with binary from mason (shared libraries not found)
 }
 
 return {
