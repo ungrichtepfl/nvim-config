@@ -1,8 +1,8 @@
 local color = ""
 -- color = "ash"
 -- color = "iceberg-dark"
-color = "zen"
--- color ="kanso-zen"
+-- color = "zen"
+color = "kanso-zen"
 -- color ="tokyonight-moon"
 -- color ="kanagawa-dragon"
 -- color = "mellifluous"
@@ -32,14 +32,14 @@ return {
   {
     "oahlen/iceberg.nvim",
     lazy = false,
-    enabled = color:find "^iceberg$" ~= nil,
+    enabled = color:find "^iceberg" ~= nil,
     priority = 1000,
     init = function() vim.cmd.colorscheme(color) end,
   },
   {
     "webhooked/kanso.nvim",
     lazy = false,
-    enabled = color:find "^kanso$" ~= nil,
+    enabled = color:find "^kanso" ~= nil,
     priority = 1000,
     opts = {
       compile = true,
@@ -49,7 +49,7 @@ return {
   },
   {
     "folke/tokyonight.nvim",
-    enabled = color:find "^tokyonight$" ~= nil,
+    enabled = color:find "^tokyonight" ~= nil,
     lazy = false,
     priority = 1000,
     opts = {},
@@ -58,7 +58,7 @@ return {
   {
     "rebelot/kanagawa.nvim",
     lazy = false,
-    enabled = color:find "^kanagawa$" ~= nil,
+    enabled = color:find "^kanagawa" ~= nil,
     priority = 1000,
     opts = {
       compile = true,
