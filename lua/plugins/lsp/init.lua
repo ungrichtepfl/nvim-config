@@ -1,29 +1,30 @@
 local lsp_servers = {
-  -- remark_ls=nil, -- Markdown
-  angularls = nil,
-  arduino_language_server = nil,
-  asm_lsp = nil,
-  bashls = nil,
-  clangd = nil, -- C/C++
-  cmake = nil,
+  -- If false use the same name
+  -- remark_ls=false, -- Markdown
+  angularls = "angular-language-server",
+  arduino_language_server = "arduino-language-server",
+  asm_lsp = "asm-lsp",
+  bashls = "bash-language-server",
+  clangd = false, -- C/C++
+  cmake = "cmake-language-server",
   cssls = "css-lsp",
   dockerls = "dockerfile-language-server",
   elmls = "elm-language-server",
-  gopls = nil,
+  gopls = false,
   hls = "haskell-language-server",
   html = "html-lsp",
   jsonls = "json-lsp",
-  lemminx = nil, -- "XML"
+  lemminx = false, -- "XML"
   lua_ls = "lua-language-server",
-  marksman = nil, -- Markdown
-  omnisharp = nil, -- C#/dotnet
-  pyright = nil,
-  ruff = nil,
+  marksman = false, -- Markdown
+  omnisharp = false, -- C#/dotnet
+  pyright = false,
+  ruff = false,
   rust_analyzer = "rust-analyzer",
-  taplo = nil, -- TOML
+  taplo = false, -- TOML
   ts_ls = "typescript-language-server",
   yamlls = "yaml-language-server",
-  zls = nil,
+  zls = false,
 }
 
 local mason_tools_to_install = {
@@ -32,7 +33,8 @@ local mason_tools_to_install = {
   "shellcheck",
   "markdownlint",
   "prettierd",
-  "taplo",
+  "beautysh",
+  "codelldb",
 }
 
 return {
@@ -176,14 +178,12 @@ return {
       local function install_tool(tool)
         local p = mason_registry.get_package(tool)
         local is_globally_installed = vim.fn.executable(tool) == 1
-        if not is_globally_installed and not p:is_installed() then
-          p:install()
-        end
+        if not is_globally_installed and not p:is_installed() then p:install() end
       end
 
       mason_registry.refresh(function()
         for server, tool in pairs(lsp_servers) do
-          if tool == nil then tool = server end
+          if not tool then tool = server end
           install_tool(tool)
         end
         for _, tool in ipairs(mason_tools_to_install) do
@@ -303,6 +303,7 @@ return {
       },
     },
   },
+  { "Civitasv/cmake-tools.nvim", opts = {} },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",

@@ -12,10 +12,9 @@ return {
   opts = {
     -- Define your formatters
     formatters_by_ft = {
-      rust = { "cargo format" },
+      rust = { "rustfmt" },
       lua = { "stylua" },
       javascript = { "prettierd", "prettier", stop_after_first = true },
-      toml = { "prettierd", "prettier", stop_after_first = true },
       yaml = { "prettierd", "prettier", stop_after_first = true },
       markdown = { "prettierd", "prettier", stop_after_first = true },
       json = { "prettierd", "prettier", stop_after_first = true },
@@ -44,7 +43,8 @@ return {
       ["*"] = {},
       -- Use the "_" filetype to run formatters on filetypes that don't
       -- have other formatters configured.
-      ["_"] = { "trim_whitespace" },
+      -- Fallback to LSP formatter for any filetype not explicitly configured
+      ["_"] = { "lsp_format" },
     },
     -- Set default options
     default_format_opts = {
