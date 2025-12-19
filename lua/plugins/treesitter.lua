@@ -247,7 +247,12 @@ return {
     "nvim-treesitter/nvim-treesitter-context",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     lazy = false,
-    opts = {},
+    keys = {
+      { "gC", function() require("treesitter-context").go_to_context(vim.v.count1) end, desc = "Go to context." },
+    },
+    opts = {
+      multiline_threshold = 1, -- show only one line for a context otherwise it gets messy
+    },
   },
   {
     "windwp/nvim-ts-autotag",
