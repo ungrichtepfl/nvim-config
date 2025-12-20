@@ -303,7 +303,7 @@ return {
       },
     },
   },
-  { "Civitasv/cmake-tools.nvim", opts = {} },
+  { "Civitasv/cmake-tools.nvim", event = "VeryLazy", opts = {} },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",
