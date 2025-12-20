@@ -3,7 +3,7 @@ return {
   dependencies = { "nvim-lua/plenary.nvim" },
   lazy = false,
   keys = {
-    { "<leader>l", "<cmd>TodoFzfLua<cr>", desc = "See all todo's, fixme's, etc." },
+    { "<leader>l", "<cmd>TodoQuickFix keywords=FIX,TODO,HACK,PERF,TEST<cr>", desc = "See all todo's, fixme's, etc." },
   },
   opts = {
     keywords = {
