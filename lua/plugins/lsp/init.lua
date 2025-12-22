@@ -121,7 +121,7 @@ return {
             "n",
             "grr",
             function() require("fzf-lua").lsp_references() end,
-            { desc = "Go to definition", buffer = args.buf }
+            { desc = "Go to references", buffer = args.buf }
           )
           vim.keymap.set(
             "n",
