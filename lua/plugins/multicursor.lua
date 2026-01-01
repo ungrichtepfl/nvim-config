@@ -1,11 +1,13 @@
 return {
   {
     "mg979/vim-visual-multi",
+    event = "VeryLazy",
     init = function() vim.g.VM_mouse_mappings = 1 end,
   },
   {
     "jake-stewart/multicursor.nvim",
     branch = "1.0",
+    event = "VeryLazy",
     enabled = false, -- FIXME: There is a problem with blink.pairs
     opts = {},
     config = function(_, opts)

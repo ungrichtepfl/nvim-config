@@ -2,7 +2,6 @@ return {
   {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
-    lazy = "VeryLazy",
     opts = {},
     enabled = true, -- Enable if you uncommented config.harpoon
     dependencies = { "nvim-lua/plenary.nvim" },

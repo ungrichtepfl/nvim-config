@@ -1,4 +1,4 @@
--- Add the following snipped to ~/.omnisharp/omnisharp.json:
+-- NOTE: Add the following snipped to ~/.omnisharp/omnisharp.json:
 -- {
 --   "RoslynExtensionsOptions": {
 --     "enableDecompilationSupport": true
