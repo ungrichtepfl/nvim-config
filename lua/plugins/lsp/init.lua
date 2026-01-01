@@ -260,6 +260,7 @@ return {
     lazy = false, -- This plugin is already lazy
     keys = {
       {
+        -- FIXME: This gets loaded before the 'on attach lsp keymap' above so it does not work
         "K", -- Override Neovim's built-in hover keymap with rustaceanvim's hover actions
         function() vim.cmd.RustLsp { "hover", "actions" } end,
         ft = "rust",
