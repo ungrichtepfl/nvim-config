@@ -9,11 +9,9 @@ return {
       show_all_diags_on_cursorline = true,
     },
   },
-  config = function(_, opts)
-    require("tiny-inline-diagnostic").setup(opts)
+  keys = {
     -- reset keymaps for diagnostics
-    vim.keymap.set(
-      "n",
+    {
       "[d",
       function()
         vim.diagnostic.jump {
@@ -21,10 +19,9 @@ return {
           float = false,
         }
       end,
-      { desc = "Go to next diagnostics" }
-    )
-    vim.keymap.set(
-      "n",
+      desc = "Go to next diagnostics",
+    },
+    {
       "]d",
       function()
         vim.diagnostic.jump {
@@ -32,8 +29,10 @@ return {
           float = false,
         }
       end,
-      { desc = "Go to previous diagnostics" }
-    )
+      desc = "Go to previous diagnostics",
+    },
+  },
+  init = function()
     vim.diagnostic.config { virtual_text = false } -- needs to be disabled
   end,
 }

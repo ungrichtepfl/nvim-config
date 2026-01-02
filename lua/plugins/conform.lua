@@ -1,6 +1,5 @@
 return {
   "stevearc/conform.nvim",
-  event = "VeryLazy",
   keys = {
     {
       "grf",

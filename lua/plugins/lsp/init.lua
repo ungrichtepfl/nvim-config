@@ -5,12 +5,12 @@ return {
   },
   {
     "Hoffs/omnisharp-extended-lsp.nvim",
-    event = "VeryLazy",
+    lazy = true,
     -- TODO: Setup keymaps if needed
   },
   {
     "b0o/schemastore.nvim",
-    event = "VeryLazy",
+    lazy = true,
   },
   {
     -- Adds vim namespace to lua, makes writing configs much nicer:
@@ -30,7 +30,6 @@ return {
     lazy = false, -- This plugin is already lazy
     keys = {
       {
-        -- FIXME: This gets loaded before the 'on attach lsp keymap' above so it does not work
         "K", -- Override Neovim's built-in hover keymap with rustaceanvim's hover actions
         function() vim.cmd.RustLsp { "hover", "actions" } end,
         ft = "rust",

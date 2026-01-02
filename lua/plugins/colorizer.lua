@@ -1,7 +1,8 @@
 return {
+  -- Show RGB and hex colors
   "norcalli/nvim-colorizer.lua",
   event = "VeryLazy",
 
-  -- needs config to work when no options are given
+  -- NOTE: Does not work with empty opts dict so config is used:
   config = function() require("colorizer").setup() end,
 }

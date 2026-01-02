@@ -33,7 +33,5 @@ return {
     },
     debug = false,
   },
-  init = function()
-    vim.g.pairs = false -- NOTE: Somehow disabling it above does not work properly (weird enter behaviour in insert mode)
-  end,
+  init = function() vim.g.pairs = false end,
 }

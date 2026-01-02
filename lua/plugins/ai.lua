@@ -1,7 +1,7 @@
 return {
   {
     "github/copilot.vim",
-    lazy = false, -- NOTE: Somehow it does not work work if lazy loaded
+    event = "VeryLazy",
     keys = {
       { "<leader>ii", "<cmd>Copilot enable<cr>", desc = "Restart and enable Copilot" },
       { "<leader>id", "<cmd>Copilot disable<cr>", desc = "Disable Copilot" },
@@ -19,7 +19,7 @@ return {
       { "<A-j>", "<Plug>(copilot-next)", mode = "i", desc = "Next Copilot Suggestion" },
       { "<A-k>", "<Plug>(copilot-previous)", mode = "i", desc = "Previous Copilot Suggestion" },
     },
-    config = function()
+    init = function()
       vim.g.copilot_no_tab_map = true
       vim.g.copilot_enabled = false
     end,
