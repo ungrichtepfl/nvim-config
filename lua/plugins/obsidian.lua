@@ -1,7 +1,7 @@
 local vault_path = vim.fn.expand "~" .. "/Notes"
 
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
   event = {
     -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
@@ -13,29 +13,16 @@ return {
     "BufNewFile " .. vault_path .. "/*.md",
   },
   dependencies = {
-    -- Required.
-    "nvim-lua/plenary.nvim",
     -- Optional
     "ibhagwan/fzf-lua",
     "nvim-treesitter/nvim-treesitter",
   },
   opts = {
+    legacy_commands = false,
     workspaces = {
       {
         name = "personal",
         path = vault_path,
-      },
-    },
-    mappings = {
-      -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
-      ["gf"] = {
-        action = function() return require("obsidian").util.gf_passthrough() end,
-        opts = { noremap = false, expr = true, buffer = true },
-      },
-      -- Smart action depending on context, either follow link or toggle checkbox.
-      ["<cr>"] = {
-        action = function() return require("obsidian").util.smart_action() end,
-        opts = { buffer = true, expr = true, desc = "Smart obsidian action" },
       },
     },
   },
