@@ -83,6 +83,9 @@ return {
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
       default = { "snippets", "lsp", "buffer", "path" },
+      per_filetype = {
+        vim = { inherit_defaults = true, "cmdline" },
+      },
       providers = {
         path = {
           opts = {
