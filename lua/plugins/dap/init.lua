@@ -56,7 +56,8 @@ return {
       })
 
       -- Configurations
-      local adapters = { "python", { "codelldb", { "c", "rust", "cpp" } }, "haskell" }
+      local adapters =
+        { "python", { "codelldb", { "c", "rust", "cpp" } }, "haskell", { "lldb", { "c", "rust", "cpp" } } }
       local dap = require "dap"
       for _, item in ipairs(adapters) do
         local adapter = item

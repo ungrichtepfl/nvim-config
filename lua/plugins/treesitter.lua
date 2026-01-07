@@ -42,6 +42,7 @@ return {
         "regex",
         "rst",
         "rust",
+        "slint",
         "sql",
         "ssh_config",
         "toml",

@@ -6,6 +6,7 @@ local mason_tools_to_install = {
   "prettierd",
   "beautysh",
   "codelldb",
+  "mypy"
 }
 
 return {

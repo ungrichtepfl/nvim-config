@@ -10,6 +10,7 @@ return {
   opts = {
     -- Define your formatters
     formatters_by_ft = {
+      slint = { "slint-lsp format" },
       rust = { "rustfmt" },
       lua = { "stylua" },
       javascript = { "prettierd", "prettier", stop_after_first = true },

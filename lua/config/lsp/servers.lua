@@ -1,7 +1,6 @@
 ---@type table<string, string|boolean>
 ---A mapping of LSP server names to their corresponding Mason package names.
 local servers = {
-  -- remark_ls=false, -- Markdown
   angularls = "angular-language-server",
   arduino_language_server = "arduino-language-server",
   asm_lsp = "asm-lsp",
@@ -20,8 +19,10 @@ local servers = {
   marksman = false, -- Markdown
   omnisharp = false, -- C#/dotnet
   pyright = false,
+  -- remark_ls=false, -- Markdown
   ruff = false,
   rust_analyzer = "rust-analyzer",
+  slint_lsp = "slint-lsp",
   taplo = false, -- TOML
   ts_ls = "typescript-language-server",
   yamlls = "yaml-language-server",
