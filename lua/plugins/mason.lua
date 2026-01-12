@@ -6,7 +6,7 @@ local mason_tools_to_install = {
   "prettierd",
   "beautysh",
   "codelldb",
-  "mypy"
+  "mypy",
 }
 
 return {
@@ -24,9 +24,10 @@ return {
     end
 
     mason_registry.refresh(function()
-      for server, tool in pairs(require "config.lsp.servers") do
-        if not tool then tool = server end
+      for _, tool in pairs(require "config.lsp.servers") do
+        if not tool then goto continue end
         install_tool(tool)
+        ::continue::
       end
       for _, tool in ipairs(mason_tools_to_install) do
         install_tool(tool)
