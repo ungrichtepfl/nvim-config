@@ -43,7 +43,7 @@ return {
         -- Search forward and backward
         if type == "/" or type == "?" then return { "buffer" } end
         -- Commands
-        if type == ":" or type == "@" then return { "cmdline", "path", "buffer" } end
+        if type == ":" or type == "@" then return { "cmdline", "buffer" } end
         return {}
       end,
     },
