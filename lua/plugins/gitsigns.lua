@@ -56,6 +56,7 @@ return {
       map("n", "<leader>hi", gitsigns.preview_hunk_inline, { desc = "Inline hunk preview" })
 
       map("n", "<leader>hb", function() gitsigns.blame_line { full = true } end, { desc = "Git blame (full line)" })
+      map("n", "<leader>hB", function() gitsigns.blame() end, { desc = "Git blame (full line)" })
 
       map("n", "<leader>hd", gitsigns.diffthis, { desc = "Diff against index" })
 
