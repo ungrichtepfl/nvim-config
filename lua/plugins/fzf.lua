@@ -47,26 +47,61 @@ return {
     { "<leader>ogb", "<cmd> FzfLua git_branches<cr>", desc = "List git branches" },
     { "[w", "<cmd> FzfLua grep_cword<cr>", desc = "Grep for word under cursor" },
     { "[W", "<cmd> FzfLua grep_cWORD<cr>", desc = "Grep for WORD under cursor" },
-    -- LSP
-    { "gD", function() require("fzf-lua").lsp_declarations() end, desc = "Go to declaration" },
-    { "gd", function() require("fzf-lua").lsp_definitions() end, desc = "Go to definition" },
-    { "grr", function() require("fzf-lua").lsp_references() end, desc = "Go to references" },
-    { "gri", function() require("fzf-lua").lsp_implementations() end, desc = "Go to implementations" },
-    { "gO", function() require("fzf-lua").lsp_document_symbols() end, desc = "Show document symbols" },
-    {
-      "<leader>wd",
-      function() require("fzf-lua").lsp_document_diagnostics() end,
-      desc = "Workspace diagnostic",
-    },
-    {
-      "<leader>wD",
-      function() require("fzf-lua").lsp_workspace_diagnostics() end,
-      desc = "Workspace diagnostic",
-    },
   },
   config = function(_, opts)
     local fzf = require "fzf-lua"
     fzf.setup(opts)
     fzf.register_ui_select()
+
+    local group = vim.api.nvim_create_augroup("FzfLuaAfterLsp", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "AfterLspAttach",
+      callback = function(args)
+        local buf = args.data.buf
+        vim.keymap.set(
+          "n",
+          "gD",
+          function() require("fzf-lua").lsp_declarations() end,
+          { desc = "Go to declaration", buffer = buf }
+        )
+        vim.keymap.set(
+          "n",
+          "gd",
+          function() require("fzf-lua").lsp_definitions() end,
+          { desc = "Go to definition", buffer = buf }
+        )
+        vim.keymap.set(
+          "n",
+          "grr",
+          function() require("fzf-lua").lsp_references() end,
+          { desc = "Go to references", buffer = buf }
+        )
+        vim.keymap.set(
+          "n",
+          "gri",
+          function() require("fzf-lua").lsp_implementations() end,
+          { desc = "Go to implementations", buffer = buf }
+        )
+        vim.keymap.set(
+          "n",
+          "gO",
+          function() require("fzf-lua").lsp_document_symbols() end,
+          { desc = "Show document symbols", buffer = buf }
+        )
+        vim.keymap.set(
+          "n",
+          "<leader>wd",
+          function() require("fzf-lua").lsp_document_diagnostics() end,
+          { desc = "Workspace diagnostic", buffer = buf }
+        )
+        vim.keymap.set(
+          "n",
+          "<leader>wD",
+          function() require("fzf-lua").lsp_workspace_diagnostics() end,
+          { desc = "Workspace diagnostic", buffer = buf }
+        )
+      end,
+    })
   end,
 }

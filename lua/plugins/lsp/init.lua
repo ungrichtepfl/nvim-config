@@ -28,13 +28,24 @@ return {
     "mrcjkb/rustaceanvim",
     version = "*",
     lazy = false, -- This plugin is already lazy
-    keys = {
-      {
-        "K", -- Override Neovim's built-in hover keymap with rustaceanvim's hover actions
-        function() vim.cmd.RustLsp { "hover", "actions" } end,
-        ft = "rust",
-      },
-    },
+    config = function()
+      local group = vim.api.nvim_create_augroup("RustaceanvimAfterLsp", { clear = true })
+      vim.api.nvim_create_autocmd("User", {
+        group = group,
+        pattern = "AfterLspAttach",
+        callback = function(args)
+          local bufnr = args.data.buf
+          if vim.bo.filetype == "rust" then
+            vim.keymap.set(
+              "n",
+              "K", -- Override Neovim's built-in hover keymap with rustaceanvim's hover actions
+              function() vim.cmd.RustLsp { "hover", "actions" } end,
+              { desc = "Rust hover action", buffer = bufnr }
+            )
+          end
+        end,
+      })
+    end,
   },
   {
     "mrcjkb/haskell-tools.nvim",
