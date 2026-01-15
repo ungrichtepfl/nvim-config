@@ -36,7 +36,7 @@ return {
     { "<leader>g", "<cmd> FzfLua live_grep<cr>", desc = "Grep word in all files" },
     { "<leader>b", "<cmd> FzfLua buffers<cr>", desc = "List of all open buffers" },
     { "<leader>s", "<cmd> FzfLua git_status<cr>", desc = "Show git status" },
-    { "<leader>s", "<cmd> FzfLua keymaps<cr>", desc = "Show keymaps" },
+    { "<leader>k", "<cmd> FzfLua keymaps<cr>", desc = "Show keymaps" },
     { "<leader>om", "<cmd> FzfLua marks<cr>", desc = "List of all marks" },
     { "<leader>op", "<cmd> FzfLua manpages<cr>", desc = "List all manpages" },
     { "<leader>oc", "<cmd> FzfLua commands<cr>", desc = "List vim commands" },

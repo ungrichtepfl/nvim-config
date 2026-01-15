@@ -73,5 +73,20 @@ return {
       },
     },
   },
-  { "Civitasv/cmake-tools.nvim", event = "VeryLazy", opts = {} },
+  {
+    "Civitasv/cmake-tools.nvim",
+    event = "VeryLazy",
+    opts = {
+      cmake_executor = {
+        name = "quickfix",
+      },
+      cmake_runner = {
+        name = "toggleterm",
+        opts = {
+          direction = "horizontal", -- 'vertical' | 'horizontal' | 'tab' | 'float'
+          close_on_exit = false, -- whether close the terminal when exit
+        },
+      },
+    },
+  },
 }
