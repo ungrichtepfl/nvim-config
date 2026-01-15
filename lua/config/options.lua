@@ -6,6 +6,7 @@ vim.g.maplocalleader = "-"
 vim.cmd.colorscheme "habamax"
 
 ----  GENERAL OPTIONS ------
+vim.o.exrc = true -- enable loading .nvim.lua files in project folders
 vim.o.scrolloff = 8 -- Show at least X lines above the cursor
 vim.o.sidescrolloff = 8 --Show at least X columns left and right to the cursor
 vim.o.cursorline = true -- highlight the current line
