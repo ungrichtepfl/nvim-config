@@ -77,9 +77,6 @@ return {
     "Civitasv/cmake-tools.nvim",
     event = "VeryLazy",
     opts = {
-      cmake_compile_commands_options = {
-        action = "none",
-      },
       cmake_executor = {
         name = "quickfix",
       },
