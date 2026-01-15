@@ -129,8 +129,8 @@ keymap("n", "<a-t><a-n>", function()
     vim.api.nvim_feedkeys(":find ", "n", true)
   end
 end, { desc = "Open a new tabpage" })
-keymap("n", "<leader>m", "mM", { desc = "Set global mark M" })
-keymap("n", "<leader><leader>m", "`M", { desc = "Go to global mark M" })
+keymap("n", "<leader><leader>m", "mM", { desc = "Set global mark M" })
+keymap("n", "<leader>m", "`M", { desc = "Go to global mark M" })
 
 -- Visual --
 -- Stay in indent mode
