@@ -91,13 +91,13 @@ return {
         )
         vim.keymap.set(
           "n",
-          "<leader>wd",
+          "<leader>Dd",
           function() require("fzf-lua").lsp_document_diagnostics() end,
-          { desc = "Workspace diagnostic", buffer = buf }
+          { desc = "Document diagnostic", buffer = buf }
         )
         vim.keymap.set(
           "n",
-          "<leader>wD",
+          "<leader>Dw",
           function() require("fzf-lua").lsp_workspace_diagnostics() end,
           { desc = "Workspace diagnostic", buffer = buf }
         )
