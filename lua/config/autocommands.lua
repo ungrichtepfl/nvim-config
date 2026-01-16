@@ -93,6 +93,20 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- detect vs code files and set filetype to json5
+local vscode_group = vim.api.nvim_create_augroup("_vscode", { clear = true })
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = vscode_group,
+  pattern = {
+    "*/.vscode/settings.json",
+    "*/.vscode/keybindings.json",
+    "*/.vscode/launch.json",
+    "*/.vscode/tasks.json",
+    "*/.vscode/extensions.json",
+  },
+  callback = function() vim.bo.filetype = "json5" end,
+})
+
 -- NOTE: Uncomment if window positions are weird
 -- local resize_group = vim.api.nvim_create_augroup("_auto_resize", { clear = true })
 -- vim.api.nvim_create_autocmd("VimResized", {
