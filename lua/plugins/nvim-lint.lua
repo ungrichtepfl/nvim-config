@@ -9,7 +9,6 @@ return {
       scss = { "stylelint" },
       javascript = { "eslint_d" },
       javascriptreact = { "eslint_d" },
-      markdown = { "markdownlint" },
       sh = { "shellcheck" },
       make = { "checkmake" },
       -- NOTE: json is already handled by jsonls

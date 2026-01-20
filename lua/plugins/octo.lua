@@ -36,6 +36,18 @@ return {
       desc = "Search GitHub",
     },
   },
+  config = function(_, opts)
+    require("octo").setup(opts)
+    local group = vim.api.nvim_create_augroup("OctoAfterLsp", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "AfterLspAttach",
+      callback = function(args)
+        -- FIX: This is a fix for lsp's in octo buffers
+        vim.lsp.stop_client(vim.lsp.get_clients { bufnr = args.buf })
+      end,
+    })
+  end,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "ibhagwan/fzf-lua",
