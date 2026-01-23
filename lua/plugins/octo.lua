@@ -3,7 +3,9 @@ return {
   cmd = "Octo",
   opts = {
     use_local_fs = true,
-    picker = "fzf-lua",
+    -- NOTE: There is a bug when using fzf lua
+    -- picker = "fzf-lua",
+    picker = "snacks",
     picker_config = {
       use_emojis = true,
     },
@@ -39,7 +41,8 @@ return {
   },
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "ibhagwan/fzf-lua",
+    -- "ibhagwan/fzf-lua",
+    "folke/snacks.nvim",
     "nvim-tree/nvim-web-devicons",
   },
 }
