@@ -2,7 +2,7 @@ return {
   "saghen/blink.cmp",
   event = "InsertEnter",
   -- optional: provides snippets for the snippet source
-  dependencies = { { "rafamadriz/friendly-snippets" }, { "echasnovski/mini.icons" } },
+  dependencies = { { "rafamadriz/friendly-snippets" }, { "echasnovski/mini.icons" }, { "Kaiser-Yang/blink-cmp-git" } },
 
   -- use a release tag to download pre-built binaries
   version = "*",
@@ -82,7 +82,7 @@ return {
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
-      default = { "snippets", "lsp", "buffer", "path" },
+      default = { "git", "snippets", "lsp", "buffer", "path" },
       per_filetype = {
         vim = { inherit_defaults = true, "cmdline" },
       },
@@ -93,6 +93,12 @@ return {
               return vim.fn.getcwd()
             end,
           },
+        },
+        git = {
+          module = "blink-cmp-git",
+          name = "Git",
+          -- only enable this source when filetype is gitcommit, markdown, or 'octo'
+          enabled = function() return vim.tbl_contains({ "octo", "gitcommit", "markdown" }, vim.bo.filetype) end,
         },
       },
     },
