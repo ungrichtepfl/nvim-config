@@ -1,6 +1,6 @@
 return {
   "saghen/blink.cmp",
-  event = "InsertEnter",
+  event = { "InsertEnter", "CmdlineEnter" },
   -- optional: provides snippets for the snippet source
   dependencies = { { "rafamadriz/friendly-snippets" }, { "echasnovski/mini.icons" }, { "Kaiser-Yang/blink-cmp-git" } },
 
