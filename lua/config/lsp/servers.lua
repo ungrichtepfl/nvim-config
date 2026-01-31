@@ -8,6 +8,7 @@ local servers = {
   bitbake_ls = "language-server-bitbake",
   clangd = "clangd", -- C/C++
   cmake = "cmake-language-server",
+  copilot = "copilot-language-server",
   cssls = "css-lsp",
   dockerls = "dockerfile-language-server",
   elmls = "elm-language-server",

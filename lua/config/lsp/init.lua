@@ -73,7 +73,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     ------------------------------------------
 
     -- Only enable if the LSP supports documentHighlight
-    if client and client.supports_method "textDocument/documentHighlight" then
+    if client and client:supports_method "textDocument/documentHighlight" then
       local group = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false }) -- TODO: Check if clear = false is correct
 
       vim.api.nvim_create_autocmd("CursorHold", {
@@ -88,7 +88,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         callback = function() vim.lsp.buf.clear_references() end,
       })
     end
-    -- Fire AfterLspAttach patter usr command for other to change keymaps
+    -- Fire AfterLspAttach pattern usr command for other to change keymaps
     vim.api.nvim_exec_autocmds("User", {
       pattern = "AfterLspAttach",
       data = {
