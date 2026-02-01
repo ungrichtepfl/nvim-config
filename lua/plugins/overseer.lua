@@ -6,15 +6,21 @@ return {
   },
   keys = {
     {
-      "<leader>rt",
+      "<leader>rr",
       "<cmd>OverseerRun<cr>",
       desc = "See all Overseer tasks",
     },
     {
-      "<leader>rr",
+      "<c-,>",
       "<cmd>OverseerToggle<cr>",
       desc = "Toggle Overseer",
     },
   },
-  opts = {},
+  opts = {
+    component_aliases = {
+      default = {
+        { "open_output", on_start = "always" },
+      },
+    },
+  },
 }
