@@ -11,7 +11,7 @@ return {
       desc = "See all Overseer tasks",
     },
     {
-      "<c-,>",
+      "<c-s>",
       "<cmd>OverseerToggle<cr>",
       desc = "Toggle Overseer",
     },
