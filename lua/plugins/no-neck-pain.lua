@@ -4,6 +4,6 @@ return {
   cmd = "NoNeckPain",
   opts = {},
   keys = {
-    { "<leader>n", "<cmd>NoNeckPain<cr>", desc = "Center window for no neck pain." },
+    { "<leader>N", "<cmd>NoNeckPain<cr>", desc = "Center window for no neck pain." },
   },
 }
