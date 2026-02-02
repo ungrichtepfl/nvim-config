@@ -11,7 +11,7 @@ return {
       desc = "See all Overseer tasks",
     },
     {
-      "<c-s>",
+      "<c-b>",
       "<cmd>OverseerToggle<cr>",
       desc = "Toggle Overseer",
     },
@@ -19,7 +19,10 @@ return {
   opts = {
     component_aliases = {
       default = {
-        { "open_output", on_start = "always" },
+        "on_exit_set_status",
+        { "on_complete_notify", statuses = { "SUCCESS", "FAILURE" } },
+        { "on_complete_dispose", require_view = { "SUCCESS", "FAILURE" } },
+        { "on_output_quickfix", open_on_match = true },
       },
     },
   },
