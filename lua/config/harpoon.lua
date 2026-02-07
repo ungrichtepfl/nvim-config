@@ -177,7 +177,7 @@ end
 local keymap = vim.keymap.set
 
 keymap("n", "<leader>a", function() mark_state:add_mark() end, { desc = "Add a mark at current cursor position" })
-keymap("n", "<C-e>", function() mark_state:show_marks() end, { desc = "Show manually added marks" })
+keymap("n", "<A-e>", function() mark_state:show_marks() end, { desc = "Show manually added marks" })
 keymap("n", "<A-h>", function() goto_mark "H" end, { desc = "Jump to mark H" })
 keymap("n", "<A-j>", function() goto_mark "J" end, { desc = "Jump to mark J" })
 keymap("n", "<A-k>", function() goto_mark "K" end, { desc = "Jump to mark K" })

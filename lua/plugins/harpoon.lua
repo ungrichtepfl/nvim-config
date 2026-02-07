@@ -8,7 +8,7 @@ return {
     keys = {
       { "<leader>a", function() require("harpoon"):list():add() end, desc = "Add buffer to harpoon list" },
       {
-        "<C-e>",
+        "<A-e>",
         function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end,
         desc = "Show harpoon list",
       },
