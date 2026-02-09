@@ -6,12 +6,12 @@ return {
   },
   keys = {
     {
-      "<leader>rr",
+      "<leader>r",
       "<cmd>OverseerRun<cr>",
       desc = "See all Overseer tasks",
     },
     {
-      "<leader>rt",
+      "<A-r>",
       "<cmd>OverseerToggle<cr>",
       desc = "Toggle Overseer",
     },
@@ -22,7 +22,7 @@ return {
         "on_exit_set_status",
         { "on_complete_notify", statuses = { "SUCCESS", "FAILURE" } },
         { "on_complete_dispose", require_view = { "SUCCESS", "FAILURE" } },
-        { "on_output_quickfix", open_on_match = true },
+        { "on_output_quickfix", close = true, open_on_exit = "failure" },
       },
     },
   },
