@@ -87,7 +87,11 @@ keymap("n", "<A-Left>", ":vertical resize -1<CR>", { silent = true, desc = "Resi
 keymap("n", "<A-Right>", ":vertical resize +1<CR>", { silent = true, desc = "Resize vertical plus" })
 
 keymap("n", "gm", "<cmd>bm<CR>", { desc = "Go to next modified buffer" })
-keymap("n", "<A-q>", "<cmd>cclose<CR>", { desc = "Close quickfix list" })
+keymap("n", "<A-q>", function()
+  local qf_winid = vim.fn.getqflist({ winid = 0 }).winid
+  local action = qf_winid > 0 and "cclose" or "copen"
+  vim.cmd(action)
+end, { desc = "Toggle quickfix list" })
 keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
 
 keymap("n", "<C-h>", "<cmd>set hlsearch<CR>", { desc = "Highlight all the searches" })
