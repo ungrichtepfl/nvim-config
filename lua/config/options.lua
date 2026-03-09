@@ -13,6 +13,8 @@ vim.o.cursorline = true -- highlight the current line
 vim.o.number = true -- keymap numbered lines
 vim.o.relativenumber = true -- keymap relative numbered lines
 vim.o.hlsearch = false -- Do not highlight all searches
+vim.o.ignorecase = true -- ignore case in search patterns
+vim.o.smartcase = true -- override ignorecase if search contains uppercase
 -- vim.o.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.o.mouse = "a" -- Fully allow mouse
 -- { insert X spaces instead of tab:
