@@ -3,9 +3,7 @@ return {
   cmd = "Octo",
   opts = {
     use_local_fs = true,
-    -- NOTE: There is a bug when using fzf lua
-    -- picker = "fzf-lua",
-    picker = "snacks",
+    picker = "fzf-lua",
     picker_config = {
       use_emojis = true,
     },
