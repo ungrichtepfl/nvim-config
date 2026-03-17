@@ -15,6 +15,13 @@ vim.o.relativenumber = true -- keymap relative numbered lines
 vim.o.hlsearch = false -- Do not highlight all searches
 vim.o.ignorecase = true -- ignore case in search patterns
 vim.o.smartcase = true -- override ignorecase if search contains uppercase
+-- Remap * and # to use noignorecase nonetheless: https://vi.stackexchange.com/questions/4054/case-sensitive-with-ignorecase-on
+vim.cmd [[
+nnoremap <silent>  * :let @/='\C\<' . expand('<cword>') . '\>'<CR>:let v:searchforward=1<CR>n
+nnoremap <silent>  # :let @/='\C\<' . expand('<cword>') . '\>'<CR>:let v:searchforward=0<CR>n
+nnoremap <silent> g* :let @/='\C'   . expand('<cword>')       <CR>:let v:searchforward=1<CR>n
+nnoremap <silent> g# :let @/='\C'   . expand('<cword>')       <CR>:let v:searchforward=0<CR>n
+]]
 -- vim.o.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.o.mouse = "a" -- Fully allow mouse
 -- { insert X spaces instead of tab:
