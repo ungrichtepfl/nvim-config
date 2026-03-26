@@ -15,7 +15,7 @@ return {
       lua = { "stylua" },
       javascript = { "prettierd", "prettier", stop_after_first = true },
       yaml = { "prettierd", "prettier", stop_after_first = true },
-      markdown = { "prettierd", "prettier", stop_after_first = true },
+      markdown = { "markdownlint", stop_after_first = true },
       json = { "prettierd", "prettier", stop_after_first = true },
       jsonc = { "prettierd", "prettier", stop_after_first = true },
       json5 = { "prettierd", "prettier", stop_after_first = true },

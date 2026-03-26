@@ -2,7 +2,6 @@ local mason_tools_to_install = {
   "checkmake",
   "markdownlint",
   "shellcheck",
-  "markdownlint",
   "prettierd",
   "beautysh",
   "codelldb",
