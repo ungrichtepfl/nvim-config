@@ -5,6 +5,10 @@ vim.g.maplocalleader = "-"
 ---- Default colorscheme ----
 vim.cmd.colorscheme "habamax"
 
+------ Enable new UI --------
+
+require("vim._core.ui2").enable()
+
 ----  GENERAL OPTIONS ------
 vim.o.exrc = true -- enable loading .nvim.lua files in project folders
 vim.o.scrolloff = 8 -- Show at least X lines above the cursor
