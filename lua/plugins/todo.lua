@@ -44,7 +44,11 @@ return {
           "Optimize",
         },
       },
-      NOTE = { icon = " ", color = "hint", alt = { "INFO", "note", "info", "Info", "Note" } },
+      NOTE = {
+        icon = " ",
+        color = "hint",
+        alt = { "INFO", "note", "info", "Info", "Note", "IMPORTANT", "important", "Important" },
+      },
       TEST = {
         icon = "⏲ ",
         color = "test",
