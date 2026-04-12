@@ -92,7 +92,6 @@ keymap("n", "<A-q>", function()
   local action = qf_winid > 0 and "cclose" or "copen"
   vim.cmd(action)
 end, { desc = "Toggle quickfix list" })
-keymap("n", "<A-o>", "<cmd>copen<CR>", { desc = "Open quickfix list" })
 
 keymap("n", "<C-h>", "<cmd>set hlsearch<CR>", { desc = "Highlight all the searches" })
 keymap("n", "<C-l>", "<cmd>set nohlsearch<CR><C-l>", { desc = "Redraw screen and unhighlight" })
