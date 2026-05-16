@@ -33,6 +33,7 @@ return {
     },
     signature = { enabled = false }, -- Ctrl-s is enough
     cmdline = {
+      completion = { menu = { auto_show = true } },
       keymap = {
         preset = "cmdline",
         ["<C-z>"] = { "show_and_insert", "select_and_accept", "fallback" }, -- Nicer for swiss keyboard
