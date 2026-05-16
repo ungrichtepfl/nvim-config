@@ -29,6 +29,11 @@ return {
         ["ctrl-q"] = "select-all+accept",
       },
     },
+    winopts = {
+      on_create = function()
+        vim.keymap.set("t", "<C-r>", [['<C-\><C-N>"'.nr2char(getchar()).'pi']], { expr = true, buffer = true })
+      end,
+    },
   },
   cmd = "FzfLua",
   keys = {
@@ -45,6 +50,7 @@ return {
     { "<leader>ogc", "<cmd> FzfLua git_commits<cr>", desc = "List git commits" },
     { "<leader>ogC", "<cmd> FzfLua git_bcommits<cr>", desc = "List git commits of the buffer" },
     { "<leader>ogb", "<cmd> FzfLua git_branches<cr>", desc = "List git branches" },
+    { "<leader><leader>r", "<cmd> FzfLua resume<cr>", desc = "List git branches" },
     { "[w", "<cmd> FzfLua grep_cword<cr>", desc = "Grep for word under cursor" },
     { "[W", "<cmd> FzfLua grep_cWORD<cr>", desc = "Grep for WORD under cursor" },
   },
