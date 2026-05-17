@@ -40,7 +40,41 @@ return {
     { "<leader>f", "<cmd> FzfLua files<cr>", desc = "Find files" },
     { "<leader>g", "<cmd> FzfLua live_grep<cr>", desc = "Grep word in all files" },
     { "<leader>b", "<cmd> FzfLua buffers<cr>", desc = "List of all open buffers" },
-    { "<leader>s", "<cmd> FzfLua git_status<cr>", desc = "Show git status" },
+    {
+      "<leader>s",
+      function()
+        if vim.fn.system("jj root") and vim.v.shell_error == 0 then
+          require("fzf-lua").fzf_exec("jj diff --summary --color=always", {
+            prompt = "JJ Status> ",
+            fzf_opts = {
+              ["--ansi"] = true,
+              ["--preview-window"] = "right:60%",
+            },
+            preview = "jj diff --color=always -- {2}",
+            actions = {
+              ["default"] = function(selected)
+                if not selected or #selected == 0 then return end
+                local file = selected[1]:match "^%S+%s+(.+)$"
+                if file then vim.cmd("edit " .. vim.fn.fnameescape(file)) end
+              end,
+              ["ctrl-v"] = function(selected)
+                if not selected or #selected == 0 then return end
+                local file = selected[1]:match "^%S+%s+(.+)$"
+                if file then vim.cmd("vsplit " .. vim.fn.fnameescape(file)) end
+              end,
+              ["ctrl-x"] = function(selected)
+                if not selected or #selected == 0 then return end
+                local file = selected[1]:match "^%S+%s+(.+)$"
+                if file then vim.cmd("split " .. vim.fn.fnameescape(file)) end
+              end,
+            },
+          })
+        else
+          require("fzf-lua").git_status()
+        end
+      end,
+      desc = "VCS status",
+    },
     { "<leader>k", "<cmd> FzfLua keymaps<cr>", desc = "Show keymaps" },
     { "<leader>om", "<cmd> FzfLua marks<cr>", desc = "List of all marks" },
     { "<leader>op", "<cmd> FzfLua manpages<cr>", desc = "List all manpages" },

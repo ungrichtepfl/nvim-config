@@ -204,8 +204,16 @@ return {
     }
 
     ins_right {
-      "branch",
-      icon = "",
+      function()
+        vim.fn.system "jj root"
+        if vim.v.shell_error == 0 then
+          return vim.fn.system(
+            "jj log -r 'trunk()' --no-graph -T 'coalesce(local_bookmarks.map(|b| b.name()).join(\"|\"), remote_bookmarks.map(|b| b.name()).join(\"|\"))' 2>/dev/null"
+          ):gsub("\n", "")
+        end
+        return vim.fn.system("git branch --show-current 2>/dev/null"):gsub("\n", "")
+      end,
+      icon = "",
       color = { fg = colors.violet, gui = "bold" },
     }
 
