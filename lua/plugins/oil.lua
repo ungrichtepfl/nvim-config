@@ -18,7 +18,7 @@ return {
         signcolumn = "yes:2", -- NOTE: Only needed when refractalize/oil-git-status.nvim is used
       },
       git = {
-        mv = function(_, _) return true end,
+        mv = function(_, _) vim.fn.system("jj root"); return vim.v.shell_error ~= 0 end,
       },
     },
     dependencies = { { "echasnovski/mini.icons", opts = {} }, "folke/snacks.nvim" },

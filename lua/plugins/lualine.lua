@@ -1,3 +1,25 @@
+local branch_value = ""
+local branch_running = false
+local function fetch_branch()
+  if branch_running then return end
+  branch_running = true
+  vim.fn.jobstart(
+    "jj root >/dev/null 2>&1 && jj log -r 'trunk()' --no-graph -T 'coalesce(local_bookmarks.map(|b| b.name()).join(\"|\"), remote_bookmarks.map(|b| b.name()).join(\"|\"))' 2>/dev/null || git branch --show-current 2>/dev/null",
+    {
+      stdout_buffered = true,
+      on_stdout = function(_, data)
+        if data and data[1] ~= "" then branch_value = data[1] end
+      end,
+      on_exit = function()
+        branch_running = false
+        require("lualine").refresh()
+      end,
+    }
+  )
+end
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "DirChanged" }, { callback = fetch_branch })
+fetch_branch()
+
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -204,8 +226,8 @@ return {
     }
 
     ins_right {
-      "branch",
-      icon = "",
+      function() return branch_value end,
+      icon = "",
       color = { fg = colors.violet, gui = "bold" },
     }
 
