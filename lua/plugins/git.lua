@@ -48,12 +48,5 @@ return {
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "DiffviewOpen",
-    keys = {
-      {
-        "<leader>vo",
-        "<cmd>DiffviewOpen<cr>", -- NOTE: Use :tabclose to close (see keymaps)
-        desc = "Open Diffview",
-      },
-    },
   },
 }
