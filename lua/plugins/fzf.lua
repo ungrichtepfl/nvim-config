@@ -44,7 +44,7 @@ return {
       "<leader>s",
       function()
         if vim.fn.system("jj root") and vim.v.shell_error == 0 then
-          require("fzf-lua").fzf_exec("jj diff --summary --color=always", {
+          require("fzf-lua").fzf_exec([[jj diff --summary --color=always 2>/dev/null | sed 's|{[^{]* => \([^}]*\)}|\1|g']], {
             prompt = "JJ Status> ",
             fzf_opts = {
               ["--ansi"] = true,
