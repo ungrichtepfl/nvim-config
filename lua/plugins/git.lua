@@ -50,11 +50,6 @@ return {
     cmd = "DiffviewOpen",
     keys = {
       {
-        "<leader>vq",
-        "<cmd>DiffviewClose<cr>",
-        desc = "Close Diffview",
-      },
-      {
         "<leader>vo",
         "<cmd>DiffviewOpen<cr>", -- NOTE: Use :tabclose to close (see keymaps)
         desc = "Open Diffview",
