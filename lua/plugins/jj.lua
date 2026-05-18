@@ -41,6 +41,17 @@ return {
     enabled = is_jj_repo,
     cmd = { "DiffEditor" },
     dependencies = { "MunifTanjim/nui.nvim", "echasnovski/mini.icons" },
-    opts = {},
+    opts = {
+      keys = {
+        global = {
+          focus_tree = { "<leader>b" },
+          accept = { "<C-C><C-C>", "<leader><Cr>" },
+        },
+        diff = {
+          prev_hunk = { "[c" },
+          next_hunk = { "]c" },
+        },
+      },
+    },
   },
 }
