@@ -4,7 +4,7 @@ local function fetch_branch()
   if branch_running then return end
   branch_running = true
   vim.fn.jobstart(
-    "jj root >/dev/null 2>&1 && jj log -r 'trunk()' --no-graph -T 'coalesce(local_bookmarks.map(|b| b.name()).join(\"|\"), remote_bookmarks.map(|b| b.name()).join(\"|\"))' 2>/dev/null || git branch --show-current 2>/dev/null",
+    "jj root >/dev/null 2>&1 && jj log -r '@' --no-graph -T 'if(description.first_line(), description.first_line(), \"(no description)\")' 2>/dev/null || git branch --show-current 2>/dev/null",
     {
       stdout_buffered = true,
       on_stdout = function(_, data)
