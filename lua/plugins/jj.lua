@@ -18,6 +18,15 @@ return {
       editor = {
         auto_insert = true,
       },
+      cmd = {
+        describe = {
+          editor = {
+            keymaps = {
+              close = { "q" },
+            },
+          },
+        },
+      },
     },
     keys = {
       { "<leader>vs", function() require("jj.cmd").status() end, desc = "JJ status" },
@@ -26,8 +35,17 @@ return {
       { "<leader>vc", function() require("jj.cmd").commit() end, desc = "JJ commit (describe + new)" },
       { "<leader>vp", function() require("jj.cmd").push() end, desc = "JJ push" },
       { "<leader>vf", function() require("jj.cmd").fetch() end, desc = "JJ fetch" },
+      { "<leader>vb", function() require("jj.cmd").bookmark_move() end, desc = "JJ fetch" },
       { "<leader>vq", "<cmd>J split<cr>", desc = "JJ split" },
     },
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "jjdescription",
+        callback = function(args)
+          vim.keymap.set({ "i" }, "<C-C><C-C>", "<cmd>wq<cr><esc>", { buffer = args.buf, desc = "Write and close" })
+        end,
+      })
+    end,
   },
 
   -- Interactive hunk/line picker for jj split/squash --interactive
