@@ -1,10 +1,12 @@
+local is_jj_repo = vim.fn.system("jj root 2>/dev/null"):match "^/" ~= nil
+
 return {
-  -- Disable git-specific plugins
-  { "NeogitOrg/neogit", enabled = false },
-  { "refractalize/oil-git-status.nvim", enabled = false },
+  { "NeogitOrg/neogit", enabled = not is_jj_repo },
+  { "refractalize/oil-git-status.nvim", enabled = not is_jj_repo },
 
   {
     "NicolasGB/jj.nvim",
+    enabled = is_jj_repo,
     dependencies = {
       "sindrets/diffview.nvim", -- used as diff backend
       "folke/snacks.nvim", -- for pickers
@@ -36,6 +38,7 @@ return {
   -- Then use :J split  or  <C-s> from the jj.nvim log buffer to invoke it.
   {
     "julienvincent/hunk.nvim",
+    enabled = is_jj_repo,
     cmd = { "DiffEditor" },
     dependencies = { "MunifTanjim/nui.nvim", "echasnovski/mini.icons" },
     opts = {},
