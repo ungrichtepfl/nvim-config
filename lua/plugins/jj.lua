@@ -21,12 +21,12 @@ return {
     },
     keys = {
       { "<leader>vs", function() require("jj.cmd").status() end, desc = "JJ status" },
-      { "<leader>vl", function() require("jj.cmd").log() end, desc = "JJ log" },
+      { "<leader>vv", function() require("jj.cmd").log() end, desc = "JJ log" },
       { "<leader>vd", function() require("jj.cmd").describe() end, desc = "JJ describe" },
       { "<leader>vc", function() require("jj.cmd").commit() end, desc = "JJ commit (describe + new)" },
-      { "<leader>vpu", function() require("jj.cmd").push() end, desc = "JJ push" },
-      { "<leader>vpl", function() require("jj.cmd").fetch() end, desc = "JJ fetch" },
-      { "<leader>vq", function() vim.cmd("terminal jj squash -i") end, desc = "JJ squash interactive" },
+      { "<leader>vp", function() require("jj.cmd").push() end, desc = "JJ push" },
+      { "<leader>vf", function() require("jj.cmd").fetch() end, desc = "JJ fetch" },
+      { "<leader>vq", "<cmd>J split<cr>", desc = "JJ split" },
     },
   },
 
