@@ -43,8 +43,32 @@ return {
     {
       "<leader>s",
       function()
-        if vim.fn.system("jj root") and vim.v.shell_error == 0 then
-          require("fzf-lua").fzf_exec([[jj diff --summary --color=always 2>/dev/null | sed 's|{[^{]* => \([^}]*\)}|\1|g']], {
+        if vim.fn.system "jj root" and vim.v.shell_error == 0 then
+          local conflicts = {}
+          for _, line in ipairs(vim.fn.systemlist "jj resolve --list 2>/dev/null") do
+            local file = line:match "^(%S+)"
+            if file then conflicts[file] = true end
+          end
+
+          local function extract_file(sel)
+            local plain = sel:gsub("\27%[[%d;]*m", "")
+            return plain:match "^%S+%s+(.-)%s*⚡?%s*$"
+          end
+
+          require("fzf-lua").fzf_exec(function(fzf_cb)
+            local lines =
+              vim.fn.systemlist [[jj diff --summary --color=always 2>/dev/null | sed 's|{[^{]* => \([^}]*\)}|\1|g']]
+            for _, line in ipairs(lines) do
+              local plain = line:gsub("\27%[[%d;]*m", "")
+              local file = plain:match "^%S+%s+(.+)$"
+              if file and conflicts[file] then
+                fzf_cb(line .. " ⚡")
+              else
+                fzf_cb(line)
+              end
+            end
+            fzf_cb()
+          end, {
             prompt = "JJ Status> ",
             fzf_opts = {
               ["--ansi"] = true,
@@ -54,17 +78,17 @@ return {
             actions = {
               ["default"] = function(selected)
                 if not selected or #selected == 0 then return end
-                local file = selected[1]:match "^%S+%s+(.+)$"
+                local file = extract_file(selected[1])
                 if file then vim.cmd("edit " .. vim.fn.fnameescape(file)) end
               end,
               ["ctrl-v"] = function(selected)
                 if not selected or #selected == 0 then return end
-                local file = selected[1]:match "^%S+%s+(.+)$"
+                local file = extract_file(selected[1])
                 if file then vim.cmd("vsplit " .. vim.fn.fnameescape(file)) end
               end,
               ["ctrl-x"] = function(selected)
                 if not selected or #selected == 0 then return end
-                local file = selected[1]:match "^%S+%s+(.+)$"
+                local file = extract_file(selected[1])
                 if file then vim.cmd("split " .. vim.fn.fnameescape(file)) end
               end,
             },
