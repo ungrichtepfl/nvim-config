@@ -56,6 +56,17 @@ function M.goto_last_cursor_position()
   if mark[1] > 0 and mark[1] <= lcount then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
 end
 
+function M.is_jj_root()
+  vim.fn.system "jj root 2>/dev/null"
+  return vim.v.shell_error == 0
+end
+
+local jj_root_cache = nil
+function M.is_jj_root_cached()
+  if jj_root_cache == nil then jj_root_cache = M.is_jj_root() end
+  return jj_root_cache
+end
+
 function M.escape_path(path)
   return path:gsub("([^%w%.%-])", function(c) return string.format("%%%02X", string.byte(c)) end)
 end

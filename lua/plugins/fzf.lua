@@ -43,7 +43,7 @@ return {
     {
       "<leader>s",
       function()
-        if vim.fn.system "jj root" and vim.v.shell_error == 0 then
+        if require("config.utils").is_jj_root_cached() then
           local conflicts = {}
           for _, line in ipairs(vim.fn.systemlist "jj resolve --list 2>/dev/null") do
             local file = line:match "^(%S+)"

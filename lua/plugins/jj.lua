@@ -1,4 +1,4 @@
-local is_jj_repo = vim.fn.system("jj root 2>/dev/null"):match "^/" ~= nil
+local is_jj_repo = require("config.utils").is_jj_root_cached()
 
 return {
   { "NeogitOrg/neogit", enabled = not is_jj_repo },
