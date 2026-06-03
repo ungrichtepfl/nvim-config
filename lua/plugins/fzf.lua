@@ -52,7 +52,8 @@ return {
 
           local function extract_file(sel)
             local plain = sel:gsub("\27%[[%d;]*m", "")
-            return plain:match "^%S+%s+(.-)%s*⚡?%s*$"
+            plain = plain:gsub("%s*⚡%s*$", "")
+            return plain:match "^%S+%s+(.-)%s*$"
           end
 
           require("fzf-lua").fzf_exec(function(fzf_cb)
@@ -86,10 +87,17 @@ return {
                 local file = extract_file(selected[1])
                 if file then vim.cmd("vsplit " .. vim.fn.fnameescape(file)) end
               end,
-              ["ctrl-x"] = function(selected)
+              ["ctrl-s"] = function(selected)
                 if not selected or #selected == 0 then return end
                 local file = extract_file(selected[1])
                 if file then vim.cmd("split " .. vim.fn.fnameescape(file)) end
+              end,
+              ["ctrl-x"] = function(selected)
+                if not selected or #selected == 0 then return end
+                local file = extract_file(selected[1])
+                if not file then return end
+                vim.fn.system("jj restore -- " .. vim.fn.shellescape(file))
+                vim.notify("Restored: " .. file, vim.log.levels.INFO)
               end,
             },
           })
