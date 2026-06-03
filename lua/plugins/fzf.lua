@@ -52,7 +52,7 @@ return {
 
           local function extract_file(sel)
             local plain = sel:gsub("\27%[[%d;]*m", "")
-            plain = plain:gsub("%s*⚡%s*$", "")
+            plain = plain:gsub("^⚡", "")
             return plain:match "^%S+%s+(.-)%s*$"
           end
 
@@ -63,7 +63,7 @@ return {
               local plain = line:gsub("\27%[[%d;]*m", "")
               local file = plain:match "^%S+%s+(.+)$"
               if file and conflicts[file] then
-                fzf_cb(line .. " ⚡")
+                fzf_cb("⚡" .. line)
               else
                 fzf_cb(line)
               end
