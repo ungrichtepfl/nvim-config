@@ -35,7 +35,7 @@ return {
       { "<leader>vc", function() require("jj.cmd").commit() end, desc = "JJ commit (describe + new)" },
       { "<leader>vp", function() require("jj.cmd").push() end, desc = "JJ push" },
       { "<leader>vf", function() require("jj.cmd").fetch() end, desc = "JJ fetch" },
-      { "<leader>vb", function() require("jj.cmd").bookmark_move() end, desc = "JJ fetch" },
+      { "<leader>vb", function() require("jj.cmd").bookmark_move() end, desc = "JJ move bookmark" },
       { "<leader>vq", "<cmd>J split<cr>", desc = "JJ split" },
     },
     init = function()
