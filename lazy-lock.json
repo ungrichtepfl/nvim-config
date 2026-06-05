@@ -76,6 +76,6 @@
   "vim-suda": { "branch": "master", "commit": "c492741b4679b3cdd4d9e34138209784e061d916" },
   "vim-visual-multi": { "branch": "master", "commit": "a6975e7c1ee157615bbc80fc25e4392f71c344d4" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
-  "yazi.nvim": { "branch": "main", "commit": "46748a986fedce122591e1ebfbb63ff0d6da7422" },
+  "yazi.nvim": { "branch": "main", "commit": "f7b967cb97d50842b2915c6600a32628d60b8d12" },
   "zen.nvim": { "branch": "main", "commit": "c16a8213ef6e969cdf283e9f52e80c3059080660" }
 }
