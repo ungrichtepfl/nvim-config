@@ -1,5 +1,5 @@
 ---@type table<string, string|boolean>
----A mapping of LSP server names to their corresponding Mason package names. If false don't install it in Mason.
+---A mapping of LSP server names to their corresponding Mason package names. If false don't install it in Mason but configure it.
 local servers = {
   angularls = "angular-language-server",
   arduino_language_server = "arduino-language-server",
@@ -8,7 +8,7 @@ local servers = {
   bitbake_ls = "language-server-bitbake",
   clangd = "clangd", -- C/C++
   cmake = "cmake-language-server",
-  copilot = "copilot-language-server",
+  -- copilot = "copilot-language-server",
   cssls = "css-lsp",
   dockerls = "dockerfile-language-server",
   elmls = "elm-language-server",
