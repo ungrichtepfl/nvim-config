@@ -60,3 +60,13 @@ vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- Which foldexpr to use
 -- Performance improvements
 vim.o.maxmempattern = 20000 -- Increase memory for regex matches
 ----
+
+---- Filetype overrides ----
+vim.filetype.add {
+  pattern = {
+    -- VS Code JSON files are JSONC; treat them as json5 so comments/trailing commas parse.
+    [".*/%.vscode/.*%.json"] = "json5",
+    -- Preprocessed linker scripts (*.ld.S / *.lds.S) are cpp input, not assembly.
+    [".*%.lds?%.S"] = "ld",
+  },
+}
