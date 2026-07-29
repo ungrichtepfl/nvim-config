@@ -93,7 +93,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-
 -- NOTE: Uncomment if window positions are weird
 -- local resize_group = vim.api.nvim_create_augroup("_auto_resize", { clear = true })
 -- vim.api.nvim_create_autocmd("VimResized", {

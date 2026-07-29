@@ -9,6 +9,11 @@ return {
           backend = "zellij",
           enabled = true,
         },
+        tools = {
+          ollama = {
+            cmd = { "ollama", "launch", "pi" },
+          },
+        },
       },
     },
     keys = {
