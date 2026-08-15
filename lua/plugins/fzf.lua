@@ -1,3 +1,84 @@
+local CONFLICT = "⚡"
+
+local function jj_status()
+  -- NOTE: the output below is hard to parse as they use spaces as separators, so we will just match the beginning of each line to find out if there is a conflict
+  -- $ jj resolve --list --no-pager --no-color 2>/dev/null
+  -- zsh/hell you      2-sided conflict
+  -- zsh/zshrc.luke    2-sided conflict
+  local conflicts = {}
+  for _, line in ipairs(vim.fn.systemlist "jj resolve --list --no-pager --color=never 2>/dev/null") do
+    table.insert(conflicts, line)
+  end
+  local function has_conflic(file)
+    for _, line in ipairs(conflicts) do
+      if line:startswith(file) then return true end
+    end
+    return false
+  end
+  -- $ jj diff --summary --no-pager 2>/dev/null
+  -- R {INSTALL.md => ini}
+  -- M zsh/hell you
+  -- M zsh/zshrc.luke
+  -- NOTE: the gsub reduces a rename to the name it ends up with:
+  -- R ini
+  -- M zsh/hell you
+  -- M zsh/zshrc.luke
+  local status = {}
+  local lines = vim.fn.systemlist "jj diff --summary --no-pager --color=never 2>/dev/null"
+  for _, line in ipairs(lines) do
+    local status_type, file = line:gsub("{[^{]* => ([^}]*)}", "%1"):match "^(%S+)%s+(.-)%s*$"
+    if file then
+      if has_conflic(file) then status_type = CONFLICT end
+      status[file] = status_type
+    end
+  end
+  return status
+end
+
+local function fzf_status()
+  local actions = {
+    ["ctrl-x"] = {
+      fn = function(selected, ops)
+        for _, entry in ipairs(selected) do
+          local file = require("fzf-lua.path").entry_to_file(entry, ops).path
+          vim.fn.system { "jj", "restore", "--", file }
+          vim.notify("Restored: " .. file, vim.log.levels.INFO)
+        end
+      end,
+      reload = true,
+      header = "restore",
+    },
+  }
+  actions = vim.tbl_deep_extend("force", require("fzf-lua").defaults.actions.files, actions)
+
+  -- NOTE: `_fzf_nth_devicons` makes fzf-lua set `--delimiter` to `utils.nbsp` and
+  --  `--nth=-1..`, so the icons are display only: they're excluded from the fuzzy
+  --  matching and `path.entry_to_file` strips them back off for the file actions.
+  local opts = {
+    file_icons = true,
+    color_icons = true,
+    _fzf_nth_devicons = true,
+    preview = "jj diff --color=always --no-pager -- {-1}",
+    actions = actions,
+    winopts = { title = " JJ Status ", title_pos = "center" },
+  }
+
+  require("fzf-lua").fzf_exec(function(fzf_cb)
+    local status = jj_status() -- NOTE: Must be in the callback for reloading to work
+
+    local fzf_utils = require "fzf-lua.utils"
+    local fzf_git_icons = require("fzf-lua.config").globals.git.icons
+    local make_entry = require "fzf-lua.make_entry"
+    for file, status_type in pairs(status) do
+      local git_icon = fzf_git_icons[status_type]
+      local prefix = git_icon and fzf_utils.ansi_codes[git_icon.color or "dark_grey"](git_icon.icon) .. " "
+        or fzf_utils.ansi_codes["red"](status_type) -- if not a git icon it is the merge conflict mod
+      fzf_cb(prefix .. fzf_utils.nbsp .. make_entry.file(file, opts))
+    end
+    fzf_cb()
+  end, opts)
+end
+
 return {
   "ibhagwan/fzf-lua",
   dependencies = { "echasnovski/mini.icons" },
@@ -43,64 +124,8 @@ return {
     {
       "<leader>s",
       function()
-        if require("config.utils").is_jj_root_cached() then
-          local conflicts = {}
-          for _, line in ipairs(vim.fn.systemlist "jj resolve --list 2>/dev/null") do
-            local file = line:match "^(%S+)"
-            if file then conflicts[file] = true end
-          end
-
-          local function extract_file(sel)
-            local plain = sel:gsub("\27%[[%d;]*m", "")
-            plain = plain:gsub("^⚡", "")
-            return plain:match "^%S+%s+(.-)%s*$"
-          end
-
-          require("fzf-lua").fzf_exec(function(fzf_cb)
-            local lines =
-              vim.fn.systemlist [[jj diff --summary --color=always 2>/dev/null | sed 's|{[^{]* => \([^}]*\)}|\1|g']]
-            for _, line in ipairs(lines) do
-              local plain = line:gsub("\27%[[%d;]*m", "")
-              local file = plain:match "^%S+%s+(.+)$"
-              if file and conflicts[file] then
-                fzf_cb("⚡" .. line)
-              else
-                fzf_cb(line)
-              end
-            end
-            fzf_cb()
-          end, {
-            prompt = "JJ Status> ",
-            fzf_opts = {
-              ["--ansi"] = true,
-              ["--preview-window"] = "right:60%",
-            },
-            preview = "jj diff --color=always -- {2}",
-            actions = {
-              ["default"] = function(selected)
-                if not selected or #selected == 0 then return end
-                local file = extract_file(selected[1])
-                if file then vim.cmd("edit " .. vim.fn.fnameescape(file)) end
-              end,
-              ["ctrl-v"] = function(selected)
-                if not selected or #selected == 0 then return end
-                local file = extract_file(selected[1])
-                if file then vim.cmd("vsplit " .. vim.fn.fnameescape(file)) end
-              end,
-              ["ctrl-s"] = function(selected)
-                if not selected or #selected == 0 then return end
-                local file = extract_file(selected[1])
-                if file then vim.cmd("split " .. vim.fn.fnameescape(file)) end
-              end,
-              ["ctrl-x"] = function(selected)
-                if not selected or #selected == 0 then return end
-                local file = extract_file(selected[1])
-                if not file then return end
-                vim.fn.system("jj restore -- " .. vim.fn.shellescape(file))
-                vim.notify("Restored: " .. file, vim.log.levels.INFO)
-              end,
-            },
-          })
+        if require("config.utils").is_jj_root() then
+          fzf_status()
         else
           require("fzf-lua").git_status()
         end

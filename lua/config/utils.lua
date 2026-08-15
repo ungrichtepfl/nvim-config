@@ -56,14 +56,14 @@ function M.goto_last_cursor_position()
   if mark[1] > 0 and mark[1] <= lcount then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
 end
 
-function M.is_jj_root()
+local function is_jj_root()
   vim.fn.system "jj root 2>/dev/null"
   return vim.v.shell_error == 0
 end
 
 local jj_root_cache = nil
-function M.is_jj_root_cached()
-  if jj_root_cache == nil then jj_root_cache = M.is_jj_root() end
+function M.is_jj_root(recompute)
+  if jj_root_cache == nil or recompute == true then jj_root_cache = is_jj_root() end
   return jj_root_cache
 end
 

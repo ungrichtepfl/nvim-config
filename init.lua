@@ -1,3 +1,5 @@
+require "type_extensions"
+
 require "config.options" -- NOTE: Must be loaded first
 require "config.keymaps"
 require "config.autocommands"
