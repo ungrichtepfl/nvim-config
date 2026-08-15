@@ -28,5 +28,6 @@ local servers = {
   ts_ls = "typescript-language-server",
   yamlls = "yaml-language-server",
   zls = "zls",
+  roc_lsp = false, -- Not available on Mason (only the wrong one)
 }
 return servers

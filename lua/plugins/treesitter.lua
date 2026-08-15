@@ -55,6 +55,7 @@ return {
         "xml",
         "yaml",
         "zig",
+        "roc",
       }
       if #ensure_installed > 0 then
         local nts = require "nvim-treesitter"
