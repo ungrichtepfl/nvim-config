@@ -59,6 +59,7 @@ local function fzf_status()
     color_icons = true,
     _fzf_nth_devicons = true,
     preview = "jj diff --color=always --no-pager -- {-1}",
+    fzf_opts = { ["--multi"] = true }, -- needed for ctrl-q
     actions = actions,
     winopts = { title = " JJ Status ", title_pos = "center" },
   }
@@ -95,18 +96,26 @@ return {
         ["--tiebreak"] = "index",
       },
     },
+    fzf_opts = {
+      ["--cycle"] = true, -- wrap around at both ends of the result list
+    },
     keymap = {
+      -- NOTE: the preview binds are needed in both tables: 'builtin' is only
+      --  mapped for the lua previewer, pickers with a native previewer (git
+      --  status, jj status) never see it and get the key from fzf instead.
       builtin = {
         true,
         ["<C-j>"] = "preview-down",
         ["<C-k>"] = "preview-up",
-        ["<C-d>"] = "preview-page-down",
-        ["<C-u>"] = "preview-page-up",
+        ["<M-j>"] = "preview-half-page-down",
+        ["<M-k>"] = "preview-half-page-up",
       },
       fzf = {
         true,
-        ["ctrl-d"] = "preview-page-down",
-        ["ctrl-u"] = "preview-page-up",
+        ["ctrl-j"] = "preview-down",
+        ["ctrl-k"] = "preview-up",
+        ["alt-j"] = "preview-half-page-down",
+        ["alt-k"] = "preview-half-page-up",
         ["ctrl-q"] = "select-all+accept",
       },
     },
