@@ -2,6 +2,22 @@ return {
   {
     "folke/sidekick.nvim",
     event = "VeryLazy",
+    -- HACK: OSC 52 copies from the CLI's :terminal buffer reach the xclip provider as one
+    -- list item, and jobsend() turns the newlines into NULs, so only the first line lands.
+    -- Fixed by neovim/neovim#41097, unreleased as of v0.12.4; drop this once nvim has it.
+    -- Paste stays on xclip: alacritty's `osc52 = "OnlyCopy"` never answers a read query.
+    config = function(_, opts)
+      local osc52 = require "vim.ui.clipboard.osc52"
+      vim.g.clipboard = {
+        name = "osc52-copy-xclip-paste",
+        copy = { ["+"] = osc52.copy "+", ["*"] = osc52.copy "*" },
+        paste = {
+          ["+"] = { "xsel", "-o", "-b" },
+          ["*"] = { "xsel", "-o", "-p" },
+        },
+      }
+      require("sidekick").setup(opts)
+    end,
     opts = {
       nes = { enabled = false },
       cli = {
