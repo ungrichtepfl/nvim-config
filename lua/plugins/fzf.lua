@@ -41,7 +41,7 @@ local function fzf_status()
       fn = function(selected, ops)
         for _, entry in ipairs(selected) do
           local file = require("fzf-lua.path").entry_to_file(entry, ops).path
-          vim.fn.system { "jj", "restore", "--", file }
+          vim.fn.system { "jj", "restore", "--", string.format('file:"%s"', file) }
           vim.notify("Restored: " .. file, vim.log.levels.INFO)
         end
       end,
@@ -58,7 +58,10 @@ local function fzf_status()
     file_icons = true,
     color_icons = true,
     _fzf_nth_devicons = true,
-    preview = "jj diff --color=always --no-pager -- {-1}",
+    -- NOTE: jj parses positional args as filesets, so paths containing meta
+    --  characters (`%`, `(`, ...) must be wrapped in `file:"..."`. fzf replaces
+    --  {-1} with a single-quoted string, so the quotes concatenate into one word.
+    preview = [[jj diff --color=always --no-pager -- 'file:"'{-1}'"']],
     fzf_opts = { ["--multi"] = true }, -- needed for ctrl-q
     actions = actions,
     winopts = { title = " JJ Status ", title_pos = "center" },
