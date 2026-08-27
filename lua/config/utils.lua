@@ -89,4 +89,8 @@ function M.is_swiss_keyboard()
   return layout_info and layout_info:match "layout:%s+ch"
 end
 
+function M.codespell_config_path() return vim.fn.expand "~/.config/codespell/codespellrc" end
+
+function M.codespell_wordlist_path() return vim.fn.expand "~/.config/codespell/words.add" end
+
 return M

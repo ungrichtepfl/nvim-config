@@ -3,6 +3,13 @@ return {
   event = "VeryLazy",
   config = function(_, _)
     local lint = require "lint"
+    local codespell_config = require("config.utils").codespell_config_path()
+    local codespell_args = { "--stdin-single-line", "-" }
+    if vim.fn.filereadable(codespell_config) == 1 then
+      table.insert(codespell_args, 2, codespell_config)
+      table.insert(codespell_args, 2, "--config")
+    end
+    lint.linters.codespell.args = codespell_args
     lint.linters_by_ft = {
       bash = { "shellcheck" },
       css = { "stylelint" },

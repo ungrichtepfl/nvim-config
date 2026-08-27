@@ -93,6 +93,20 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+local spell_group = vim.api.nvim_create_augroup("_spellfile", { clear = true })
+vim.api.nvim_create_autocmd("VimEnter", {
+  group = spell_group,
+  callback = function()
+    local addfile = require("config.utils").codespell_wordlist_path()
+    if vim.fn.filereadable(addfile) == 0 then return end
+    vim.o.spellfile = addfile
+    local splfile = addfile .. ".spl"
+    if vim.fn.filereadable(splfile) == 0 or vim.fn.getftime(splfile) < vim.fn.getftime(addfile) then
+      vim.cmd("mkspell! " .. vim.fn.fnameescape(addfile))
+    end
+  end,
+})
+
 -- NOTE: Uncomment if window positions are weird
 -- local resize_group = vim.api.nvim_create_augroup("_auto_resize", { clear = true })
 -- vim.api.nvim_create_autocmd("VimResized", {
