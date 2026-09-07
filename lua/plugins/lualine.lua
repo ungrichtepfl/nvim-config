@@ -1,17 +1,21 @@
-local branch_value = ""
-local branch_running = false
+local vcs_info = ""
+local vcs_cmd_running = false
 local function fetch_branch()
-  if branch_running then return end
-  branch_running = true
+  if vcs_cmd_running then return end
+  vcs_cmd_running = true
   vim.fn.jobstart(
     "jj root >/dev/null 2>&1 && jj log -r '@' --no-graph -T 'if(description.first_line(), description.first_line(), \"(no description)\")' 2>/dev/null || git branch --show-current 2>/dev/null",
     {
       stdout_buffered = true,
       on_stdout = function(_, data)
-        if data and data[1] ~= "" then branch_value = data[1] end
+        if data and data[1] ~= "" then
+          vcs_info = data[1]
+          local max_len = 35
+          if #vcs_info > max_len then vcs_info = vcs_info:sub(1, max_len) .. "..." end
+        end
       end,
       on_exit = function()
-        branch_running = false
+        vcs_cmd_running = false
         require("lualine").refresh()
       end,
     }
@@ -180,6 +184,17 @@ return {
       },
     }
 
+    ins_left {
+      -- Overseer running-task count. Reads the task list only once overseer is
+      -- loaded, so it does not pull the plugin in at startup.
+      function()
+        if not package.loaded["overseer"] then return "" end
+        local running = #require("overseer.task_list").list_tasks { status = "RUNNING" }
+        return running > 0 and string.format("%s%d", "󰑮 ", running) or ""
+      end,
+      color = { fg = colors.orange },
+    }
+
     -- Insert mid section. You can make any number of sections in neovim :)
     -- for lualine it's any number greater then 2
     ins_left {
@@ -226,7 +241,7 @@ return {
     }
 
     ins_right {
-      function() return branch_value end,
+      function() return vcs_info end,
       icon = "",
       color = { fg = colors.violet, gui = "bold" },
     }
