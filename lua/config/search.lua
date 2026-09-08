@@ -124,9 +124,9 @@ local GH_PREVIEW = "gh repo view {1}"
 local JIRA_PREVIEW = "jira issue view --plain {1}"
 
 local sources = {
-  g = { title = "GitHub " .. GITHUB_USER, preview = GH_PREVIEW, query = repos(GITHUB_USER) },
+  m = { title = "GitHub " .. GITHUB_USER, preview = GH_PREVIEW, query = repos(GITHUB_USER) },
   s = { title = "GitHub " .. GITHUB_ORG, preview = GH_PREVIEW, query = repos(GITHUB_ORG) },
-  I = { title = "Jira SOF (mine, open)", preview = JIRA_PREVIEW, query = issues("SOF", MINE_OPEN) },
+  i = { title = "Jira SOF (mine, open)", preview = JIRA_PREVIEW, query = issues("SOF", MINE_OPEN) },
   r = { title = "Jira REQ", preview = JIRA_PREVIEW, query = issues("REQ", NOT_ARCHIVED) },
   t = { title = "Jira TP", preview = JIRA_PREVIEW, query = issues("TP", NOT_ARCHIVED) },
   f = { title = "Jira FMEA", preview = JIRA_PREVIEW, query = issues("FMEA", NOT_ARCHIVED) },
