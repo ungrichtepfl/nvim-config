@@ -353,13 +353,59 @@ local MINE_OPEN = "assignee = currentUser() AND statusCategory != Done"
 local NOT_ARCHIVED = "status != Archive"
 local ANY = ""
 
-local GH_PREVIEW = "gh repo view {1}"
-local JIRA_PREVIEW = "jira issue view --plain {1}"
+-- Confluence's macros make pandoc emit divs, spans and attribute blocks that
+-- drown the text; disabling those constructs leaves plain markdown, and the
+-- table extensions are off so that multi-line cells stay in grid tables.
+local PANDOC_MD = "markdown-raw_html-fenced_divs-bracketed_spans-native_divs-native_spans"
+  .. "-header_attributes-link_attributes-inline_code_attributes-simple_tables-multiline_tables"
+
+-- Preview rendering. `--color`/`-s dark` are needed because a preview pane is not
+-- a tty and both tools drop their colors there, and fzf exports
+-- `FZF_PREVIEW_COLUMNS` for the pane width.
+local RENDERERS = {
+  -- `--ansi` skips terminal detection, or mdcat tries to draw images with the
+  -- terminal's own protocol inside the preview pane; `--local` keeps it from
+  -- fetching remote images over the network while scrolling the list.
+  mdcat = [[mdcat --ansi --local --columns "${FZF_PREVIEW_COLUMNS:-80}" -]],
+  glow = [[glow - -s dark -w "${FZF_PREVIEW_COLUMNS:-80}"]],
+  bat = [[bat --color=always --style=plain --paging=never --language md ]]
+    .. [[--terminal-width "${FZF_PREVIEW_COLUMNS:-80}"]],
+}
+
+-- mdcat and glow both render markdown - headings, pipe tables, code blocks - and
+-- mdcat wins on a narrow pane: same tables with clean rules instead of glow's
+-- per-word background fills, and far fewer escape codes. Both reflow paragraphs
+-- though, which destroys content that carries its own fixed-width layout
+-- (jira-cli's aligned issue list, pandoc's grid tables), so that stays with bat:
+-- it only highlights and never rewraps.
+local MARKDOWN = { "mdcat", "glow", "bat" }
+local FIXED_WIDTH = { "bat" }
+
+--- Pipe a preview command through the first installed renderer in `preferred`,
+--- leaving the output raw when none of them is installed.
+--- NOTE: the parentheses matter, `a || b | bat` would pipe only `b`.
+local function rendered(cmd, preferred)
+  for _, name in ipairs(preferred) do
+    if vim.fn.executable(name) == 1 then return "( " .. cmd .. " ) | " .. RENDERERS[name] end
+  end
+  return cmd
+end
+
+local GH_PREVIEW = rendered("gh repo view {1}", MARKDOWN)
+-- The two `sed`s undo jira-cli's fixed two-space indent and its right padding,
+-- without which bat sees no markdown (an indented `#` is not a heading) and turns
+-- every padded blank line into a rule.
+-- NOTE: `[==[ ]==]` because `[[:space:]]` would nest into a plain `[[` string.
+local JIRA_PREVIEW =
+  rendered([==[jira issue view --plain {1} | sed -e 's/[[:space:]]*$//' -e 's/^  //']==], FIXED_WIDTH)
 -- `{1}` is `owner/repo#<number>`. The REST issues endpoint serves both issues and
 -- pull requests, so no per-subject-type dispatch is needed; other subject types
 -- (commits, releases, ...) have no such endpoint and fall through to the message.
-local GH_NOTIFY_PREVIEW =
-  [[gh api "repos/$(echo {1} | sed 's|#|/issues/|')" --jq '.title, "", .body' 2>/dev/null || echo 'no preview for this subject']]
+local GH_NOTIFY_PREVIEW = rendered(
+  [[gh api "repos/$(echo {1} | sed 's|#|/issues/|')" --jq '.title, "", .body' 2>/dev/null ]]
+    .. [[|| echo 'no preview for this subject']],
+  MARKDOWN
+)
 
 --- `{1}` is the page id, hidden from the display by `with_nth`.
 --- NOTE: fzf substitutes a placeholder as a single-quoted word, so the url has to
@@ -367,15 +413,21 @@ local GH_NOTIFY_PREVIEW =
 ---  literal and Confluence answers 404 for the malformed content id.
 local function confluence_preview()
   local login = atlassian_login()
-  if not login then return nil end
+  -- The page body only arrives as HTML, so without pandoc there is nothing
+  -- readable to render and the picker is better off with no preview pane.
+  if not login or vim.fn.executable "pandoc" == 0 or vim.fn.executable "jq" == 0 then return nil end
   -- `$JIRA_API_TOKEN` is expanded by the preview shell, not by us, so the token
   -- never lands in an argv.
-  return string.format(
+  return rendered(
+    string.format(
     [[printf 'user = "%s:%%s"\n' "$JIRA_API_TOKEN" | curl -fsS -K - ]]
       .. [["%s/rest/api/content/"{1}"?expand=body.view" ]]
-      .. [[| jq -r '.body.view.value' | pandoc -f html -t plain --columns="${FZF_PREVIEW_COLUMNS:-80}"]],
-    login,
-    CONFLUENCE_SERVER
+      .. [[| jq -r '.body.view.value' ]]
+      .. string.format([[| pandoc -f html -t %s --columns="${FZF_PREVIEW_COLUMNS:-80}"]], PANDOC_MD),
+      login,
+      CONFLUENCE_SERVER
+    ),
+    FIXED_WIDTH
   )
 end
 
