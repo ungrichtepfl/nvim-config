@@ -76,7 +76,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local git_group = vim.api.nvim_create_augroup("_git", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   group = git_group,
-  pattern = "gitcommit",
+  pattern = { "gitcommit", "jjdescription" },
   callback = function()
     vim.wo[0][0].wrap = true
     vim.wo[0][0].spell = true
