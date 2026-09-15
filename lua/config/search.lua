@@ -257,6 +257,10 @@ end
 local SUBJECT_LABEL = { PullRequest = "PR", Issue = "Issue" }
 local STATE_COLOR = { merged = "magenta", open = "green", closed = "red", draft = "grey" }
 
+-- The names octo gives the same subject types; anything absent here (a commit, a
+-- check suite, ...) is a subject octo cannot preview.
+local OCTO_KIND = { Issue = "issue", PullRequest = "pull_request", Discussion = "discussion", Release = "release" }
+
 --- Look the state of every pull request and issue up in one GraphQL request and
 --- fold it into the items' status column.
 --- @param items table[] parsed notifications, annotated in place
@@ -333,6 +337,8 @@ local function notifications()
             api_url:gsub("^https://api%.github%.com/repos/", "https://github.com/"):gsub("/pulls/(%d+)$", "/pull/%1")
           table.insert(items, {
             id = number and (repo .. "#" .. number) or repo,
+            repo = repo,
+            number = number,
             kind = kind,
             status = kind, -- replaced by "<label> <state>" once known
             text = title,
@@ -420,10 +426,10 @@ local function confluence_preview()
   -- never lands in an argv.
   return rendered(
     string.format(
-    [[printf 'user = "%s:%%s"\n' "$JIRA_API_TOKEN" | curl -fsS -K - ]]
-      .. [["%s/rest/api/content/"{1}"?expand=body.view" ]]
-      .. [[| jq -r '.body.view.value' ]]
-      .. string.format([[| pandoc -f html -t %s --columns="${FZF_PREVIEW_COLUMNS:-80}"]], PANDOC_MD),
+      [[printf 'user = "%s:%%s"\n' "$JIRA_API_TOKEN" | curl -fsS -K - ]]
+        .. [["%s/rest/api/content/"{1}"?expand=body.view" ]]
+        .. [[| jq -r '.body.view.value' ]]
+        .. string.format([[| pandoc -f html -t %s --columns="${FZF_PREVIEW_COLUMNS:-80}"]], PANDOC_MD),
       login,
       CONFLUENCE_SERVER
     ),
@@ -431,11 +437,12 @@ local function confluence_preview()
   )
 end
 
---- Pickers. `preview` may be a function returning the command (or nil for none),
---- `no_input` skips the query prompt, `with_nth` hides leading display fields,
---- `color` picks the `ansi_codes` name for an item's status column and `web` is
---- the page the picker itself came from: a template with an optional `%s` for
---- the query, or a function turning the query into the url.
+--- Pickers. `preview` may be a function returning the command (or nil for none)
+--- and `octo_preview` supersedes it with octo's own previewer where octo is
+--- installed, `no_input` skips the query prompt, `with_nth` hides leading display
+--- fields, `color` picks the `ansi_codes` name for an item's status column and
+--- `web` is the page the picker itself came from: a template with an optional
+--- `%s` for the query, or a function turning the query into the url.
 local sources = {
   G = { title = "GitHub " .. GITHUB_USER, preview = GH_PREVIEW, query = repos(GITHUB_USER) },
   g = { title = "GitHub " .. GITHUB_ORG, preview = GH_PREVIEW, query = repos(GITHUB_ORG) },
@@ -475,6 +482,7 @@ local sources = {
     title = "GitHub notifications (unread)",
     preview = GH_NOTIFY_PREVIEW,
     query = notifications(),
+    octo_preview = true,
     no_input = true,
     can_mark_done = true,
     web = GITHUB_NOTIFICATIONS,
@@ -560,9 +568,44 @@ local function mark_done(items, on_failure)
   end
 end
 
+--- The entry octo's notification previewer expects, nil for a subject it cannot
+--- render. `ordinal` is only used as its cache key.
+local function octo_entry(item)
+  local kind = OCTO_KIND[item.kind]
+  if not (kind and item.repo and item.number) then return nil end
+  return { value = item.number, repo = item.repo, kind = kind, ordinal = item.id }
+end
+
+--- Octo's own notification previewer, which renders the issue, PR, discussion or
+--- release into an `octo` buffer instead of shelling out to `gh`.
+--- NOTE: `entries` is mutated in place by the caller rather than replaced: the
+---  previewer closes over the table it is handed, and the list is refilled on
+---  every fzf reload.
+--- @return table? previewer class, nil when octo is not installed
+local function octo_previewer(entries)
+  -- `require "octo"` is what makes lazy.nvim load the plugin and run its setup,
+  -- which the previewer needs (graphql fragments, `octo` filetype, highlights).
+  if not pcall(require, "octo") then return nil end
+  local ok, previewers = pcall(require, "octo.pickers.fzf-lua.previewers")
+  if not ok then return nil end
+
+  -- `notifications()` returns a fresh class per call, so patching it is local to
+  -- this picker. Guarding is on us: it indexes the entry without checking.
+  local previewer = previewers.notifications(entries, {})
+  local populate = previewer.populate_preview_buf
+  function previewer:populate_preview_buf(entry_str)
+    if entries[entry_str] then return populate(self, entry_str) end
+    local buf = self:get_tmp_buffer()
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "no preview for this subject" })
+    self:set_preview_buf(buf)
+    self:update_border(entry_str)
+  end
+  return previewer
+end
+
 local function show_fzf(fzf, source, query, items)
   local ansi = require("fzf-lua.utils").ansi_codes
-  local state = { query = query, by_line = {}, dismissed = {} }
+  local state = { query = query, by_line = {}, dismissed = {}, octo_entries = {} }
 
   -- Re-fed by fzf on every `reload` action, which is what keeps the window open
   -- on a re-query instead of tearing the picker down and opening a new one.
@@ -579,6 +622,13 @@ local function show_fzf(fzf, source, query, items)
         function(status, item) return ansi[source.color and source.color(item) or "yellow"](status) end
       )
       state.by_line = by_line
+      -- cleared in place, see `octo_previewer`
+      for line in pairs(state.octo_entries) do
+        state.octo_entries[line] = nil
+      end
+      for line, item in pairs(by_line) do
+        state.octo_entries[line] = octo_entry(item)
+      end
       for _, line in ipairs(lines) do
         fzf_cb(line)
       end
@@ -640,12 +690,17 @@ local function show_fzf(fzf, source, query, items)
       reload = true,
     }
   end
+  -- Octo renders a notification far better than any `gh` invocation can, but it
+  -- is optional: without it the source falls back to its own shell preview.
+  local previewer = source.octo_preview and octo_previewer(state.octo_entries) or nil
   fzf.fzf_exec(contents, {
     prompt = "> ",
+    previewer = previewer,
     fzf_opts = {
       ["--ansi"] = true,
       ["--header"] = header,
-      ["--preview"] = type(source.preview) == "function" and source.preview() or source.preview,
+      ["--preview"] = not previewer and (type(source.preview) == "function" and source.preview() or source.preview)
+        or nil,
       ["--with-nth"] = source.with_nth,
     },
     winopts = { title = " " .. source.title .. " ", title_pos = "center" },
