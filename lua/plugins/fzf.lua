@@ -49,7 +49,10 @@ local function fzf_status()
       header = "restore",
     },
   }
-  actions = vim.tbl_deep_extend("force", require("fzf-lua").defaults.actions.files, actions)
+  -- NOTE: `config.globals` and not `fzf.defaults`: the latter is the static table
+  --  from `defaults.lua` that `setup()` never touches, the former is a lazy view
+  --  that merges the setup options over it.
+  actions = vim.tbl_deep_extend("force", require("fzf-lua").config.globals.actions.files, actions)
 
   -- NOTE: `_fzf_nth_devicons` makes fzf-lua set `--delimiter` to `utils.nbsp` and
   --  `--nth=-1..`, so the icons are display only: they're excluded from the fuzzy
