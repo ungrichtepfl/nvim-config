@@ -83,6 +83,176 @@ local function fzf_status()
   end, opts)
 end
 
+--- owner/repo of the `origin` remote, resolved offline from the remote url
+local function github_repo(cwd)
+  local url = vim.fn.systemlist { "git", "-C", cwd, "remote", "get-url", "origin" }
+  if vim.v.shell_error ~= 0 or not url[1] then return nil end
+  return url[1]:gsub("%.git$", ""):match "github%.com[:/](.+)$"
+end
+
+-- NOTE: "list pull requests associated with a commit" returns the merged PR that
+--  introduced the commit (squash merges included) or the open PRs containing it:
+--  https://docs.github.com/en/rest/commits/commits#list-pull-requests-associated-with-a-commit
+local function pr_number(nwo, sha)
+  local out = vim.fn.systemlist {
+    "gh",
+    "api",
+    string.format("repos/%s/commits/%s/pulls", nwo, sha),
+    "--jq",
+    ".[0].number",
+  }
+  if vim.v.shell_error ~= 0 then return nil, table.concat(out, "\n") end
+  return tonumber(out[1])
+end
+
+local function open_pr(nwo, selected, web)
+  if not nwo then
+    vim.notify("No github.com `origin` remote", vim.log.levels.WARN)
+    return
+  end
+  local sha = require("fzf-lua.utils").strip_ansi_coloring(selected[1]):match "^%x+"
+  local number, err = pr_number(nwo, sha)
+  if err then
+    vim.notify(err, vim.log.levels.ERROR)
+  elseif not number then
+    vim.notify("No pull request found for " .. sha, vim.log.levels.WARN)
+  elseif web then
+    vim.system { "gh", "pr", "view", "--repo", nwo, "--web", tostring(number) }
+  else
+    vim.cmd("Octo pr edit " .. number)
+  end
+end
+
+--- Resolve a buffer line range to the commit/file/range it originates from.
+--- NOTE: `git log -L` resolves its range against a *revision*, never against the
+---  working tree, so on a modified buffer an untranslated range is either out of
+---  bounds ("file has only N lines") or, worse, silently reports the history of an
+---  unrelated line. `git blame --contents -` blames the buffer as it is right now
+---  and its porcelain header gives us the line number in the commit it came from.
+local function blame_origin(git_root, relfile, first, last)
+  local out = vim.fn.systemlist({
+    "git",
+    "-C",
+    git_root,
+    "-c",
+    "core.quotepath=false",
+    "blame",
+    "--porcelain",
+    "--contents",
+    "-",
+    "-L",
+    string.format("%d,%d", first, last),
+    "--",
+    relfile,
+  }, vim.api.nvim_buf_get_lines(0, 0, -1, false))
+  if vim.v.shell_error ~= 0 then return nil, table.concat(out, "\n") end
+
+  -- porcelain group header: "<sha> <line in commit> <line in buffer> <lines in group>"
+  local sha, srcline, nlines = out[1]:match "^(%x+)%s+(%d+)%s+%d+%s+(%d+)"
+  if not sha then return nil, "unexpected `git blame --porcelain` output: " .. (out[1] or "") end
+  if sha:match "^0+$" then return nil end -- not committed yet
+
+  local count = math.min(tonumber(nlines), last - first + 1)
+  local file = relfile
+  for _, line in ipairs(out) do
+    local name = line:match "^filename (.+)$"
+    if name then
+      file = name
+      break
+    end
+  end
+  return {
+    sha = sha,
+    file = file,
+    first = tonumber(srcline),
+    last = tonumber(srcline) + count - 1,
+    -- the range spills into an older commit, only the first group is listed
+    truncated = count < last - first + 1,
+  }
+end
+
+--- Picker over every commit that touched the current line (or the visual range).
+local function fzf_line_history()
+  local fzf = require "fzf-lua"
+  local fzf_path = require "fzf-lua.path"
+  -- NOTE: `config.globals` (unlike `fzf.defaults`) is the table `setup()` merges
+  --  into, so the entry format, pager and actions borrowed from `git_bcommits`
+  --  below follow both the upstream defaults and any user override of them.
+  local bcommits = fzf.config.globals.git.bcommits
+
+  if #vim.api.nvim_buf_get_name(0) == 0 then
+    vim.notify("Line history is not available for unnamed buffers", vim.log.levels.WARN)
+    return
+  end
+
+  local opts = { cwd = fzf_path.git_root({ cwd = vim.fn.expand "%:p:h" }, true) }
+  local git_root = fzf_path.git_root(opts)
+  if not git_root then return end
+
+  local first, last = vim.fn.line ".", vim.fn.line "."
+  if vim.fn.mode():match "^[vV\22]" then
+    first, last = vim.fn.line "v", vim.fn.line "."
+    if first > last then
+      first, last = last, first
+    end
+  end
+
+  local origin, err = blame_origin(git_root, fzf_path.relative_to(vim.fn.expand "%:p", git_root), first, last)
+  if err then
+    vim.notify(err, vim.log.levels.ERROR)
+    return
+  elseif not origin then
+    vim.notify(string.format("Line %d-%d is not committed yet", first, last), vim.log.levels.WARN)
+    return
+  elseif origin.truncated then
+    vim.notify("Range spans several commits, listing the first one only", vim.log.levels.WARN)
+  end
+  local nwo = github_repo(git_root)
+
+  -- NOTE: `git blame` only reports the *last* commit that touched a line, `git log -L`
+  --  walks the full history of a line range instead. `--no-patch` reduces each commit
+  --  to a single entry line, matching the bcommits entry format.
+  local cmd = string.format(
+    [[git log -L %d,%d:%s %s --no-patch --color=always --pretty=format:"%s"]],
+    origin.first,
+    origin.last,
+    require("fzf-lua.libuv").shellescape(origin.file),
+    origin.sha,
+    bcommits.cmd:match [[%-%-pretty=format:"(.-)"]]
+  )
+
+  -- NOTE: both previews are plain shell commands bound to fzf's `change-preview`,
+  --  so nothing hits the network until <A-p> is pressed: the commit preview is
+  --  fully offline, the PR preview shells out to `gh`.
+  local pager = type(bcommits.preview_pager) == "function" and bcommits.preview_pager() or bcommits.preview_pager
+  local preview_commit = "git show --color=always {1}" .. (pager and " | " .. pager or "")
+  local preview_pr = nwo
+    and string.format(
+      [[sh -c 'n=$(gh api repos/%s/commits/"$1"/pulls --jq ".[0].number" 2>/dev/null); ]]
+        .. [[if [ -n "$n" ]; then GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh pr view --repo %s "$n"; ]]
+        .. [[else echo "no pull request found for $1"; fi' sh {1}]],
+      nwo,
+      nwo
+    )
+
+  opts.preview = preview_commit
+  opts.fzf_opts = vim.deepcopy(bcommits.fzf_opts)
+  opts.keymap = {
+    fzf = {
+      ["alt-c"] = string.format("change-preview(%s)", preview_commit),
+      ["alt-p"] = preview_pr and string.format("change-preview(%s)", preview_pr) or nil,
+    },
+  }
+  opts.actions = vim.tbl_deep_extend("force", bcommits.actions, {
+    ["alt-o"] = { fn = function(selected) open_pr(nwo, selected) end },
+    ["alt-b"] = { fn = function(selected) open_pr(nwo, selected, true) end },
+  })
+  opts.winopts = { title = string.format(" Line History %d-%d ", first, last), title_pos = "center" }
+  opts.header = ":: <A-p> PR description | <A-c> commit | <A-o> open PR | <A-b> PR in browser"
+
+  fzf.fzf_exec(cmd, opts)
+end
+
 return {
   "ibhagwan/fzf-lua",
   dependencies = { "echasnovski/mini.icons" },
@@ -153,6 +323,12 @@ return {
     { "<leader>ogc", "<cmd> FzfLua git_commits<cr>", desc = "List git commits" },
     { "<leader>ogC", "<cmd> FzfLua git_bcommits<cr>", desc = "List git commits of the buffer" },
     { "<leader>ogb", "<cmd> FzfLua git_branches<cr>", desc = "List git branches" },
+    {
+      "<leader>ob",
+      fzf_line_history,
+      mode = { "n", "x" },
+      desc = "List git commits touching the current line",
+    },
     { "<leader><leader>r", "<cmd> FzfLua resume<cr>", desc = "List git branches" },
     { "[w", "<cmd> FzfLua grep_cword<cr>", desc = "Grep for word under cursor" },
     { "[W", "<cmd> FzfLua grep_cWORD<cr>", desc = "Grep for WORD under cursor" },
