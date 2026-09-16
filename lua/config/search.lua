@@ -14,7 +14,8 @@ local JIRA_NOTIFICATIONS =
 -- NOTE: the web picker lists DuckDuckGo results, not Google's: Google's only
 --  official programmatic search is the Custom Search JSON API, which is closed
 --  to new customers and reaches end of life on 2027-01-01. Google is therefore
---  only ever a page to open, which is what `<ctrl-g>` in that picker does.
+--  only ever a page to open - by `<ctrl-g>` in the picker, and by the picker
+--  itself when ddgr is missing and there is nothing to list.
 local GOOGLE_SEARCH = "https://www.google.com/search?q=%s"
 local DDG_SEARCH = "https://duckduckgo.com/?q=%s"
 local GITHUB_NOTIFICATIONS = "https://github.com/notifications"
@@ -38,6 +39,16 @@ local function strip_ansi(s) return (s:gsub("\27%[[%d;]*m", "")) end
 --- Percent-encode everything outside the RFC 3986 unreserved set.
 local function urlencode(s)
   return (s:gsub("[^%w%-%.%_%~]", function(c) return string.format("%%%02X", string.byte(c)) end))
+end
+
+--- Open a page in the browser. `url` is either a template whose `%s` receives
+--- the percent-encoded `query`, or a function building the whole url from it.
+local function open_url(url, query)
+  if type(url) == "function" then
+    vim.ui.open(url(query or ""))
+    return
+  end
+  vim.ui.open(url:find "%%s" and url:format(urlencode(query or "")) or url)
 end
 
 -- Lucene operators inside a `~` value; turned into separators so that a
@@ -261,18 +272,19 @@ local function pages()
 end
 
 --- Query the web through ddgr, which renders DuckDuckGo's html endpoint and so
---- needs no API key.
+--- needs no API key. Falls back to opening the search on Google.
 local function web()
   return function(query, on_items)
     if query == "" then
       on_items {}
       return
     end
-    -- Without ddgr there is no result list to show, so the search itself is the
-    -- best that can still happen.
+    -- NOTE: without ddgr there is no result list to build a picker out of, so
+    --  this degrades to what a plain `links` entry does - prompt for the text,
+    --  open the search - and does it silently, being the documented behaviour
+    --  rather than a failure.
     if vim.fn.executable "ddgr" == 0 then
-      vim.notify("ddgr is not installed, searching in the browser instead", vim.log.levels.WARN)
-      vim.ui.open(DDG_SEARCH:format(urlencode(query)))
+      open_url(GOOGLE_SEARCH, query)
       on_items({}, true)
       return
     end
@@ -508,7 +520,9 @@ local function web_preview()
   return nil
 end
 
---- Pickers. `preview` may be a function returning the command (or nil for none)
+--- Pickers. `title` names the picker and prefixes its input prompt,
+--- `picker_title` overrides it on the picker window alone, `preview` may be a
+--- function returning the command (or nil for none)
 --- and `octo` supersedes it with octo's previewer and adds the action opening
 --- the item in octo, both where octo is installed, `no_input` skips the query
 --- prompt, `with_nth` hides leading display fields, `color` picks the
@@ -552,7 +566,8 @@ local sources = {
     web = CONFLUENCE_SEARCH,
   },
   w = {
-    title = "Web (DuckDuckGo)",
+    title = "Web search",
+    picker_title = "Web search (DuckDuckGo)",
     preview = web_preview,
     query = web(),
     with_nth = "2..",
@@ -609,16 +624,6 @@ end
 
 local function open(item)
   if item then vim.ui.open(item.url) end
-end
-
---- Open a page in the browser. `url` is either a template whose `%s` receives
---- the percent-encoded `query`, or a function building the whole url from it.
-local function open_url(url, query)
-  if type(url) == "function" then
-    vim.ui.open(url(query or ""))
-    return
-  end
-  vim.ui.open(url:find "%%s" and url:format(urlencode(query or "")) or url)
 end
 
 --- Mark GitHub notification threads as done, removing them from the inbox.
@@ -809,7 +814,9 @@ local function show_fzf(fzf, source, query, items)
         or nil,
       ["--with-nth"] = source.with_nth,
     },
-    winopts = { title = " " .. source.title .. " ", title_pos = "center" },
+    -- `picker_title` is where the engine behind the results is named: `title`
+    -- is also the text of the input prompt, which comes before there are any.
+    winopts = { title = " " .. (source.picker_title or source.title) .. " ", title_pos = "center" },
     actions = actions,
   })
 end
