@@ -511,10 +511,11 @@ end
 --- Pickers. `preview` may be a function returning the command (or nil for none)
 --- and `octo` supersedes it with octo's previewer and adds the action opening
 --- the item in octo, both where octo is installed, `no_input` skips the query
---- prompt, `with_nth` hides leading display
---- fields, `color` picks the `ansi_codes` name for an item's status column and
---- `web` is the page the picker itself came from: a template with an optional
---- `%s` for the query, or a function turning the query into the url.
+--- prompt, `with_nth` hides leading display fields, `color` picks the
+--- `ansi_codes` name for an item's status column, `google` adds the action
+--- repeating the search on Google and `web` is the page the picker itself came
+--- from: a template with an optional `%s` for the query, or a function turning
+--- the query into the url.
 local sources = {
   G = { title = "GitHub " .. GITHUB_USER, preview = GH_PREVIEW, query = repos(GITHUB_USER) },
   g = { title = "GitHub " .. GITHUB_ORG, preview = GH_PREVIEW, query = repos(GITHUB_ORG) },
@@ -556,6 +557,7 @@ local sources = {
     query = web(),
     with_nth = "2..",
     web = DDG_SEARCH,
+    google = true,
   },
   n = {
     title = "GitHub notifications (unread)",
@@ -754,6 +756,15 @@ local function show_fzf(fzf, source, query, items)
     actions["alt-o"] = {
       fn = function() open_url(source.web, state.query) end,
       header = "open the web page",
+    }
+  end
+  if source.google then
+    -- The results come from DuckDuckGo, so this is the escape hatch to the same
+    -- search on Google. `state.query`, like `<alt-o>`, is the text the results
+    -- were fetched with, not what is currently typed in the prompt.
+    actions["ctrl-g"] = {
+      fn = function() open_url(GOOGLE_SEARCH, state.query) end,
+      header = "search Google instead",
     }
   end
   if source.octo then
