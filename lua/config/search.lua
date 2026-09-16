@@ -1,4 +1,4 @@
--- Search GitHub, Jira, Confluence and Google behind a single `PREFIX`.
+-- Search GitHub, Jira, Confluence and the web behind a single `PREFIX`.
 -- Pickers (`sources`) work without any plugin: they fall back to `vim.ui.input`
 -- + `vim.ui.select`, and use fzf-lua when it is installed. Entries that only
 -- open a URL in the browser live in `links`.
@@ -11,11 +11,11 @@ local CONFLUENCE_SERVER = JIRA_SERVER .. "/wiki"
 -- inbox has neither a documented URL nor a public API.
 local JIRA_NOTIFICATIONS =
   "https://home.atlassian.com/o/340bf104-3ba2-4426-adda-528ed9bc1728/notifications?cloudId=6f8cc0c8-4809-40a4-8303-db00047cf75d"
+-- NOTE: the web picker lists DuckDuckGo results, not Google's: Google's only
+--  official programmatic search is the Custom Search JSON API, which is closed
+--  to new customers and reaches end of life on 2027-01-01. Google is therefore
+--  only ever a page to open, which is what `<ctrl-g>` in that picker does.
 local GOOGLE_SEARCH = "https://www.google.com/search?q=%s"
--- NOTE: the web picker searches DuckDuckGo, not Google: Google's only official
---  programmatic search is the Custom Search JSON API, which is closed to new
---  customers and reaches end of life on 2027-01-01. `GOOGLE_SEARCH` is still
---  what the plain `links` keymap opens.
 local DDG_SEARCH = "https://duckduckgo.com/?q=%s"
 local GITHUB_NOTIFICATIONS = "https://github.com/notifications"
 -- Both taken from the address bar of a search run in the browser.
@@ -577,7 +577,6 @@ local sources = {
 --- Keymaps that only open a URL. A `%s` in `url` makes the keymap prompt for
 --- text and substitute it percent-encoded.
 local links = {
-  o = { title = "Google", url = GOOGLE_SEARCH },
   N = { title = "Jira notifications", url = JIRA_NOTIFICATIONS },
 }
 
