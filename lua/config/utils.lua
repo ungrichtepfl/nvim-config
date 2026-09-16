@@ -89,6 +89,20 @@ function M.is_swiss_keyboard()
   return layout_info and layout_info:match "layout:%s+ch"
 end
 
+--- Open a GitHub page using Octo if it is installed otherwise falls back to the browser.
+--- @param url string a github.com html url
+--- @param opts? { browser?: boolean } skip octo and go straight to the browser
+--- @return boolean handled_by_octo
+function M.open_github(url, opts)
+  local ok, octo = pcall(require, "octo.utils")
+  if not (opts and opts.browser) and ok and octo.parse_url(url) then
+    vim.cmd { cmd = "Octo", args = { url } }
+    return true
+  end
+  vim.ui.open(url)
+  return false
+end
+
 function M.codespell_config_path() return vim.fn.expand "~/.config/codespell/codespellrc" end
 
 function M.codespell_wordlist_path() return vim.fn.expand "~/.config/codespell/words.add" end

@@ -108,7 +108,7 @@ local function pr_number(nwo, sha)
   return tonumber(out[1])
 end
 
-local function open_pr(nwo, selected, web)
+local function open_pr(nwo, selected, browser)
   if not nwo then
     vim.notify("No github.com `origin` remote", vim.log.levels.WARN)
     return
@@ -119,10 +119,11 @@ local function open_pr(nwo, selected, web)
     vim.notify(err, vim.log.levels.ERROR)
   elseif not number then
     vim.notify("No pull request found for " .. sha, vim.log.levels.WARN)
-  elseif web then
-    vim.system { "gh", "pr", "view", "--repo", nwo, "--web", tostring(number) }
   else
-    vim.cmd("Octo pr edit " .. number)
+    require("config.utils").open_github(
+      string.format("https://github.com/%s/pull/%d", nwo, number),
+      { browser = browser }
+    )
   end
 end
 

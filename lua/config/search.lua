@@ -438,8 +438,9 @@ local function confluence_preview()
 end
 
 --- Pickers. `preview` may be a function returning the command (or nil for none)
---- and `octo_preview` supersedes it with octo's own previewer where octo is
---- installed, `no_input` skips the query prompt, `with_nth` hides leading display
+--- and `octo` supersedes it with octo's previewer and adds the action opening
+--- the item in octo, both where octo is installed, `no_input` skips the query
+--- prompt, `with_nth` hides leading display
 --- fields, `color` picks the `ansi_codes` name for an item's status column and
 --- `web` is the page the picker itself came from: a template with an optional
 --- `%s` for the query, or a function turning the query into the url.
@@ -482,7 +483,7 @@ local sources = {
     title = "GitHub notifications (unread)",
     preview = GH_NOTIFY_PREVIEW,
     query = notifications(),
-    octo_preview = true,
+    octo = true,
     no_input = true,
     can_mark_done = true,
     web = GITHUB_NOTIFICATIONS,
@@ -644,15 +645,19 @@ local function show_fzf(fzf, source, query, items)
     end
   end
 
-  local header = ":: <ctrl-y> to Yank URL | <alt-r> to Re-query"
+  -- NOTE: no `--header` of our own: fzf-lua composes one out of the actions that
+  --  ended up being defined, so the conditional ones below list themselves.
   local actions = {
     ["default"] = function(selected) open(state.by_line[selected[1]]) end,
-    ["ctrl-y"] = function(selected)
-      local item = state.by_line[selected[1]]
-      if not item then return end
-      vim.fn.setreg("+", item.url)
-      vim.notify("Copied URL to clipboard: " .. item.url)
-    end,
+    ["ctrl-y"] = {
+      fn = function(selected)
+        local item = state.by_line[selected[1]]
+        if not item then return end
+        vim.fn.setreg("+", item.url)
+        vim.notify("Copied URL to clipboard: " .. item.url)
+      end,
+      header = "yank the URL",
+    },
     -- NOTE: a `reload` action with `field_index = "{q}"` hands the typed query to
     --  `fn` as `selected[1]` and then re-runs `contents` in place.
     --  Not `ctrl-r`: `winopts.on_create` in `plugins/fzf.lua` maps it in terminal
@@ -661,17 +666,30 @@ local function show_fzf(fzf, source, query, items)
       fn = function(selected) state.query = selected[1] or "" end,
       field_index = "{q}",
       reload = true,
+      header = "re-query",
     },
   }
   if source.web then
-    header = header .. " | <alt-o> to Open the web page"
     -- `state.query` is the text the listed results were fetched with, not what
     -- is currently typed in the prompt: fzf's own input only filters locally
     -- and is usually empty, `<alt-r>` is what turns it into a new search.
-    actions["alt-o"] = function() open_url(source.web, state.query) end
+    actions["alt-o"] = {
+      fn = function() open_url(source.web, state.query) end,
+      header = "open the web page",
+    }
+  end
+  if source.octo then
+    -- Falls back to the browser for the subjects octo cannot render, which is
+    -- what `<enter>` does for every one of them.
+    actions["ctrl-o"] = {
+      fn = function(selected)
+        local item = state.by_line[selected[1]]
+        if item then require("config.utils").open_github(item.url) end
+      end,
+      header = "open in octo",
+    }
   end
   if source.can_mark_done then
-    header = header .. " | <ctrl-x> to mark Done"
     -- NOTE: `reload` is what keeps the picker alive here. `noclose` alone leaves
     --  the window up but fzf has already exited, so it turns into a dead
     --  terminal showing "[Process exited 0]".
@@ -688,17 +706,17 @@ local function show_fzf(fzf, source, query, items)
         mark_done(marked, function(item) state.dismissed[item.thread] = nil end)
       end,
       reload = true,
+      header = "mark done",
     }
   end
   -- Octo renders a notification far better than any `gh` invocation can, but it
   -- is optional: without it the source falls back to its own shell preview.
-  local previewer = source.octo_preview and octo_previewer(state.octo_entries) or nil
+  local previewer = source.octo and octo_previewer(state.octo_entries) or nil
   fzf.fzf_exec(contents, {
     prompt = "> ",
     previewer = previewer,
     fzf_opts = {
       ["--ansi"] = true,
-      ["--header"] = header,
       ["--preview"] = not previewer and (type(source.preview) == "function" and source.preview() or source.preview)
         or nil,
       ["--with-nth"] = source.with_nth,
