@@ -12,6 +12,11 @@ local CONFLUENCE_SERVER = JIRA_SERVER .. "/wiki"
 local JIRA_NOTIFICATIONS =
   "https://home.atlassian.com/o/340bf104-3ba2-4426-adda-528ed9bc1728/notifications?cloudId=6f8cc0c8-4809-40a4-8303-db00047cf75d"
 local GOOGLE_SEARCH = "https://www.google.com/search?q=%s"
+-- NOTE: the web picker searches DuckDuckGo, not Google: Google's only official
+--  programmatic search is the Custom Search JSON API, which is closed to new
+--  customers and reaches end of life on 2027-01-01. `GOOGLE_SEARCH` is still
+--  what the plain `links` keymap opens.
+local DDG_SEARCH = "https://duckduckgo.com/?q=%s"
 local GITHUB_NOTIFICATIONS = "https://github.com/notifications"
 -- Both taken from the address bar of a search run in the browser.
 local CONFLUENCE_SEARCH = CONFLUENCE_SERVER .. "/search?text=%s&product=confluence"
@@ -19,6 +24,9 @@ local JIRA_SEARCH = JIRA_SERVER .. "/issues?jql=%s"
 local GITHUB_USER = "ungrichtepfl"
 local GITHUB_ORG = "Scewo"
 local LIMIT = 100
+-- ddgr pages DuckDuckGo's html endpoint, so a large limit means several requests
+-- for results nobody scrolls down to.
+local WEB_LIMIT = 25
 
 -- NOTE: jira-cli always wraps stdout in a `tabwriter` with '\t' as pad char, so a
 --  tab delimiter gets extra alignment tabs appended. A delimiter without any tab
@@ -55,14 +63,15 @@ local function prefixed(terms) return #terms > 0 and (table.concat(terms, "* ") 
 --- Run `cmd` and hand its stdout to `parse`, then the parsed items to `on_items`.
 --- @param cmd string[]
 --- @param parse fun(stdout: string): table[]
---- @param on_items fun(items: table[])
+--- @param on_items fun(items: table[], explained?: boolean) `explained` suppresses
+---  the generic "no results" of `search`, for a bail-out that already said why
 --- @param stdin string? written to the process' stdin, which is then closed
 local function run(cmd, parse, on_items, stdin)
   -- NOTE: every bail-out has to reach `on_items`, or the fzf reload it feeds
   --  waits for a pipe that is never closed and the picker hangs on "loading".
   if vim.fn.executable(cmd[1]) == 0 then
     vim.notify(cmd[1] .. " is not installed", vim.log.levels.ERROR)
-    on_items {}
+    on_items({}, true)
     return
   end
   vim.system(cmd, { text = true, stdin = stdin }, function(res)
@@ -74,7 +83,7 @@ local function run(cmd, parse, on_items, stdin)
       --  shows up here as an empty picker. gh and curl report their errors properly.
       if #items == 0 and res.code ~= 0 and not res.stderr:find("No result found", 1, true) then
         vim.notify(string.format("%s failed: %s", cmd[1], vim.trim(strip_ansi(res.stderr))), vim.log.levels.ERROR)
-        on_items {}
+        on_items({}, true)
         return
       end
       on_items(items)
@@ -213,7 +222,7 @@ local function pages()
   return function(query, on_items)
     local config = atlassian_curl_config()
     if not config then
-      on_items {}
+      on_items({}, true)
       return
     end
     -- NOTE: `siteSearch` is the field Confluence's own search box uses: it ranks
@@ -248,6 +257,45 @@ local function pages()
       end
       return items
     end, on_items, config)
+  end
+end
+
+--- Query the web through ddgr, which renders DuckDuckGo's html endpoint and so
+--- needs no API key.
+local function web()
+  return function(query, on_items)
+    if query == "" then
+      on_items {}
+      return
+    end
+    -- Without ddgr there is no result list to show, so the search itself is the
+    -- best that can still happen.
+    if vim.fn.executable "ddgr" == 0 then
+      vim.notify("ddgr is not installed, searching in the browser instead", vim.log.levels.WARN)
+      vim.ui.open(DDG_SEARCH:format(urlencode(query)))
+      on_items({}, true)
+      return
+    end
+    -- NOTE: `--json` also puts ddgr in non-interactive mode; without it ddgr
+    --  sits on its own prompt waiting for a stdin that `run` never opens.
+    run({ "ddgr", "--json", "--num", tostring(WEB_LIMIT), query }, function(stdout)
+      local ok, found = pcall(vim.json.decode, stdout)
+      if not ok or type(found) ~= "table" then return {} end
+      local items = {}
+      for _, result in ipairs(found) do
+        if result.url then
+          table.insert(items, {
+            -- The url doubles as the id so that it lands in `{1}` for the
+            -- preview, hidden from the display by `with_nth`.
+            id = result.url,
+            status = result.url:match "^%a+://([^/]+)" or "",
+            text = result.title or "",
+            url = result.url,
+          })
+        end
+      end
+      return items
+    end, on_items)
   end
 end
 
@@ -437,6 +485,29 @@ local function confluence_preview()
   )
 end
 
+--- `{1}` is the result url, hidden from the display by `with_nth`.
+--- NOTE: `--with-nth` hides the field from the list and from the matching, but
+---  not from the preview: fzf extracts `--preview` fields from the original
+---  line (`man fzf`, under `--nth`).
+local function web_preview()
+  -- A slow site would otherwise hold the preview pane until fzf kills it.
+  local guard = vim.fn.executable "timeout" == 1 and "timeout 10 " or ""
+  -- w3m fetches and lays out the page itself, which reads far better than
+  -- pandoc's markdown of a whole modern page.
+  if vim.fn.executable "w3m" == 1 then return guard .. [[w3m -dump -cols "${FZF_PREVIEW_COLUMNS:-80}" {1}]] end
+  if vim.fn.executable "curl" == 1 and vim.fn.executable "pandoc" == 1 then
+    return rendered(
+      string.format(
+        [[%scurl -fsSL {1} | pandoc -f html -t %s --columns="${FZF_PREVIEW_COLUMNS:-80}"]],
+        guard,
+        PANDOC_MD
+      ),
+      FIXED_WIDTH
+    )
+  end
+  return nil
+end
+
 --- Pickers. `preview` may be a function returning the command (or nil for none)
 --- and `octo` supersedes it with octo's previewer and adds the action opening
 --- the item in octo, both where octo is installed, `no_input` skips the query
@@ -478,6 +549,13 @@ local sources = {
     query = pages(),
     with_nth = "2..",
     web = CONFLUENCE_SEARCH,
+  },
+  w = {
+    title = "Web (DuckDuckGo)",
+    preview = web_preview,
+    query = web(),
+    with_nth = "2..",
+    web = DDG_SEARCH,
   },
   n = {
     title = "GitHub notifications (unread)",
@@ -736,9 +814,11 @@ local function search(key)
   local source = sources[key]
   local go = function(text)
     local query = vim.trim(text)
-    source.query(query, function(items)
+    source.query(query, function(items, explained)
       if #items == 0 then
-        vim.notify("No results for " .. source.title, vim.log.levels.WARN)
+        -- A bail-out that already notified (no binary, bad credentials, the
+        -- browser fallback) would otherwise be followed by a contradicting line.
+        if not explained then vim.notify("No results for " .. source.title, vim.log.levels.WARN) end
         return
       end
       local ok, fzf = pcall(require, "fzf-lua")
