@@ -19,6 +19,9 @@ local JIRA_NOTIFICATIONS =
 local GOOGLE_SEARCH = "https://www.google.com/search?q=%s"
 local DDG_SEARCH = "https://duckduckgo.com/?q=%s"
 local GITHUB_NOTIFICATIONS = "https://github.com/notifications"
+-- The search page behind the PR picker; `type=pullrequests` is the Pull requests
+-- tab, taken from the address bar of a search run in the browser.
+local GITHUB_PR_SEARCH = "https://github.com/search?q=%s&type=pullrequests"
 -- Both taken from the address bar of a search run in the browser.
 local CONFLUENCE_SEARCH = CONFLUENCE_SERVER .. "/search?text=%s&product=confluence"
 local JIRA_SEARCH = JIRA_SERVER .. "/issues?jql=%s"
@@ -413,6 +416,58 @@ local function notifications()
   end
 end
 
+--- The qualifiers the PR picker lists, in GitHub's own search syntax: `gh search
+--- prs` and the web search take the same ones, so the picker and `<alt-o>` stay
+--- in sync.
+local MY_OPEN_PRS = "is:pr is:open author:@me"
+
+--- Query my open pull requests across all repositories.
+local function pull_requests()
+  return function(query, on_items)
+    -- NOTE: the `--json` field names are the ones `gh search prs --help` lists.
+    local cmd = {
+      "gh",
+      "search",
+      "prs",
+      "--author",
+      "@me",
+      "--state",
+      "open",
+      "--limit",
+      tostring(LIMIT),
+      "--sort",
+      "updated",
+      "--json",
+      "repository,number,title,url,isDraft",
+    }
+    if query ~= "" then table.insert(cmd, query) end
+    run(cmd, function(stdout)
+      local ok, found = pcall(vim.json.decode, stdout)
+      if not ok or type(found) ~= "table" then return {} end
+      local items = {}
+      for _, pr in ipairs(found) do
+        local repo = (pr.repository or {}).nameWithOwner
+        if repo and pr.number then
+          local state = pr.isDraft and "draft" or "open"
+          table.insert(items, {
+            -- The same `owner/repo#number` id the notifications picker builds, so
+            -- that both the shell preview and octo's take the items as they are.
+            id = repo .. "#" .. pr.number,
+            repo = repo,
+            number = tostring(pr.number),
+            kind = "PullRequest",
+            state = state,
+            status = SUBJECT_LABEL.PullRequest .. " " .. state,
+            text = pr.title or "",
+            url = pr.url,
+          })
+        end
+      end
+      return items
+    end, on_items)
+  end
+end
+
 -- `statusCategory != Done` is exactly "neither Done nor Cancelled": those two are
 -- the only Done-category statuses in SOF.
 local MINE_OPEN = "assignee = currentUser() AND statusCategory != Done"
@@ -573,6 +628,15 @@ local sources = {
     with_nth = "2..",
     web = DDG_SEARCH,
     google = true,
+  },
+  p = {
+    title = "GitHub PRs (mine, open)",
+    preview = GH_NOTIFY_PREVIEW,
+    query = pull_requests(),
+    octo = true,
+    no_input = true,
+    web = function(query) return GITHUB_PR_SEARCH:format(urlencode(vim.trim(MY_OPEN_PRS .. " " .. query))) end,
+    color = function(item) return STATE_COLOR[item.state] or "yellow" end,
   },
   n = {
     title = "GitHub notifications (unread)",
