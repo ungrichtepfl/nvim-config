@@ -873,15 +873,23 @@ local function show_fzf(fzf, source, query, items)
   -- NOTE: no `--header` of our own: fzf-lua composes one out of the actions that
   --  ended up being defined, so the conditional ones below list themselves.
   local actions = {
-    ["default"] = function(selected) open(state.by_line[selected[1]]) end,
+    ["default"] = function(selected)
+      for _, line in ipairs(selected) do
+        open(state.by_line[line])
+      end
+    end,
     ["ctrl-y"] = {
       fn = function(selected)
-        local item = state.by_line[selected[1]]
-        if not item then return end
-        vim.fn.setreg("+", item.url)
-        vim.notify("Copied URL to clipboard: " .. item.url)
+        local urls = {}
+        for _, line in ipairs(selected) do
+          local item = state.by_line[line]
+          if item then table.insert(urls, item.url) end
+        end
+        if #urls == 0 then return end
+        vim.fn.setreg("+", table.concat(urls, "\n"))
+        vim.notify("Copied URL to clipboard: " .. table.concat(urls, ", "))
       end,
-      header = "yank the URL",
+      header = "yank the URLs",
     },
     -- NOTE: a `reload` action with `field_index = "{q}"` hands the typed query to
     --  `fn` as `selected[1]` and then re-runs `contents` in place.
@@ -917,8 +925,10 @@ local function show_fzf(fzf, source, query, items)
     -- what `<enter>` does for every one of them.
     actions["ctrl-o"] = {
       fn = function(selected)
-        local item = state.by_line[selected[1]]
-        if item then require("config.utils").open_github(item.url) end
+        for _, line in ipairs(selected) do
+          local item = state.by_line[line]
+          if item then require("config.utils").open_github(item.url) end
+        end
       end,
       header = "open in octo",
     }
@@ -951,6 +961,7 @@ local function show_fzf(fzf, source, query, items)
     previewer = previewer,
     fzf_opts = {
       ["--ansi"] = true,
+      ["--multi"] = true,
       ["--preview"] = not previewer and (type(source.preview) == "function" and source.preview() or source.preview)
         or nil,
       ["--with-nth"] = source.with_nth,
@@ -958,6 +969,11 @@ local function show_fzf(fzf, source, query, items)
     -- `picker_title` is where the engine behind the results is named: `title`
     -- is also the text of the input prompt, which comes before there are any.
     winopts = { title = " " .. (source.picker_title or source.title) .. " ", title_pos = "center" },
+    -- The global `ctrl-q` (`select-all+accept`, `plugins/fzf.lua`) would hand
+    -- every listed entry to `default` and open each one in the browser.
+    -- NOTE: `ignore` and not `false`: an unbound key falls back to fzf's own
+    --  `ctrl-q`, which is `abort`.
+    keymap = { fzf = { ["ctrl-q"] = "ignore" } },
     actions = actions,
   })
 end
