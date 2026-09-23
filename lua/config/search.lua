@@ -315,10 +315,69 @@ local function web()
 end
 
 -- How a notification subject is labelled once its state is known, and the color
--- the state gets. A read thread stays grey, so the color doubles as the
--- read/unread marker.
+-- the state gets.
 local SUBJECT_LABEL = { PullRequest = "PR", Issue = "Issue" }
 local STATE_COLOR = { merged = "magenta", open = "green", closed = "red", draft = "grey" }
+
+--- The status column of a notification: its subject and, once known, its state,
+--- marked while the thread is unread.
+--- NOTE: an ASCII marker on purpose - `format` pads the column on byte length,
+---  so a multi-byte bullet would misalign every line carrying it.
+local function notification_status(item)
+  local label = item.state and (SUBJECT_LABEL[item.kind] .. " " .. item.state) or item.kind
+  return (item.unread and "* " or "") .. label
+end
+
+-- GitHub serves the Inbox and the Done threads as one list and exposes nothing
+-- to tell them apart: the thread objects are identical in both states (checked
+-- against this account), the list endpoint has no `is:done` counterpart to the
+-- web UI's filter, and GraphQL has no notifications query at all. See
+-- https://github.com/orgs/community/discussions/50224. The threads dismissed
+-- from this picker are therefore remembered here and subtracted from the full
+-- list; a thread marked done in the browser keeps showing up until it is
+-- dismissed here too, which is idempotent.
+--
+-- What is remembered is the `updated_at` the thread was dismissed at, not just
+-- the fact that it was: GitHub keeps one thread id per subject and reuses it for
+-- every new event on it (checked: the same id came back with a later
+-- `updated_at` after a new comment), so a thread that is mentioned again has to
+-- return here instead of being hidden for good.
+local DONE_LEDGER = vim.fn.stdpath "state" .. "/github-notifications-done.json"
+
+local done_cache
+
+--- @return table<string, string> thread id -> the `updated_at` it was done at
+local function read_done()
+  if not done_cache then
+    done_cache = {}
+    local ok, lines = pcall(vim.fn.readfile, DONE_LEDGER)
+    if ok then
+      local decoded_ok, decoded = pcall(vim.json.decode, table.concat(lines, "\n"))
+      if decoded_ok and type(decoded) == "table" then done_cache = decoded end
+    end
+  end
+  return done_cache
+end
+
+local function write_done(done)
+  done_cache = done
+  local ok, err = pcall(vim.fn.writefile, { vim.json.encode(done) }, DONE_LEDGER)
+  if not ok then vim.notify("Could not write " .. DONE_LEDGER .. ": " .. tostring(err), vim.log.levels.ERROR) end
+end
+
+--- Remember `thread` as done as of `updated`, so that it stays out of the picker
+--- until something new happens on it.
+local function remember_done(thread, updated)
+  local done = read_done()
+  if done[thread] == updated then return end
+  done[thread] = updated
+  write_done(done)
+end
+
+--- Whether a thread has been dismissed here and has not moved since. An unread
+--- thread never counts as done: GitHub only turns one unread again on new
+--- activity, which is the same signal as a bumped `updated_at`.
+local function is_done(item) return not item.unread and read_done()[item.thread] == item.updated end
 
 -- The names octo gives the same subject types; anything absent here (a commit, a
 -- check suite, ...) is a subject octo cannot preview.
@@ -363,7 +422,7 @@ local function with_states(items, on_items)
         local node = type(repo) == "table" and repo.issueOrPullRequest or nil
         if type(node) == "table" and type(node.state) == "string" then
           item.state = node.isDraft == true and "draft" or node.state:lower()
-          item.status = SUBJECT_LABEL[item.kind] .. " " .. item.state
+          item.status = notification_status(item)
         end
       end
       on_items(items)
@@ -371,45 +430,63 @@ local function with_states(items, on_items)
   end)
 end
 
---- Query the unread GitHub notifications, ignoring the search text.
+--- Query the GitHub notification inbox, ignoring the search text.
 local function notifications()
   return function(_, on_items)
-    -- NOTE: this is the web UI's "Unread" tab, not its Inbox. The REST API has
-    --  no notion of the Done state when listing (only `all`, `participating`,
-    --  `since`, `before`), and a thread marked done is also marked read, so
-    --  `all=true` returns Inbox + Done with nothing to tell them apart.
-    --  See https://docs.github.com/en/rest/activity/notifications.
+    -- `all=true` is every thread GitHub still keeps, read ones included; the
+    -- Done ones are taken back out through `DONE_LEDGER`.
     local cmd = {
       "gh",
       "api",
       "--paginate",
-      "/notifications",
+      "/notifications?all=true",
       "--jq",
-      ".[] | [.id, (.unread | tostring), .subject.type, .repository.full_name, .subject.title, .subject.url] | @tsv",
+      ".[] | [.id, (.unread | tostring), .updated_at, .subject.type, "
+        .. ".repository.full_name, .subject.title, .subject.url] | @tsv",
     }
     run(cmd, function(stdout)
-      local items = {}
+      local items, seen = {}, {}
       for _, line in ipairs(vim.split(stdout, "\n", { trimempty = true })) do
         local fields = vim.split(line, "\t", { plain = true })
-        if #fields == 6 then
-          local thread, unread, kind, repo, title, api_url = unpack(fields)
+        if #fields == 7 then
+          local thread, unread, updated, kind, repo, title, api_url = unpack(fields)
+          seen[thread] = true
           local number = api_url:match "/(%d+)$"
           -- NOTE: the API url differs from the web url only in the host and in
           --  `pulls` -> `pull` (checked against the `.html_url` of a PR).
           local url =
             api_url:gsub("^https://api%.github%.com/repos/", "https://github.com/"):gsub("/pulls/(%d+)$", "/pull/%1")
-          table.insert(items, {
+          local item = {
             id = number and (repo .. "#" .. number) or repo,
             repo = repo,
             number = number,
             kind = kind,
-            status = kind, -- replaced by "<label> <state>" once known
             text = title,
             thread = thread,
             unread = unread == "true",
+            updated = updated,
             url = url,
-          })
+          }
+          item.status = notification_status(item) -- the state is folded in later
+          if not is_done(item) then table.insert(items, item) end
         end
+      end
+      -- GitHub keeps a notification for three months
+      -- (https://docs.github.com/en/subscriptions-and-notifications/how-tos/
+      -- viewing-and-triaging-notifications/managing-notifications-from-your-inbox),
+      -- and a ledger entry for a thread it no longer serves can never match
+      -- anything again. Only ever on a list that actually arrived: pruning
+      -- against a failed request would resurrect everything.
+      if next(seen) then
+        local pruned, changed = {}, false
+        for thread, updated in pairs(read_done()) do
+          if seen[thread] then
+            pruned[thread] = updated
+          else
+            changed = true
+          end
+        end
+        if changed then write_done(pruned) end
       end
       return items
     end, function(items) with_states(items, on_items) end)
@@ -639,17 +716,16 @@ local sources = {
     color = function(item) return STATE_COLOR[item.state] or "yellow" end,
   },
   n = {
-    title = "GitHub notifications (unread)",
+    title = "GitHub notifications (inbox)",
     preview = GH_NOTIFY_PREVIEW,
     query = notifications(),
     octo = true,
     no_input = true,
     can_mark_done = true,
     web = GITHUB_NOTIFICATIONS,
-    color = function(item)
-      if not item.unread then return "grey" end
-      return STATE_COLOR[item.state] or "yellow"
-    end,
+    -- Not grey for a read thread: the inbox is the list of things still to do,
+    -- and almost everything in it has been read. `*` is the unread marker.
+    color = function(item) return STATE_COLOR[item.state] or "yellow" end,
   },
 }
 
@@ -708,6 +784,7 @@ local function mark_done(items, on_failure)
               )
               on_failure(item)
             else
+              remember_done(item.thread, item.updated)
               vim.notify("Marked notification done: " .. item.id)
             end
           end)
