@@ -38,6 +38,34 @@ return {
       { "<leader>vb", function() require("jj.cmd").bookmark_move() end, desc = "JJ move bookmark" },
       { "<leader>vq", "<cmd>J split<cr>", desc = "JJ split" },
     },
+    config = function(_, opts)
+      require("jj").setup(opts)
+
+      -- jj.nvim wipes its buffers on close (q) and before re-running a command (e.g. log refresh
+      -- after `n`) and relies on that closing the window. When the only other window holds an
+      -- unlisted buffer (e.g. snacks dashboard), the window survives as an empty buffer instead,
+      -- so close it up front
+      local function close_wins(buf)
+        if not buf or not vim.api.nvim_buf_is_valid(buf) then return end
+        for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+          if #vim.api.nvim_tabpage_list_wins(0) > 1 then vim.api.nvim_win_close(win, true) end
+        end
+      end
+
+      local terminal = require "jj.ui.terminal"
+      local run = terminal.run
+      terminal.run = function(...)
+        close_wins(terminal.state.buf)
+        return run(...)
+      end
+
+      local buffer = require "jj.core.buffer"
+      local close = buffer.close
+      buffer.close = function(buf, ...)
+        close_wins(buf)
+        return close(buf, ...)
+      end
+    end,
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "jjdescription",

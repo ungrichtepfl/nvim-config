@@ -342,6 +342,22 @@ return {
     fzf.setup(opts)
     fzf.register_ui_select()
 
+    -- Editing in place from a special window (quickfix, terminal, jj, overseer, ...) replaces that
+    -- window's buffer or splits it (winfixbuf), so open the file in the snacks dashboard instead
+    local actions = require "fzf-lua.actions"
+    local vimcmd_entry = actions.vimcmd_entry
+    actions.vimcmd_entry = function(vimcmd, ...)
+      if not vimcmd and vim.bo.buftype ~= "" then
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+          if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "snacks_dashboard" then
+            vim.api.nvim_set_current_win(win)
+            break
+          end
+        end
+      end
+      return vimcmd_entry(vimcmd, ...)
+    end
+
     local group = vim.api.nvim_create_augroup("FzfLuaAfterLsp", { clear = true })
     vim.api.nvim_create_autocmd("User", {
       group = group,
