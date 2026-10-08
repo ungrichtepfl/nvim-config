@@ -34,6 +34,25 @@ return {
           end
         end,
       })
+
+      -- Quickfix only reuses a window with a normal buffer (buftype="") and splits otherwise,
+      -- so close oil once a file from quickfix got its own split next to it
+      vim.api.nvim_create_autocmd("BufWinEnter", {
+        group = vim.api.nvim_create_augroup("_oil_qf", { clear = true }),
+        callback = function()
+          if vim.bo.buftype ~= "" or vim.fn.getwinvar(vim.fn.winnr "#", "&buftype") ~= "quickfix" then return end
+          local current_win = vim.api.nvim_get_current_win()
+          local wins = vim.api.nvim_tabpage_list_wins(0)
+          for _, win in ipairs(wins) do
+            if win ~= current_win and vim.bo[vim.api.nvim_win_get_buf(win)].buftype == "" then return end
+          end
+          for _, win in ipairs(wins) do
+            if win ~= current_win and vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "oil" then
+              vim.api.nvim_win_close(win, true)
+            end
+          end
+        end,
+      })
     end,
   },
   {
