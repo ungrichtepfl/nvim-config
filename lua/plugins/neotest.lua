@@ -1,39 +1,42 @@
+local KEYMAP_PREFIX = "<leader>t"
+
 return {
   "nvim-neotest/neotest",
+  specs = { { "folke/which-key.nvim", opts = { spec = { { KEYMAP_PREFIX, group = "test" } } } } },
   cmd = "Neotest",
   keys = {
     {
-      "<leader>tt",
+      KEYMAP_PREFIX .. "t",
       function() require("neotest").run.run() end,
       desc = "Run nearest test.",
     },
     {
-      "<leader>td",
+      KEYMAP_PREFIX .. "d",
       function() require("neotest").run.run { strategy = "dap" } end,
       desc = "Debug nearest test.",
     },
     {
-      "<leader>tf",
+      KEYMAP_PREFIX .. "f",
       function() require("neotest").run.run(vim.fn.expand "%") end,
       desc = "Test file",
     },
     {
-      "<leader>tw",
+      KEYMAP_PREFIX .. "w",
       function() require("neotest").watch.toggle(vim.fn.expand "%") end,
       desc = "Toggle watching file (reruns tests when file changed)",
     },
     {
-      "<leader>ts",
+      KEYMAP_PREFIX .. "s",
       function() require("neotest").summary.toggle() end,
       desc = "Toggle test summary",
     },
     {
-      "<leader>tp",
+      KEYMAP_PREFIX .. "p",
       function() require("neotest").output_panel.toggle() end,
       desc = "Toggle test ouput panel",
     },
     {
-      "<leader>to",
+      KEYMAP_PREFIX .. "o",
       function() require("neotest").output.open { enter = true } end,
       desc = "Toggle test ouput",
     },

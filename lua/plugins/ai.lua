@@ -1,6 +1,9 @@
+local KEYMAP_PREFIX = "<leader>i"
+
 return {
   {
     "folke/sidekick.nvim",
+    specs = { { "folke/which-key.nvim", opts = { spec = { { KEYMAP_PREFIX, group = "AI" } } } } },
     event = "VeryLazy",
     -- HACK: OSC 52 copies from the CLI's :terminal buffer reach the xclip provider as one
     -- list item, and jobsend() turns the newlines into NULs, so only the first line lands.
@@ -52,46 +55,46 @@ return {
         mode = { "n", "t", "i", "x" },
       },
       {
-        "<leader>ie",
+        KEYMAP_PREFIX .. "e",
         "<cmd>Sidekick nes toggle<cr>",
         desc = "Sidekick Toggle NES",
       },
       {
-        "<leader>ii",
+        KEYMAP_PREFIX .. "i",
         "<cmd>Sidekick nes update<cr>",
         desc = "Sidekick Show NES Suggestions",
       },
       {
-        "<leader>is",
+        KEYMAP_PREFIX .. "s",
         function() require("sidekick.cli").select() end,
         -- Or to select only installed tools:
         -- require("sidekick.cli").select({ filter = { installed = true } })
         desc = "Select CLI",
       },
       {
-        "<leader>id",
+        KEYMAP_PREFIX .. "d",
         function() require("sidekick.cli").close() end,
         desc = "Detach a CLI Session",
       },
       {
-        "<leader>it",
+        KEYMAP_PREFIX .. "t",
         function() require("sidekick.cli").send { msg = "{this}" } end,
         mode = { "x", "n" },
         desc = "Send This",
       },
       {
-        "<leader>if",
+        KEYMAP_PREFIX .. "f",
         function() require("sidekick.cli").send { msg = "{file}" } end,
         desc = "Send File",
       },
       {
-        "<leader>iv",
+        KEYMAP_PREFIX .. "v",
         function() require("sidekick.cli").send { msg = "{selection}" } end,
         mode = { "x" },
         desc = "Send Visual Selection",
       },
       {
-        "<leader>ip",
+        KEYMAP_PREFIX .. "p",
         function() require("sidekick.cli").prompt() end,
         mode = { "n", "x" },
         desc = "Sidekick Select Prompt",

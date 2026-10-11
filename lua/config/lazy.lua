@@ -22,7 +22,9 @@ require("lazy").setup {
     timeout = 60 * 60, -- For slow networks
   },
   spec = {
-    import = "plugins", -- load all plugins in "lua/plugins"
+    -- Must come before the plugin files so that the which-key groups they add are joined, not replaced
+    { "folke/which-key.nvim", opts_extend = { "spec" } },
+    { import = "plugins" }, -- load all plugins in "lua/plugins"
   },
   change_detection = {
     enabled = false,

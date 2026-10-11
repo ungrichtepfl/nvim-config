@@ -1,3 +1,5 @@
+local KEYMAP_PREFIX = "<leader>v"
+
 local is_jj_repo = require("config.utils").is_jj_root()
 
 return {
@@ -6,6 +8,7 @@ return {
 
   {
     "NicolasGB/jj.nvim",
+    specs = { { "folke/which-key.nvim", opts = { spec = { { KEYMAP_PREFIX, group = "jj" } } } } },
     enabled = is_jj_repo,
     dependencies = {
       "sindrets/diffview.nvim", -- used as diff backend
@@ -29,14 +32,14 @@ return {
       },
     },
     keys = {
-      { "<leader>vs", function() require("jj.cmd").status() end, desc = "JJ status" },
-      { "<leader>vl", function() require("jj.cmd").log { limit = 200 } end, desc = "JJ log" },
-      { "<leader>vd", function() require("jj.cmd").describe() end, desc = "JJ describe" },
-      { "<leader>vc", function() require("jj.cmd").commit() end, desc = "JJ commit (describe + new)" },
-      { "<leader>vp", function() require("jj.cmd").push() end, desc = "JJ push" },
-      { "<leader>vf", function() require("jj.cmd").fetch() end, desc = "JJ fetch" },
-      { "<leader>vb", function() require("jj.cmd").bookmark_move() end, desc = "JJ move bookmark" },
-      { "<leader>vq", "<cmd>J split<cr>", desc = "JJ split" },
+      { KEYMAP_PREFIX .. "s", function() require("jj.cmd").status() end, desc = "JJ status" },
+      { KEYMAP_PREFIX .. "l", function() require("jj.cmd").log { limit = 200 } end, desc = "JJ log" },
+      { KEYMAP_PREFIX .. "d", function() require("jj.cmd").describe() end, desc = "JJ describe" },
+      { KEYMAP_PREFIX .. "c", function() require("jj.cmd").commit() end, desc = "JJ commit (describe + new)" },
+      { KEYMAP_PREFIX .. "p", function() require("jj.cmd").push() end, desc = "JJ push" },
+      { KEYMAP_PREFIX .. "f", function() require("jj.cmd").fetch() end, desc = "JJ fetch" },
+      { KEYMAP_PREFIX .. "b", function() require("jj.cmd").bookmark_move() end, desc = "JJ move bookmark" },
+      { KEYMAP_PREFIX .. "q", "<cmd>J split<cr>", desc = "JJ split" },
     },
     config = function(_, opts)
       require("jj").setup(opts)

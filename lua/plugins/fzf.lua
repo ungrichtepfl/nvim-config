@@ -1,3 +1,6 @@
+local KEYMAP_PREFIX = "<leader>o"
+local DIAGNOSTICS_PREFIX = "<leader>D"
+
 local CONFLICT = "⚡"
 
 local function jj_status()
@@ -259,6 +262,18 @@ end
 
 return {
   "ibhagwan/fzf-lua",
+  specs = {
+    {
+      "folke/which-key.nvim",
+      opts = {
+        spec = {
+          { KEYMAP_PREFIX, group = "pickers" },
+          { KEYMAP_PREFIX .. "g", group = "git" },
+          { DIAGNOSTICS_PREFIX, group = "diagnostics" },
+        },
+      },
+    },
+  },
   dependencies = { "echasnovski/mini.icons" },
   event = "VeryLazy", -- Needed for ui select to work properly
   opts = {
@@ -319,16 +334,16 @@ return {
       desc = "VCS status",
     },
     { "<leader>k", "<cmd> FzfLua keymaps<cr>", desc = "Show keymaps" },
-    { "<leader>om", "<cmd> FzfLua marks<cr>", desc = "List of all marks" },
-    { "<leader>op", "<cmd> FzfLua manpages<cr>", desc = "List all manpages" },
-    { "<leader>oc", "<cmd> FzfLua commands<cr>", desc = "List vim commands" },
-    { "<leader>oh", "<cmd> FzfLua command_history<cr>", desc = "Show command history" },
-    { "<leader>ot", "<cmd> FzfLua filetypes<cr>", desc = "List available filetypes" },
-    { "<leader>ogc", "<cmd> FzfLua git_commits<cr>", desc = "List git commits" },
-    { "<leader>ogC", "<cmd> FzfLua git_bcommits<cr>", desc = "List git commits of the buffer" },
-    { "<leader>ogb", "<cmd> FzfLua git_branches<cr>", desc = "List git branches" },
+    { KEYMAP_PREFIX .. "m", "<cmd> FzfLua marks<cr>", desc = "List of all marks" },
+    { KEYMAP_PREFIX .. "p", "<cmd> FzfLua manpages<cr>", desc = "List all manpages" },
+    { KEYMAP_PREFIX .. "c", "<cmd> FzfLua commands<cr>", desc = "List vim commands" },
+    { KEYMAP_PREFIX .. "h", "<cmd> FzfLua command_history<cr>", desc = "Show command history" },
+    { KEYMAP_PREFIX .. "t", "<cmd> FzfLua filetypes<cr>", desc = "List available filetypes" },
+    { KEYMAP_PREFIX .. "gc", "<cmd> FzfLua git_commits<cr>", desc = "List git commits" },
+    { KEYMAP_PREFIX .. "gC", "<cmd> FzfLua git_bcommits<cr>", desc = "List git commits of the buffer" },
+    { KEYMAP_PREFIX .. "gb", "<cmd> FzfLua git_branches<cr>", desc = "List git branches" },
     {
-      "<leader>ob",
+      KEYMAP_PREFIX .. "b",
       fzf_line_history,
       mode = { "n", "x" },
       desc = "List git commits touching the current line",
@@ -396,13 +411,13 @@ return {
         )
         vim.keymap.set(
           "n",
-          "<leader>Dd",
+          DIAGNOSTICS_PREFIX .. "d",
           function() require("fzf-lua").lsp_document_diagnostics() end,
           { desc = "Document diagnostic", buffer = buf }
         )
         vim.keymap.set(
           "n",
-          "<leader>Dw",
+          DIAGNOSTICS_PREFIX .. "w",
           function() require("fzf-lua").lsp_workspace_diagnostics() end,
           { desc = "Workspace diagnostic", buffer = buf }
         )

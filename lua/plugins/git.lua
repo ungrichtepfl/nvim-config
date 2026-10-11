@@ -1,6 +1,19 @@
+local KEYMAP_PREFIX = "<leader>v"
+
 return {
   {
     "NeogitOrg/neogit",
+    specs = {
+      {
+        "folke/which-key.nvim",
+        opts = {
+          spec = {
+            { KEYMAP_PREFIX, group = "git" },
+            { KEYMAP_PREFIX .. "p", group = "pull/push" },
+          },
+        },
+      },
+    },
     cmd = "Neogit",
     dependencies = {
       "nvim-lua/plenary.nvim", -- required
@@ -10,27 +23,27 @@ return {
     },
     keys = {
       {
-        "<leader>vs",
+        KEYMAP_PREFIX .. "s",
         "<cmd>Neogit<cr>",
         desc = "Show git status",
       },
       {
-        "<leader>vc",
+        KEYMAP_PREFIX .. "c",
         "<cmd>Neogit commit<cr>",
         desc = "Git commit",
       },
       {
-        "<leader>vpl",
+        KEYMAP_PREFIX .. "pl",
         "<cmd>Neogit pull<cr>",
         desc = "Git pull",
       },
       {
-        "<leader>vpu",
+        KEYMAP_PREFIX .. "pu",
         "<cmd>Neogit push<cr>",
         desc = "Git push",
       },
       {
-        "<leader>vl",
+        KEYMAP_PREFIX .. "l",
         "<cmd>Neogit log<cr>",
         desc = "Git log",
       },

@@ -1,3 +1,5 @@
+local KEYMAP_PREFIX = "<leader>lH"
+
 return {
   {
     event = "VeryLazy",
@@ -49,35 +51,36 @@ return {
   },
   {
     "mrcjkb/haskell-tools.nvim",
+    specs = { { "folke/which-key.nvim", opts = { spec = { { KEYMAP_PREFIX, group = "haskell" } } } } },
     version = "*",
     lazy = false, -- This plugin is already lazy
     keys = {
       {
-        "<space>lHs",
+        KEYMAP_PREFIX .. "s",
         function() require("haskell-tools").hoogle.hoogle_signature() end,
         ft = { "haskell", "cabal" },
         desc = "Hoogle: Search type signature under cursor",
       },
       {
-        "<space>lHe",
+        KEYMAP_PREFIX .. "e",
         function() require("haskell-tools").lsp.buf_eval_all() end,
         ft = { "haskell", "cabal" },
         desc = "Haskell: Evaluate all code snippets",
       },
       {
-        "<leader>lHr",
+        KEYMAP_PREFIX .. "r",
         function() require("haskell-tools").repl.toggle() end,
         ft = { "haskell", "cabal" },
         desc = "REPL: Toggle GHCi for package",
       },
       {
-        "<leader>lHrb",
+        KEYMAP_PREFIX .. "rb",
         function() require("haskell-tools").repl.toggle(vim.api.nvim_buf_get_name(0)) end,
         ft = { "haskell", "cabal" },
         desc = "REPL: Toggle GHCi for current buffer",
       },
       {
-        "<leader>lHrq",
+        KEYMAP_PREFIX .. "rq",
         function() require("haskell-tools").repl.quit() end,
         ft = { "haskell", "cabal" },
         desc = "REPL: Quit GHCi session",

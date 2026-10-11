@@ -1,5 +1,8 @@
+local KEYMAP_PREFIX = "<leader>T"
+
 return {
   "akinsho/toggleterm.nvim",
+  specs = { { "folke/which-key.nvim", opts = { spec = { { KEYMAP_PREFIX, group = "terminal" } } } } },
   version = "*",
   cmd = "ToggleTerm",
   keys = {
@@ -14,25 +17,25 @@ return {
       desc = "Run current file",
     },
     {
-      "<leader>TT",
+      KEYMAP_PREFIX .. "T",
       "<cmd>ToggleTerm direction=tab<cr>",
       mode = { "n" },
       desc = "Open toggle term terminal tab",
     },
     {
-      "<leader>Tf",
+      KEYMAP_PREFIX .. "f",
       "<cmd>ToggleTerm direction=float<cr>",
       mode = { "n" },
       desc = "Open toggle term terminal floating",
     },
     {
-      "<leader>Th",
+      KEYMAP_PREFIX .. "h",
       "<cmd>ToggleTerm direction=horizontal<cr>",
       mode = { "n" },
       desc = "Open toggle term terminal horizontally",
     },
     {
-      "<leader>Tv",
+      KEYMAP_PREFIX .. "v",
       "<cmd>ToggleTerm direction=vertical<cr>",
       mode = { "n" },
       desc = "Open toggle term terminal vertically",

@@ -1,3 +1,5 @@
+local KEYMAP_PREFIX = "<leader>dP"
+
 return {
   {
     "mfussenegger/nvim-dap",
@@ -160,22 +162,23 @@ return {
   },
   {
     "mfussenegger/nvim-dap-python",
+    specs = { { "folke/which-key.nvim", opts = { spec = { { KEYMAP_PREFIX, group = "python debug" } } } } },
     dependencies = { "mfussenegger/nvim-dap" },
     keys = {
       {
-        "<leader>dPm",
+        KEYMAP_PREFIX .. "m",
         function() require("dap-python").test_method() end,
         ft = "python",
         desc = "Run python test method",
       },
       {
-        "<leader>dPc",
+        KEYMAP_PREFIX .. "c",
         function() require("dap-python").test_class() end,
         ft = "python",
         desc = "Run python test class",
       },
       {
-        "<leader>dPs",
+        KEYMAP_PREFIX .. "s",
         function()
           vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
           require("dap-python").debug_selection()
