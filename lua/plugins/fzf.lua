@@ -246,16 +246,15 @@ local function fzf_line_history()
   opts.fzf_opts = vim.deepcopy(bcommits.fzf_opts)
   opts.keymap = {
     fzf = {
-      ["alt-c"] = string.format("change-preview(%s)", preview_commit),
-      ["alt-p"] = preview_pr and string.format("change-preview(%s)", preview_pr) or nil,
+      ["alt-c"] = { string.format("change-preview(%s)", preview_commit), desc = "commit preview" },
+      ["alt-p"] = preview_pr and { string.format("change-preview(%s)", preview_pr), desc = "PR preview" } or nil,
     },
   }
   opts.actions = vim.tbl_deep_extend("force", bcommits.actions, {
-    ["alt-o"] = { fn = function(selected) open_pr(nwo, selected) end },
-    ["alt-b"] = { fn = function(selected) open_pr(nwo, selected, true) end },
+    ["alt-o"] = { fn = function(selected) open_pr(nwo, selected) end, header = "open PR" },
+    ["alt-b"] = { fn = function(selected) open_pr(nwo, selected, true) end, header = "open PR in browser" },
   })
   opts.winopts = { title = string.format(" Line History %d-%d ", first, last), title_pos = "center" }
-  opts.header = ":: <A-p> PR description | <A-c> commit | <A-o> open PR | <A-b> PR in browser"
 
   fzf.fzf_exec(cmd, opts)
 end
