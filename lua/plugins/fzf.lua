@@ -279,12 +279,17 @@ return {
     files = {
       git_icons = true,
       -- NOTE: using rg with sortr=modified displays recently modified files at the
-      --  top of the fzf input file list. Using the --tiebreak=index prefers
-      --  the files on top of the list.
+      --  top of the fzf input file list. On equal score fzf prefers a match in
+      --  the file name, then the shorter path, and only then the more recently
+      --  modified file (index). fzf has no weighted mix of these criteria.
       --  CAVEAT: rg now runs SINGLE THREADED!
-      cmd = [[rg --files --color=never --hidden --files -g "!.git" --sortr=modified]],
+      cmd = [[rg --files --color=never --hidden -g "!.git" -g "!.jj" --sortr=modified]],
       fzf_opts = {
-        ["--tiebreak"] = "index",
+        -- NOTE: the "path" scheme only gives a boundary bonus after "/", but a
+        --  file in the root follows the icon separator instead, so it scores
+        --  lower than any nested match and never reaches the tiebreak.
+        ["--scheme"] = "default",
+        ["--tiebreak"] = "pathname,length,index",
       },
     },
     fzf_opts = {
