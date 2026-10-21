@@ -43,6 +43,15 @@ return {
     priority = 1000,
     opts = {
       compile = true,
+      overrides = function(colors)
+        local doc_comment = { fg = colors.palette.gray2, italic = true }
+        return {
+          Comment = { fg = "#FFAA00", italic = false },
+          ["@comment.documentation"] = doc_comment,
+          ["@lsp.typemod.comment.documentation"] = doc_comment,
+          DiagnosticUnnecessary = { fg = colors.theme.syn.comment },
+        }
+      end,
     },
     build = ":KansoCompile",
     init = function() vim.cmd.colorscheme(color) end,

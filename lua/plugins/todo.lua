@@ -67,6 +67,9 @@ return {
         },
       },
     },
+    highlight = {
+      after = "",
+    },
     search = {
       pattern = [[\b(KEYWORDS)\s*(:?|!)]], -- ripgrep regex also check for rust macros
     },
