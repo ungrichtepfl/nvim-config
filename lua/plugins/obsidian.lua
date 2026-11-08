@@ -18,11 +18,29 @@ local function set_note_keymaps(buf)
   map("m", "RenderMarkdown buf_toggle", "Toggle markdown rendering")
 end
 
----obsidian.nvim skips its own UI when render-markdown is installed, so render notes with that instead.
----Scheduled because render-markdown attaches to the buffer in its own FileType autocmd.
 ---Presentation decks for presenterm, which need their own front matter and stay unrendered
 local function is_in_slides_folder(path) return ("/" .. path):find("/Slides/", 1, true) ~= nil end
 
+---Pick a presenterm comment command (<!-- pause -->, ...) and insert it at the cursor
+local function insert_presenterm_command()
+  if vim.fn.executable "presenterm" == 0 then
+    vim.notify("presenterm is not installed", vim.log.levels.ERROR)
+    return
+  end
+  require("fzf-lua").fzf_exec("presenterm --list-comment-commands", { prompt = "presenterm> ", complete = true })
+end
+
+local function set_deck_keymaps(buf)
+  vim.keymap.set(
+    "n",
+    "<localleader>c",
+    insert_presenterm_command,
+    { buffer = buf, desc = "Insert presenterm comment command" }
+  )
+end
+
+---obsidian.nvim skips its own UI when render-markdown is installed, so render notes with that instead.
+---Scheduled because render-markdown attaches to the buffer in its own FileType autocmd.
 local function enable_note_rendering(buf)
   if not require("lazy.core.config").plugins["render-markdown.nvim"] then return end
   if is_in_slides_folder(vim.api.nvim_buf_get_name(buf)) then return end
@@ -55,6 +73,22 @@ return {
       "3rd/image.nvim",
       optional = true,
       opts = { integrations = { markdown = { resolve_image_path = resolve_vault_image_path } } },
+    },
+    {
+      "saghen/blink.cmp",
+      optional = true,
+      opts = {
+        sources = {
+          default = { "presenterm" },
+          providers = {
+            presenterm = {
+              name = "presenterm",
+              module = "blink-cmp-presenterm",
+              enabled = function() return is_in_slides_folder(vim.api.nvim_buf_get_name(0)) end,
+            },
+          },
+        },
+      },
     },
   },
   keys = {
@@ -112,6 +146,7 @@ return {
       pattern = "ObsidianNoteEnter",
       callback = function(args)
         set_note_keymaps(args.buf)
+        if is_in_slides_folder(vim.api.nvim_buf_get_name(args.buf)) then set_deck_keymaps(args.buf) end
         enable_note_rendering(args.buf)
       end,
       desc = "Set note keymaps and render the note",
