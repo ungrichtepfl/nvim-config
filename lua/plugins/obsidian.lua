@@ -30,12 +30,47 @@ local function insert_presenterm_command()
   require("fzf-lua").fzf_exec("presenterm --list-comment-commands", { prompt = "presenterm> ", complete = true })
 end
 
+---Open or close presenterm for this deck in a vertical split; it reloads on every save
+local function toggle_presenterm_preview(buf)
+  local preview_win = vim.b[buf].presenterm_preview_win
+  if preview_win and vim.api.nvim_win_is_valid(preview_win) then
+    vim.api.nvim_win_close(preview_win, true)
+    return
+  end
+  if vim.fn.executable "presenterm" == 0 then
+    vim.notify("presenterm is not installed", vim.log.levels.ERROR)
+    return
+  end
+
+  local deck_win = vim.api.nvim_get_current_win()
+  vim.cmd "rightbelow vnew"
+  vim.bo.bufhidden = "wipe" -- closing the window wipes the buffer, which stops presenterm
+  preview_win = vim.api.nvim_get_current_win()
+  vim.b[buf].presenterm_preview_win = preview_win
+  vim.fn.jobstart({ "presenterm", vim.api.nvim_buf_get_name(buf) }, {
+    term = true,
+    on_exit = function(_, code)
+      -- A closed window means it was stopped on purpose; otherwise presenterm quit by itself
+      if not vim.api.nvim_win_is_valid(preview_win) then return end
+      if code ~= 0 then vim.notify("presenterm exited with code " .. code, vim.log.levels.ERROR) end
+      vim.api.nvim_win_close(preview_win, true)
+    end,
+  })
+  vim.api.nvim_set_current_win(deck_win)
+end
+
 local function set_deck_keymaps(buf)
   vim.keymap.set(
     "n",
     "<localleader>c",
     insert_presenterm_command,
     { buffer = buf, desc = "Insert presenterm comment command" }
+  )
+  vim.keymap.set(
+    "n",
+    "<localleader>s",
+    function() toggle_presenterm_preview(buf) end,
+    { buffer = buf, desc = "Toggle presenterm preview" }
   )
 end
 
