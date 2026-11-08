@@ -229,7 +229,7 @@ local function fzf_line_history()
   )
 
   -- NOTE: both previews are plain shell commands bound to fzf's `change-preview`,
-  --  so nothing hits the network until <A-p> is pressed: the commit preview is
+  --  so nothing hits the network until the PR preview is chosen: the commit preview is
   --  fully offline, the PR preview shells out to `gh`.
   local pager = type(bcommits.preview_pager) == "function" and bcommits.preview_pager() or bcommits.preview_pager
   local preview_commit = "git show --color=always {1}" .. (pager and " | " .. pager or "")
@@ -281,7 +281,7 @@ return {
       -- NOTE: using rg with sortr=modified displays recently modified files at the
       --  top of the fzf input file list. On equal score fzf prefers a match in
       --  the file name, then the shorter path, and only then the more recently
-      --  modified file (index). fzf has no weighted mix of these criteria.
+      --  modified file (index).
       --  CAVEAT: rg now runs SINGLE THREADED!
       cmd = [[rg --files --color=never --hidden -g "!.git" -g "!.jj" --sortr=modified]],
       fzf_opts = {

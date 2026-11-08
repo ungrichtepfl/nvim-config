@@ -24,7 +24,7 @@ require("lazy").setup {
   spec = {
     -- Must come before the plugin files so that the which-key groups they add are joined, not replaced
     { "folke/which-key.nvim", opts_extend = { "spec" } },
-    { import = "plugins" }, -- load all plugins in "lua/plugins"
+    { import = "plugins" },
   },
   change_detection = {
     enabled = false,

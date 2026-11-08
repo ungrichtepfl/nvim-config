@@ -80,11 +80,7 @@ return {
   },
 
   -- Interactive hunk/line picker for jj split/squash --interactive
-  -- Configured as jj's diff-editor via ~/.config/jj/config.toml:
-  --   [ui]
-  --   diff-editor = ["nvim", "-c", "DiffEditor $left $right $output"]
-  --   diff-instructions = false
-  -- Then use :J split  or  <C-s> from the jj.nvim log buffer to invoke it.
+  -- Started through `DiffEditor`, which jj's `ui.diff-editor` setting calls
   {
     "julienvincent/hunk.nvim",
     enabled = is_jj_repo,

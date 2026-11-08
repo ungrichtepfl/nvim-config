@@ -130,7 +130,6 @@ for server, _ in pairs(require "config.lsp.servers") do
   if server == "hls" then
     local installed = require("lazy.core.config").plugins["haskell-tools.nvim"]
     if installed then
-      -- Don't load hls if haskell_tools is loaded
       goto continue
     end
   end
