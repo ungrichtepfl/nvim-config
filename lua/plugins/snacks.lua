@@ -4,7 +4,6 @@ return {
     input = {}, -- Nicer input
     bigfile = {}, -- Do not launch lsp and treesitter on bigfiles
     quickfile = {}, -- Load file as quickly as possible
-    image = {}, -- Show images in markdown, only in terminals with the kitty graphics protocol
     dashboard = {
       preset = {
         keys = {
