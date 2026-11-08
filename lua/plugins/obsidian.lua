@@ -1,7 +1,10 @@
-local vault_path = vim.fn.expand "~" .. "/Notes"
 local KEYMAP_PREFIX = "<leader>z"
+local VAULT_PATH = vim.fn.expand "~" .. "/Notes"
+-- Must match the attachment and daily-note settings of the Obsidian app
+local IMAGES_FOLDER = "images"
+local DAILY_NOTES_FOLDER = "Daily"
+local SLIDES_FOLDER = "Slides"
 
----Keymaps that only make sense inside a note, under <localleader>
 local function set_note_keymaps(buf)
   local function map(lhs, cmd, desc)
     vim.keymap.set("n", "<localleader>" .. lhs, "<cmd>" .. cmd .. "<cr>", { buffer = buf, desc = desc })
@@ -18,10 +21,8 @@ local function set_note_keymaps(buf)
   map("m", "RenderMarkdown buf_toggle", "Toggle markdown rendering")
 end
 
----Presentation decks for presenterm, which need their own front matter and stay unrendered
-local function is_in_slides_folder(path) return ("/" .. path):find("/Slides/", 1, true) ~= nil end
+local function is_slides_file(path) return ("/" .. path):find("/" .. SLIDES_FOLDER .. "/", 1, true) ~= nil end
 
----Pick a presenterm comment command (<!-- pause -->, ...) and insert it at the cursor
 local function insert_presenterm_command()
   if vim.fn.executable "presenterm" == 0 then
     vim.notify("presenterm is not installed", vim.log.levels.ERROR)
@@ -30,7 +31,7 @@ local function insert_presenterm_command()
   require("fzf-lua").fzf_exec("presenterm --list-comment-commands", { prompt = "presenterm> ", complete = true })
 end
 
----Open or close presenterm for this deck in a vertical split; it reloads on every save
+-- presenterm reloads the slides on every save
 local function toggle_presenterm_preview(buf)
   local preview_win = vim.b[buf].presenterm_preview_win
   if preview_win and vim.api.nvim_win_is_valid(preview_win) then
@@ -42,7 +43,7 @@ local function toggle_presenterm_preview(buf)
     return
   end
 
-  local deck_win = vim.api.nvim_get_current_win()
+  local slides_win = vim.api.nvim_get_current_win()
   vim.cmd "rightbelow vnew"
   vim.bo.bufhidden = "wipe" -- closing the window wipes the buffer, which stops presenterm
   preview_win = vim.api.nvim_get_current_win()
@@ -56,10 +57,10 @@ local function toggle_presenterm_preview(buf)
       vim.api.nvim_win_close(preview_win, true)
     end,
   })
-  vim.api.nvim_set_current_win(deck_win)
+  vim.api.nvim_set_current_win(slides_win)
 end
 
-local function set_deck_keymaps(buf)
+local function set_slides_keymaps(buf)
   vim.keymap.set(
     "n",
     "<localleader>c",
@@ -74,11 +75,11 @@ local function set_deck_keymaps(buf)
   )
 end
 
----obsidian.nvim skips its own UI when render-markdown is installed, so render notes with that instead.
----Scheduled because render-markdown attaches to the buffer in its own FileType autocmd.
+-- obsidian.nvim skips its own UI when render-markdown is installed, so render notes with that instead.
+-- Scheduled because render-markdown attaches to the buffer in its own FileType autocmd.
 local function enable_note_rendering(buf)
   if not require("lazy.core.config").plugins["render-markdown.nvim"] then return end
-  if is_in_slides_folder(vim.api.nvim_buf_get_name(buf)) then return end
+  if is_slides_file(vim.api.nvim_buf_get_name(buf)) then return end
   vim.schedule(function()
     if vim.api.nvim_buf_is_valid(buf) then
       vim.api.nvim_buf_call(buf, function() require("render-markdown").buf_enable() end)
@@ -86,12 +87,15 @@ local function enable_note_rendering(buf)
   end)
 end
 
-local function is_in_vault(path) return vim.startswith(path, vault_path .. "/") end
+local function is_in_vault(path) return vim.startswith(path, VAULT_PATH .. "/") end
 
----Obsidian writes image links relative to the vault root or as the bare file name (![[x.png]])
+-- Obsidian writes image links relative to the vault root or as the bare file name (![[x.png]])
 local function resolve_vault_image_path(document_path, image_path, fallback)
   if is_in_vault(document_path) then
-    for _, candidate in ipairs { vault_path .. "/" .. image_path, vault_path .. "/images/" .. image_path } do
+    for _, candidate in ipairs {
+      VAULT_PATH .. "/" .. image_path,
+      VAULT_PATH .. "/" .. IMAGES_FOLDER .. "/" .. image_path,
+    } do
       if vim.uv.fs_stat(candidate) then return candidate end
     end
   end
@@ -119,7 +123,7 @@ return {
             presenterm = {
               name = "presenterm",
               module = "blink-cmp-presenterm",
-              enabled = function() return is_in_slides_folder(vim.api.nvim_buf_get_name(0)) end,
+              enabled = function() return is_slides_file(vim.api.nvim_buf_get_name(0)) end,
             },
           },
         },
@@ -135,13 +139,8 @@ return {
     { KEYMAP_PREFIX .. "t", "<cmd>Obsidian tags<cr>", desc = "Find notes by tag" },
   },
   event = {
-    -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-    -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-    -- refer to `:h file-pattern` for more examples
-    "BufReadPre "
-      .. vault_path
-      .. "/*.md",
-    "BufNewFile " .. vault_path .. "/*.md",
+    "BufReadPre " .. VAULT_PATH .. "/*.md",
+    "BufNewFile " .. VAULT_PATH .. "/*.md",
   },
   dependencies = {
     -- Optional
@@ -153,7 +152,7 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = vault_path,
+        path = VAULT_PATH,
       },
     },
     -- Same file names as the existing notes, readable in the Obsidian phone app ("My Note" -> "My-Note.md")
@@ -161,19 +160,18 @@ return {
       if title == nil or vim.trim(title) == "" then return require("obsidian.builtin").zettel_id() end
       return (vim.trim(title):gsub("%s+", "-"))
     end,
-    -- presenterm rejects unknown front matter keys, so do not add id/aliases/tags to decks
+    -- presenterm rejects unknown front matter keys, so do not add id/aliases/tags to slides
     frontmatter = {
       enabled = function(vault_relative_path)
-        return vault_relative_path == nil or not is_in_slides_folder(vault_relative_path)
+        return vault_relative_path == nil or not is_slides_file(vault_relative_path)
       end,
     },
-    -- Must match the attachment and daily-note settings of the Obsidian app
-    attachments = { folder = "images" },
-    daily_notes = { folder = "Daily", workdays_only = false },
+    attachments = { folder = IMAGES_FOLDER },
+    daily_notes = { folder = DAILY_NOTES_FOLDER, workdays_only = false },
   },
   init = function()
     vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
-      pattern = vault_path .. "/*.md",
+      pattern = VAULT_PATH .. "/*.md",
       callback = function() vim.wo[0][0].conceallevel = 2 end,
       desc = "Set conceallevel=2 for markdown in vault",
     })
@@ -181,7 +179,7 @@ return {
       pattern = "ObsidianNoteEnter",
       callback = function(args)
         set_note_keymaps(args.buf)
-        if is_in_slides_folder(vim.api.nvim_buf_get_name(args.buf)) then set_deck_keymaps(args.buf) end
+        if is_slides_file(vim.api.nvim_buf_get_name(args.buf)) then set_slides_keymaps(args.buf) end
         enable_note_rendering(args.buf)
       end,
       desc = "Set note keymaps and render the note",
