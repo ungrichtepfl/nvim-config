@@ -65,8 +65,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
       desc = "Run codelens actions",
       buffer = bufnr,
     })
-    vim.keymap.set("n", "gD", function() vim.lsp.buf.declarations() end, { desc = "Go to declaration", buffer = bufnr })
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definitions() end, { desc = "Go to definition", buffer = bufnr })
+    vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, { desc = "Go to declaration", buffer = bufnr })
+    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, { desc = "Go to definition", buffer = bufnr })
 
     ------------------------------------------
     ----------------- AUTOCOMANDS ------------
@@ -127,10 +127,10 @@ for server, _ in pairs(require "config.lsp.servers") do
       goto continue
     end
   end
-  if server == "haskell-language-server" then
+  if server == "hls" then
     local installed = require("lazy.core.config").plugins["haskell-tools.nvim"]
     if installed then
-      -- Don't load haskell_language_server if haskell_tools is loaded
+      -- Don't load hls if haskell_tools is loaded
       goto continue
     end
   end

@@ -25,6 +25,14 @@ return {
         path = vault_path,
       },
     },
+    -- Same file names as the existing notes, readable in the Obsidian phone app ("My Note" -> "My-Note.md")
+    note_id_func = function(title)
+      if title == nil or vim.trim(title) == "" then return require("obsidian.builtin").zettel_id() end
+      return (vim.trim(title):gsub("%s+", "-"))
+    end,
+    -- Must match the attachment and daily-note settings of the Obsidian app
+    attachments = { folder = "images" },
+    daily_notes = { folder = "Daily", workdays_only = false },
   },
   init = function()
     vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
