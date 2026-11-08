@@ -20,8 +20,12 @@ end
 
 ---obsidian.nvim skips its own UI when render-markdown is installed, so render notes with that instead.
 ---Scheduled because render-markdown attaches to the buffer in its own FileType autocmd.
+---Presentation decks for presenterm, which need their own front matter and stay unrendered
+local function is_in_slides_folder(path) return ("/" .. path):find("/Slides/", 1, true) ~= nil end
+
 local function enable_note_rendering(buf)
   if not require("lazy.core.config").plugins["render-markdown.nvim"] then return end
+  if is_in_slides_folder(vim.api.nvim_buf_get_name(buf)) then return end
   vim.schedule(function()
     if vim.api.nvim_buf_is_valid(buf) then
       vim.api.nvim_buf_call(buf, function() require("render-markdown").buf_enable() end)
@@ -47,11 +51,6 @@ return {
   cmd = { "Obsidian" },
   specs = {
     { "folke/which-key.nvim", opts = { spec = { { KEYMAP_PREFIX, group = "notes" } } } },
-    {
-      "MeanderingProgrammer/render-markdown.nvim",
-      optional = true,
-      opts = { preset = "obsidian" },
-    },
     {
       "3rd/image.nvim",
       optional = true,
@@ -93,6 +92,12 @@ return {
       if title == nil or vim.trim(title) == "" then return require("obsidian.builtin").zettel_id() end
       return (vim.trim(title):gsub("%s+", "-"))
     end,
+    -- presenterm rejects unknown front matter keys, so do not add id/aliases/tags to decks
+    frontmatter = {
+      enabled = function(vault_relative_path)
+        return vault_relative_path == nil or not is_in_slides_folder(vault_relative_path)
+      end,
+    },
     -- Must match the attachment and daily-note settings of the Obsidian app
     attachments = { folder = "images" },
     daily_notes = { folder = "Daily", workdays_only = false },
