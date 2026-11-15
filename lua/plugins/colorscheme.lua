@@ -44,22 +44,16 @@ return {
     opts = {
       compile = true,
       overrides = function(colors)
-        -- Kanso's own comment style: kept for doc comments, commit messages and oil,
-        -- only code comments are orange.
-        local kanso_comment = { fg = colors.theme.syn.comment, italic = true }
+        -- Only code comments are orange. Plugins also use Comment for their own text, so it stays gray.
+        local code_comment = { fg = colors.palette.yellowSaturated, italic = false }
+        local kanso_comment = { link = "Comment" }
         return {
-          Comment = { fg = colors.palette.yellowSaturated, italic = false },
+          ["@comment"] = code_comment,
+          ["@lsp.type.comment"] = code_comment,
           ["@comment.documentation"] = kanso_comment,
           ["@lsp.typemod.comment.documentation"] = kanso_comment,
           ["@comment.gitcommit"] = kanso_comment,
           ["@comment.jjdescription"] = kanso_comment,
-          gitcommitComment = kanso_comment,
-          jjComment = kanso_comment,
-          OilEmpty = kanso_comment,
-          OilHidden = kanso_comment,
-          OilLinkTarget = kanso_comment,
-          OilTrashSourcePath = kanso_comment,
-          DiagnosticUnnecessary = { fg = colors.theme.syn.comment },
         }
       end,
     },
