@@ -86,6 +86,7 @@ return {
       default = { "git", "snippets", "lsp", "buffer", "path" },
       per_filetype = {
         vim = { inherit_defaults = true, "cmdline" },
+        markdown = { inherit_defaults = true, "presenterm" },
       },
       providers = {
         path = {
@@ -100,6 +101,10 @@ return {
           name = "Git",
           -- only enable this source when filetype is gitcommit, markdown, or 'octo'
           enabled = function() return vim.tbl_contains({ "octo", "gitcommit", "markdown" }, vim.bo.filetype) end,
+        },
+        presenterm = {
+          name = "presenterm",
+          module = "blink-cmp-presenterm",
         },
       },
     },

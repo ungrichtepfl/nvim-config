@@ -23,58 +23,6 @@ end
 
 local function is_slides_file(path) return ("/" .. path):find("/" .. SLIDES_FOLDER .. "/", 1, true) ~= nil end
 
-local function insert_presenterm_command()
-  if vim.fn.executable "presenterm" == 0 then
-    vim.notify("presenterm is not installed", vim.log.levels.ERROR)
-    return
-  end
-  require("fzf-lua").fzf_exec("presenterm --list-comment-commands", { prompt = "presenterm> ", complete = true })
-end
-
--- presenterm reloads the slides on every save
-local function toggle_presenterm_preview(buf)
-  local preview_win = vim.b[buf].presenterm_preview_win
-  if preview_win and vim.api.nvim_win_is_valid(preview_win) then
-    vim.api.nvim_win_close(preview_win, true)
-    return
-  end
-  if vim.fn.executable "presenterm" == 0 then
-    vim.notify("presenterm is not installed", vim.log.levels.ERROR)
-    return
-  end
-
-  local slides_win = vim.api.nvim_get_current_win()
-  vim.cmd "rightbelow vnew"
-  vim.bo.bufhidden = "wipe" -- closing the window wipes the buffer, which stops presenterm
-  preview_win = vim.api.nvim_get_current_win()
-  vim.b[buf].presenterm_preview_win = preview_win
-  vim.fn.jobstart({ "presenterm", vim.api.nvim_buf_get_name(buf) }, {
-    term = true,
-    on_exit = function(_, code)
-      -- A closed window means it was stopped on purpose; otherwise presenterm quit by itself
-      if not vim.api.nvim_win_is_valid(preview_win) then return end
-      if code ~= 0 then vim.notify("presenterm exited with code " .. code, vim.log.levels.ERROR) end
-      vim.api.nvim_win_close(preview_win, true)
-    end,
-  })
-  vim.api.nvim_set_current_win(slides_win)
-end
-
-local function set_slides_keymaps(buf)
-  vim.keymap.set(
-    "n",
-    "<localleader>c",
-    insert_presenterm_command,
-    { buffer = buf, desc = "Insert presenterm comment command" }
-  )
-  vim.keymap.set(
-    "n",
-    "<localleader>s",
-    function() toggle_presenterm_preview(buf) end,
-    { buffer = buf, desc = "Toggle presenterm preview" }
-  )
-end
-
 -- obsidian.nvim skips its own UI when render-markdown is installed, so render notes with that instead.
 -- Scheduled because render-markdown attaches to the buffer in its own FileType autocmd.
 local function enable_note_rendering(buf)
@@ -112,22 +60,6 @@ return {
       "3rd/image.nvim",
       optional = true,
       opts = { integrations = { markdown = { resolve_image_path = resolve_vault_image_path } } },
-    },
-    {
-      "saghen/blink.cmp",
-      optional = true,
-      opts = {
-        sources = {
-          default = { "presenterm" },
-          providers = {
-            presenterm = {
-              name = "presenterm",
-              module = "blink-cmp-presenterm",
-              enabled = function() return is_slides_file(vim.api.nvim_buf_get_name(0)) end,
-            },
-          },
-        },
-      },
     },
   },
   keys = {
@@ -179,7 +111,6 @@ return {
       pattern = "ObsidianNoteEnter",
       callback = function(args)
         set_note_keymaps(args.buf)
-        if is_slides_file(vim.api.nvim_buf_get_name(args.buf)) then set_slides_keymaps(args.buf) end
         enable_note_rendering(args.buf)
       end,
       desc = "Set note keymaps and render the note",

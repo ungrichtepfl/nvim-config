@@ -92,6 +92,11 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.wo[0][0].spell = true
   end,
 })
+vim.api.nvim_create_autocmd("FileType", {
+  group = markdown_group,
+  pattern = "markdown",
+  callback = function(args) require("config.presenterm").set_keymaps(args.buf) end,
+})
 
 local spell_group = vim.api.nvim_create_augroup("_spellfile", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
