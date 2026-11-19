@@ -117,31 +117,82 @@ function M.toggle_preview(buf)
   end
 end
 
----Run the preview of the slides in `buf` in a floating zellij pane.
+---@param args string[]
+---@return string? stdout
+---@return string? error
+local function run_zellij(args)
+  local result = vim.system(vim.list_extend({ "zellij" }, args), { text = true }):wait()
+  if result.code ~= 0 then return nil, "zellij " .. table.concat(args, " ") .. " failed: " .. (result.stderr or "") end
+  return result.stdout
+end
+
+---@param pane_id string as printed by `zellij run`, e.g. "terminal_5"
+---@return boolean? exists
+---@return string? error
+local function zellij_pane_exists(pane_id)
+  local stdout, err = run_zellij { "action", "list-panes", "--json" }
+  if not stdout then return nil, err end
+  local ok, panes = pcall(vim.json.decode, stdout)
+  if not ok then return nil, "cannot read the output of zellij action list-panes: " .. panes end
+  local number = tonumber(pane_id:match "^terminal_(%d+)$")
+  for _, pane in ipairs(panes) do
+    if pane.id == number and not pane.is_plugin then return true end
+  end
+  return false
+end
+
+---@param slides_path string
+---@return string? pane_id
+---@return string? error
+local function start_preview_in_zellij(slides_path)
+  local cmd, err = preview_command(slides_path)
+  if not cmd then return nil, err end
+  -- The zellij pane does not get the PATH of Neovim, so tools that the slides run (e.g. d2) are not found
+  -- without passing it on.
+  local stdout, run_err = run_zellij(vim.list_extend({
+    "run",
+    "--direction",
+    "right",
+    "--cwd",
+    vim.fs.dirname(slides_path),
+    "--",
+    "env",
+    "PATH=" .. vim.env.PATH,
+  }, cmd))
+  if not stdout then return nil, run_err end
+  return vim.trim(stdout)
+end
+
+---Show or hide a preview of the slides in `buf` in a zellij pane to the right of Neovim.
 ---Unlike the terminal of Neovim, zellij passes images on to the terminal, so they are not drawn as ascii blocks.
+---zellij cannot hide a pane, so hiding makes the pane of Neovim fullscreen. The preview keeps running behind it.
 ---@param buf integer
-function M.open_preview_in_zellij(buf)
+function M.toggle_preview_in_zellij(buf)
   if not vim.env.ZELLIJ then
     notify_error "Neovim does not run inside zellij"
     return
   end
-  local slides_path = vim.api.nvim_buf_get_name(buf)
-  local cmd, err = preview_command(slides_path)
-  if not cmd then
-    notify_error(err)
+  local pane_id = vim.b[buf].presenterm_zellij_pane
+  local exists, exists_err = false, nil
+  if pane_id then
+    exists, exists_err = zellij_pane_exists(pane_id)
+  end
+  if exists_err then
+    notify_error(exists_err)
     return
   end
-  -- The zellij pane does not get the PATH of Neovim, so tools that the slides run (e.g. d2) are not found
-  -- without passing it on.
-  local zellij_cmd = vim.list_extend(
-    { "zellij", "run", "--floating", "--cwd", vim.fs.dirname(slides_path), "--", "env", "PATH=" .. vim.env.PATH },
-    cmd
-  )
-  vim.system(zellij_cmd, { text = true }, function(result)
-    if result.code ~= 0 then
-      vim.schedule(function() notify_error("zellij run failed: " .. (result.stderr or "")) end)
-    end
-  end)
+
+  if exists then
+    local _, toggle_err = run_zellij { "action", "toggle-fullscreen", "--pane-id", vim.env.ZELLIJ_PANE_ID }
+    if toggle_err then notify_error(toggle_err) end
+    return
+  end
+  local new_pane_id, start_err = start_preview_in_zellij(vim.api.nvim_buf_get_name(buf))
+  if not new_pane_id then
+    notify_error(start_err)
+    return
+  end
+  vim.b[buf].presenterm_zellij_pane = new_pane_id
 end
 
 ---Set the keymaps to write and preview the slides in `buf`.
@@ -156,8 +207,8 @@ function M.set_keymaps(buf)
   vim.keymap.set(
     "n",
     "<localleader>z",
-    function() M.open_preview_in_zellij(buf) end,
-    { buffer = buf, desc = "Open presenterm preview in a zellij pane" }
+    function() M.toggle_preview_in_zellij(buf) end,
+    { buffer = buf, desc = "Toggle presenterm preview in a zellij pane" }
   )
   set_toggle_preview_keymap(buf, buf)
 end
