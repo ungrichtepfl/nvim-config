@@ -12,16 +12,34 @@ local function has_makefile(dir)
   return false
 end
 
+---Run `cmd` so that it gets `signal` when the program that started it dies.
+---Ending a zellij session kills Neovim and the panes without a hangup, so without this the preview keeps running.
+---@param signal string
+---@param cmd string[]
+---@return string[]
+local function stop_with_parent(signal, cmd)
+  if vim.fn.executable "setpriv" == 0 then
+    vim.notify(
+      "setpriv is not installed: the preview keeps running if Neovim or zellij is killed",
+      vim.log.levels.WARN,
+      { title = "presenterm" }
+    )
+    return cmd
+  end
+  return vim.list_extend({ "setpriv", "--pdeathsig", signal, "--" }, cmd)
+end
+
 ---@param slides_path string
 ---@return string[]? cmd
 ---@return string? error
 local function preview_command(slides_path)
   if has_makefile(vim.fs.dirname(slides_path)) then
     if vim.fn.executable "make" == 0 then return nil, "make is not installed" end
-    return { "make" }
+    -- make ends its children only on SIGTERM. On SIGHUP it keeps waiting for presenterm.
+    return stop_with_parent("TERM", { "make" })
   end
   if vim.fn.executable "presenterm" == 0 then return nil, "presenterm is not installed" end
-  return { "presenterm", slides_path }
+  return stop_with_parent("HUP", { "presenterm", slides_path })
 end
 
 local function set_toggle_preview_keymap(keymap_buf, slides_buf)
@@ -58,6 +76,16 @@ local function open_preview_window(preview_buf)
   vim.api.nvim_open_win(preview_buf, true, { split = "right", win = vim.api.nvim_get_current_win() })
 end
 
+---Stop a running terminal job together with every process it started.
+---@param job integer
+local function stop_job_with_children(job)
+  if vim.fn.jobwait({ job }, 0)[1] ~= -1 then return end -- already ended
+  -- `make` starts presenterm as a child, so stopping only the job would leave presenterm running. A terminal job
+  -- leads its own process group, so the negative pid reaches all of them.
+  local _, err, err_name = vim.uv.kill(-vim.fn.jobpid(job), "sigterm")
+  if err and err_name ~= "ESRCH" then notify_error("cannot stop the preview: " .. err) end
+end
+
 ---@param slides_buf integer
 local function start_preview(slides_buf)
   local slides_path = vim.api.nvim_buf_get_name(slides_buf)
@@ -76,20 +104,37 @@ local function start_preview(slides_buf)
   vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>", { buffer = preview_buf, desc = "Window commands" })
   vim.b[slides_buf].presenterm_preview_buf = preview_buf
   open_preview_window(preview_buf)
-  vim.fn.jobstart(cmd, {
+  local job = vim.fn.jobstart(cmd, {
     term = true,
     cwd = vim.fs.dirname(slides_path),
     on_exit = function(_, code)
-      -- 129 is SIGHUP, which Neovim sends when the terminal buffer is deleted or Neovim quits
-      if code ~= 0 and code ~= 129 then notify_error(table.concat(cmd, " ") .. " exited with code " .. code) end
+      -- 129 is SIGHUP, which Neovim sends when the terminal buffer is deleted or Neovim quits.
+      -- 143 is SIGTERM from stop_job_with_children.
+      if code ~= 0 and code ~= 129 and code ~= 143 then
+        notify_error(table.concat(cmd, " ") .. " exited with code " .. code)
+      end
       delete_preview_buf()
     end,
   })
+  if job <= 0 then
+    notify_error("cannot start " .. table.concat(cmd, " ") .. " (jobstart returned " .. job .. ")")
+    delete_preview_buf()
+    return
+  end
+  local function stop_preview()
+    stop_job_with_children(job)
+    delete_preview_buf()
+  end
   vim.api.nvim_create_autocmd("BufUnload", {
     buffer = slides_buf,
     once = true,
-    callback = delete_preview_buf,
+    callback = stop_preview,
     desc = "Stop the presenterm preview together with its slides",
+  })
+  vim.api.nvim_create_autocmd("VimLeavePre", {
+    once = true,
+    callback = function() stop_job_with_children(job) end,
+    desc = "Stop the presenterm preview when Neovim quits",
   })
   vim.api.nvim_create_autocmd("BufEnter", {
     buffer = preview_buf,
@@ -151,6 +196,7 @@ local function start_preview_in_zellij(slides_path)
   -- without passing it on.
   local stdout, run_err = run_zellij(vim.list_extend({
     "run",
+    "--close-on-exit",
     "--direction",
     "right",
     "--cwd",
@@ -161,6 +207,19 @@ local function start_preview_in_zellij(slides_path)
   }, cmd))
   if not stdout then return nil, run_err end
   return vim.trim(stdout)
+end
+
+---Close the zellij pane of a preview, which ends the presenterm in it.
+---@param pane_id string
+local function close_zellij_pane(pane_id)
+  local exists, err = zellij_pane_exists(pane_id)
+  if err then
+    notify_error(err)
+    return
+  end
+  if not exists then return end
+  local _, close_err = run_zellij { "action", "close-pane", "--pane-id", pane_id }
+  if close_err then notify_error(close_err) end
 end
 
 ---Show or hide a preview of the slides in `buf` in a zellij pane to the right of Neovim.
@@ -193,6 +252,18 @@ function M.toggle_preview_in_zellij(buf)
     return
   end
   vim.b[buf].presenterm_zellij_pane = new_pane_id
+  -- Hiding only makes Neovim fullscreen, so the pane must be closed explicitly, or it keeps running unseen.
+  vim.api.nvim_create_autocmd("BufUnload", {
+    buffer = buf,
+    once = true,
+    callback = function() close_zellij_pane(new_pane_id) end,
+    desc = "Close the presenterm zellij pane together with its slides",
+  })
+  vim.api.nvim_create_autocmd("VimLeavePre", {
+    once = true,
+    callback = function() close_zellij_pane(new_pane_id) end,
+    desc = "Close the presenterm zellij pane when Neovim quits",
+  })
 end
 
 ---Set the keymaps to write and preview the slides in `buf`.
