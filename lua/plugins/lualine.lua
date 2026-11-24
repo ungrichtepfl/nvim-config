@@ -4,7 +4,7 @@ local function fetch_branch()
   if vcs_cmd_running then return end
   vcs_cmd_running = true
   vim.fn.jobstart(
-    "jj root >/dev/null 2>&1 && jj log -r '@' --no-graph -T 'if(description.first_line(), description.first_line(), \"(no description)\")' 2>/dev/null || git branch --show-current 2>/dev/null",
+    "jj root >/dev/null 2>&1 && jj log --ignore-working-copy -r '@' --no-graph -T 'if(description.first_line(), description.first_line(), \"(no description)\")' 2>/dev/null || git branch --show-current 2>/dev/null",
     {
       stdout_buffered = true,
       on_stdout = function(_, data)
