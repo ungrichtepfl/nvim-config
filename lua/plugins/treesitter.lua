@@ -9,6 +9,7 @@ return {
         "arduino",
         "asm",
         "bash",
+        "bitbake",
         "c",
         "c_sharp",
         "cmake",
