@@ -13,8 +13,12 @@ return {
           enabled = true,
         },
         tools = {
+          -- zellij 0.46 also uses ZELLIJ_SESSION_ID to detect an outer session;
+          -- if it is set, the nested sidekick zellij opens as a new outer tab.
+          claude = { env = { ZELLIJ_SESSION_ID = false } },
           ollama = {
             cmd = { "ollama", "launch", "pi" },
+            env = { ZELLIJ_SESSION_ID = false },
           },
         },
       },
